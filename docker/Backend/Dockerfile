@@ -6,12 +6,12 @@ RUN apt-get update &&\
 	apt-get install -y nodejs &&\
 	node -v &&\
 	cd /home &&\
-	git clone https://github.com/MatiasVilche/Inventario-Biosur-TallerDesarrollo &&\
-	cd Inventario-Biosur-TallerDesarrollo/Backend
+	git clone https://github.com/MatiasVilche/TallerD2023 &&\
+	cd TallerD2023
 # Copiar el archivo .env al directorio /home/Inventario-Biosur-TallerDesarrollo/Backend en el contenedor
-COPY .env /home/Inventario-Biosur-TallerDesarrollo/Backend/.env
+COPY .env /home/TallerD2023/Backend/.env
 
-WORKDIR /home/Inventario-Biosur-TallerDesarrollo/Backend
+WORKDIR /home/TallerD2023/Backend
 
 # Se levanta el backend
 RUN npm i

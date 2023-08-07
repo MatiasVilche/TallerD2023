@@ -20,12 +20,12 @@ ENV NODE_PATH $NVM_DIR/versions/node/v18.16.0/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v18.16.0/bin:$PATH
 
 RUN cd /home &&\
-	git clone https://github.com/MatiasVilche/Inventario-Biosur-TallerDesarrollo.git &&\
-	cd Inventario-Biosur-TallerDesarrollo/frontend
+	git clone https://github.com/MatiasVilche/TallerD2023 &&\
+	cd TallerD2023/frontend
 # Copiar el archivo .env al directorio /home/Inventario-Biosur-TallerDesarrollo/Backend en el contenedor
-COPY .env /home/Inventario-Biosur-TallerDesarrollo/frontend/.env
+COPY .env /home/TallerD2023/frontend/.env
 
-WORKDIR /home/Inventario-Biosur-TallerDesarrollo/frontend
+WORKDIR /home/TallerD2023/frontend
 
 # Se levanta el backend
 
