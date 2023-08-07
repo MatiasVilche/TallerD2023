@@ -1,0 +1,29 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.5.1",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@next/font": "13.1.6",
+    "axios": "^1.2.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "eslint": "8.34.0",
+    "eslint-config-next": "13.1.6",
+    "framer-motion": "^9.0.7",
+    "next": "13.1.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "rut.js": "^2.1.0",
+    "serve": "^14.2.0",
+    "sweetalert2": "^11.7.2"
+  }
+}
