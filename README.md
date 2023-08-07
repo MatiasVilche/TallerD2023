@@ -23,7 +23,7 @@ El proyecto Sistema de apoyo administrativo empresa MiPyme Biosur es una aplicac
 ## Configuraciones de Ejecución para Entorno de Desarrollo/Produccción
 
 - Clonar el repositorio de github
-```git clone https://github.com/MatiasVilche/Inventario-Biosur-TallerDesarrollo```
+```git clone https://github.com/MatiasVilche/TallerD2023```
 
 ### Instalar dependencias del backend
 - Entrar en la carpeta de /Backend y ejecutar los siguientes comandos
