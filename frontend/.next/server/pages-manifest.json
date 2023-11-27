@@ -1,18 +1,7 @@
 {
   "/_app": "pages/_app.js",
-  "/crear": "pages/crear.html",
-  "/historial": "pages/historial.html",
-  "/": "pages/index.html",
-  "/mostrar": "pages/mostrar.html",
-  "/mostrarT": "pages/mostrarT.html",
-  "/proyecto/crearProyecto": "pages/proyecto/crearProyecto.html",
-  "/proyecto/proyecto": "pages/proyecto/proyecto.html",
-  "/usuarios/crear": "pages/usuarios/crear.html",
-  "/usuarios/mostrar": "pages/usuarios/mostrar.html",
   "/_error": "pages/_error.js",
-  "/usuarios/perfil/[userID]": "pages/usuarios/perfil/[userID].js",
-  "/editar/[materiales]": "pages/editar/[materiales].js",
   "/_document": "pages/_document.js",
-  "/usuarios/editar/[usuarios]": "pages/usuarios/editar/[usuarios].js",
-  "/404": "pages/404.html"
+  "/mostrar": "pages/mostrar.js",
+  "/": "pages/index.js"
 }

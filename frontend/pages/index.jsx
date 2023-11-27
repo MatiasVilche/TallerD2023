@@ -10,22 +10,23 @@ const Index = () => {
 	const router = useRouter()
 
 	const handleChange = (e) => {
-	  setRUT(e.target.value)
-    console.log(rut)
+		setRUT(e.target.value)
+    	//console.log(rut)
 	}
 
 	const toast = useToast()
 
 	const onSubmit = async (e) => {
 		e.preventDefault()
-    let rutF = format(rut)
+		let rutF = format(rut)
+
 		const response = await login(rutF)
-		if (response.status === 200) {			
+		if (response.status === 200) {
 			const usrType = await isAdmin(rutF)
 
-			const usrState = await getUsuario(usrType.data.userId)	
+			const usrState = await getUsuario(usrType.data.userId)
+			
 			if(usrState.data.estadoUsuario === 0){
-
 				localStorage.setItem('token', usrType.data.userId)
 			if(usrType.status === 202){
 				localStorage.setItem('userType', 0)
@@ -42,7 +43,6 @@ const Index = () => {
 					isClosable: false,
 				})				
 			}
-			
 		}
 	}
 

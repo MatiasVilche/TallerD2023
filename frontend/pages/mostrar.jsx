@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Input,Select, VStack, StackDivider,useDisclosure,FormControl,FormLabel,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Input,Select, VStack, StackDivider,useDisclosure,FormControl,FormLabel,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Slider, SliderTrack, SliderFilledTrack, SliderThumb,Text} from '@chakra-ui/react'
 import { getMateriales, deleteMaterial} from '../data/materiales'
 import { getUsuarios} from '../data/usuarios'
 import { getProyecto} from '../data/proyecto'
@@ -27,6 +27,23 @@ const Mostrar = () => {
         descripcion: '',
         fecha: ''
     });
+
+    const resetFormData = () => {
+        setFormData({
+        rutTrabajador: '',
+        codigoProducto:'',
+        cantidad: '',
+        tipo: '',
+        proyecto: '',
+        descripcion: '',
+        fecha: ''
+        });
+    };
+
+    const handleButtonClick = () => {
+        onClose();
+        resetFormData();
+    };
 
     const [usuarios, setUsuarios]= useState({
         rut: '',
@@ -164,10 +181,11 @@ const Mostrar = () => {
     //Varaible de id de material dentro del modal
     const [modalVariable, setModalVariable] = useState({ usu: [] });
     
-    const fetchData = async(usu,proyecto) => {
+    const fetchData = async(usu,proyecto,CantidadMaterial) => {
             const variables = {
                 usu,
-                proyecto
+                proyecto,
+                CantidadMaterial
             };
             setModalVariable(variables);
     };
@@ -190,7 +208,7 @@ const Mostrar = () => {
                     <Td>{material.cantidad}</Td>
                     <Td>
                         <HStack>
-                            <Button colorScheme={"yellow"} onClick={() => {fetchData(usuarios,proyecto); onOpen(); setFormData({ ...formData, codigoProducto: material._id })}}>Ajustar Stock</Button>
+                            <Button colorScheme={"yellow"} onClick={() => {fetchData(usuarios,proyecto,material.cantidad); onOpen(); setFormData({ ...formData, codigoProducto: material._id });}}>Ajustar Stock</Button>
                             <Button colorScheme={"green"} onClick={() => router.push(`./editar/${material._id}`)}>Modificar material</Button>
                             <Button colorScheme={"red"} onClick={() => confirmDelete(material._id)}>Eliminar material</Button>
     <Modal
@@ -219,7 +237,13 @@ const Mostrar = () => {
 
             <FormControl mt={4}>
                 <FormLabel htmlFor="cantidad">Cantidad</FormLabel>
-                <Input id="cantidad" placeholder='Last name' value={formData.cantidad} onChange={(e) => setFormData({ ...formData, cantidad: e.target.value })}/>
+                <Slider defaultValue={formData.cantidad} min={0} max={modalVariable.CantidadMaterial} step={1} onChange={(value) => setFormData({ ...formData, cantidad: value })}>
+            <SliderTrack>
+                <SliderFilledTrack />
+            </SliderTrack>
+                <SliderThumb />
+                </Slider>
+            <Text>{0+formData.cantidad}</Text>
             </FormControl>
 
             <FormControl mt={4}>
@@ -245,15 +269,15 @@ const Mostrar = () => {
 
             <FormControl mt={4}>
                 <FormLabel htmlFor="descripcion">Descripción</FormLabel>
-                <Input id="descripcion" placeholder='Last name' value={formData.descripcion} onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}/>
+                <Input id="descripcion" placeholder='Ingrese una descripción' value={formData.descripcion} onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}/>
             </FormControl>
         </ModalBody>
         <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
-                Save
+                Guardar
             </Button>
 
-            <Button onClick={onClose}>Cancel</Button>
+            <Button colorScheme="red" onClick={handleButtonClick}>Cancelar</Button>
         </ModalFooter>
     </ModalContent>
     </Modal>
