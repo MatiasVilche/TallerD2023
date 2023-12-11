@@ -50,7 +50,6 @@ const Editar = ({ data }) => {
             ...material,
             [e.target.name]: e.target.value
         })
-        //console.log(e.target.value)
     }
 
     //console.log(usuario.rut)
@@ -100,12 +99,12 @@ const Editar = ({ data }) => {
             <Container maxW="container.xl" mt={10}>
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar Material: {data.nombre}</Heading>
             <Stack spacing={4} mt={10}>
-                <InputForm label="Codigo" handleChange={handleChange} name="codigo" type="text" value={material.codigo}/>
-                <InputForm label="Nombre" handleChange={handleChange} name="nombre" type="text" value={material.nombre}/>
-                <InputForm label="Descripcion" handleChange={handleChange} name="descripcion" type="text" value={material.descripcion}/>
-                <InputForm label="Cantidad" handleChange={handleChange} name="cantidad" type="text" value={material.cantidad}/>
-                </Stack>
-                <Button colorScheme="green" mt={10} mb={10} onClick={submitMaterial}>Modificar Material</Button>
+                <InputForm width="35%" label="Codigo" handleChange={handleChange} name="codigo" type="text" value={material.codigo}/>
+                <InputForm width="35%" label="Nombre" handleChange={handleChange} name="nombre" type="text" value={material.nombre}/>
+                <InputForm width="35%" label="Descripcion" handleChange={handleChange} name="descripcion" type="text" value={material.descripcion}/>
+                <InputForm width="35%" label="Cantidad" handleChange={handleChange} name="cantidad" type="text" value={material.cantidad}/>
+            </Stack>
+                <Button colorScheme="green" mt={10} mb={10} mr="1%" onClick={submitMaterial}>Modificar Material</Button>
                 <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../mostrar')}>Cancelar</Button>
         </Container>
 )

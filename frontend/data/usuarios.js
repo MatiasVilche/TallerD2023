@@ -11,12 +11,6 @@ const getUsuarios = async () => {
     
 }
 
-const getConserjes = async () => {
-    const response = await axios.get(`${process.env.SERVIDOR}/Usuario/conserje`)
-    return response
-    
-}
-
 const isAdmin = async (rut) => {
     //let rut = localStorage.getItem("token")
     const response = await axios.get(`${process.env.SERVIDOR}/Usuario/query/${rut}`)
@@ -52,7 +46,6 @@ module.exports = {
     login,
     getUsuarios,
     getUsuario,
-    getConserjes,
     isAdmin,
     createUsuario,
     deleteUsuario,

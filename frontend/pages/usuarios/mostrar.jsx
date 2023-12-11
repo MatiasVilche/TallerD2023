@@ -64,7 +64,7 @@ const Mostrar = () => {
                     <Td>{showEstado(conserje.estadoUsuario)}</Td>
                     <Td>
                         <HStack>
-                            <Button colorScheme={"teal"} onClick={() => router.push(`../mailer/send/${conserje._id}`)}>Enviar Mensaje</Button>                
+                            <Button colorScheme={"green"} onClick={() => router.push(`./perfil/${conserje._id}`)}>Ver perfil</Button>    
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${conserje._id}`)}>Modificar</Button>      
                             <Button colorScheme={"red"} onClick={() => confirmDelete(conserje._id)}>Eliminar</Button>
                         </HStack>
@@ -81,6 +81,8 @@ const Mostrar = () => {
         s = "Administrador"
     }else if(a === 1){
         s = "Conserje"    
+    }else if(a === 2){
+        s = "Superadministrador"    
     }
         return s
     }
@@ -105,15 +107,15 @@ const Mostrar = () => {
     return (
         <> 
             <Container maxW="container.xl">
-                <Heading as="h1" size="2xl" textAlign="center" mt="10">Seleccione un conserje</Heading>
-                <Flex>
-                <Button variant='outline'  onClick={()=> router.push('../admin/dashboard')}>Atras</Button>
+                <Heading as="h1" size="2xl" textAlign="center" mt="5%">Usuarios</Heading>
+                <Flex mt="3%"> 
+                <Button variant='outline'  colorScheme='red' onClick={()=> router.push('../mostrar')}>Atras</Button>
                 <Spacer></Spacer>
                 <Button variant='outline' colorScheme='green'  onClick={()=> router.push('./crear')}>Crear Usuario</Button>
                 </Flex>
 
                 <Stack spacing={4} mt="10">
-                    <Table variant="simple">     
+                    <Table variant="striped">        
                         <Thead>
                             <Tr>
                                 <Td>Nombre</Td>

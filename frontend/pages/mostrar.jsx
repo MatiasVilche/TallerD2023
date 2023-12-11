@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Input,Select, VStack, StackDivider,useDisclosure,FormControl,FormLabel,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Slider, SliderTrack, SliderFilledTrack, SliderThumb,Text} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Input,Select, VStack, StackDivider,useDisclosure,FormControl,FormLabel,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Slider, SliderTrack, SliderFilledTrack, SliderThumb,Text,Center} from '@chakra-ui/react'
 import { getMateriales, deleteMaterial} from '../data/materiales'
 import { getUsuarios} from '../data/usuarios'
 import { getProyecto} from '../data/proyecto'
@@ -8,6 +8,7 @@ import { sendEmail} from '../data/mailer'
 import  Swal  from 'sweetalert2'
 import { useState,useEffect} from 'react'
 import axios from 'axios';
+import Sidebar from '../components/Sidebar2';
 
 const Mostrar = () => {
 
@@ -115,16 +116,16 @@ const Mostrar = () => {
     const confirmDelete = async (id) => {
 
         Swal.fire({
-            title: 'Esta seguro que quiere eliminar este material?',
+            title: 'Está seguro que quiere eliminar este material?',
             showDenyButton: true,
-            //showCancelButton: true,
             confirmButtonText: 'Si',
             denyButtonText: 'No',
+            confirmButtonColor:'green',
+            denyButtonColor:'red',
             }).then((result) => {
 
             if (result.isDenied) {
-                Swal.fire('No se elimino el material')
-                return
+                Swal.fire({title: 'No se eliminó el material',confirmButtonColor:'green'})
             }else if (result.isConfirmed) {
                 delMat(id)
                 Swal.fire({
@@ -290,25 +291,18 @@ const Mostrar = () => {
 
     return (
         <>
+        <Sidebar/>
             <Container maxW="container.xl">
-                <Heading as="h1" size="2xl" textAlign="center" mt="10">Listado de materiales</Heading>
+                <Heading as="h1" size="2xl" textAlign="center" mt="10">Lista de materiales</Heading>
                 <VStack divider={<StackDivider borderColor='gray.200' />}spacing={4} align='stretch'>
-                    <Flex>
-                        <Stack spacing={4} direction={['column', 'row']}>
-                            <Button variant='outline' colorScheme='red'  onClick={()=> router.push('./')}>Salir</Button>
-                            <Button variant='outline' colorScheme='green'  onClick={()=> router.push('./crear')}>Agregar un material</Button>
-                            <Button variant='outline' colorScheme='blue'  onClick={()=> router.push('./historial')}>Ver historial</Button>
-                            <Button variant='outline' colorScheme='yellow'  onClick={()=> router.push('./usuarios/crear')}>Crear usuario</Button>
-                            <Button variant='outline' colorScheme='purple'  onClick={()=> router.push('./proyecto/proyecto')}>Ver proyectos</Button>
-                        </Stack>
-                    </Flex>
-                    <Flex>
-                        <Input placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
-                    </Flex>
+                    <Button marginLeft='auto' variant='outline' colorScheme='green'  width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
+                        <Center>
+                        <Input width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
+                        </Center>
                 </VStack>
 
                 <Stack spacing={4} mt="10">
-                    <Table variant="simple">
+                    <Table variant="striped">
                         <Thead>
                             <Tr>
                                 <Td>Codigo</Td>

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Heading, Input, Stack, FormControl, FormLabel, useToast,Box} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { login,isAdmin,getUsuario} from '../data/usuarios'
-import {  validate, clean, format, getCheckDigit } from 'rut.js'
+import { format} from 'rut.js'
 
 const Index = () => {
 
@@ -27,13 +27,22 @@ const Index = () => {
 			const usrState = await getUsuario(usrType.data.userId)
 			
 			if(usrState.data.estadoUsuario === 0){
+
 				localStorage.setItem('token', usrType.data.userId)
+				localStorage.setItem('nombreUsuario', usrState.data.nombre);
+
 			if(usrType.status === 202){
+
 				localStorage.setItem('userType', 0)
+				localStorage.setItem('nombreUsuario', usrState.data.nombre);
 				router.push('./mostrar')
-			} else if(usrType.status === 200){
-				localStorage.setItem('userType', 1)
-				router.push('./mostrarT')
+
+			}else if(usrType.status === 203){
+
+				localStorage.setItem('userType', 2)
+				localStorage.setItem('nombreUsuario', usrState.data.nombre);
+				router.push('./panelSuperAdmin')
+
 			}}else {
 				toast({
 					title: 'Login invalido',

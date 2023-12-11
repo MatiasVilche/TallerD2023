@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Spacer , Input, VStack, StackDivider} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex , Input, VStack, StackDivider,Center} from '@chakra-ui/react'
 import {getHistorial} from '../data/historial'
 import { getUsuarios  } from '../data/usuarios'
 import { getMateriales} from '../data/materiales'
@@ -102,19 +102,15 @@ const Mostrar = () => {
         <>
             <Container maxW="container.xl">
                 <Heading as="h1" size="2xl" textAlign="center" mt="10">Historial de retiro de materiales</Heading>
-                <Button variant='outline' colorScheme='red'  onClick={()=> router.push('./mostrar')}>Salir</Button>
+                <Button mt="5%" variant='outline' colorScheme='red'  onClick={()=> router.push('./mostrar')}>Salir</Button>
                 <VStack divider={<StackDivider borderColor='gray.200' />}spacing={4} align='stretch'>
-                    <Flex>
-                        <Stack spacing={4} direction={['column', 'row']}>
-                        </Stack>
-                    </Flex>
-                    <Flex>
-                        <Input placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
-                    </Flex>
+                        <Center>
+                            <Input width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
+                        </Center>
                 </VStack>
 
                 <Stack spacing={4} mt="10">
-                    <Table variant="simple">
+                    <Table variant="striped">
                         <Thead>
                             <Tr>
                                 <Td>Nombre del trabajador</Td>

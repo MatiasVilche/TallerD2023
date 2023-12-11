@@ -8,7 +8,8 @@ api.get('/', proyectoController.obtenerProyectos);
 api.get('/search/:id', proyectoController.obtenerProyectoPorId);
 api.put('/agregar/:id', proyectoController.agregarMaterialAProyecto);
 
-//api.put('/actualizar/:id', proyectoController.actualizarProyecto);
+api.put('/actualizar/:id', proyectoController.updateProyecto);
+
 //api.delete('/eliminar/:id', proyectoController.eliminarProyecto);
 
 module.exports = api;

@@ -20,13 +20,13 @@ const sendCustomEmail = async (msg) => {
         text : "Stock Critico, quedan menos de 10 unidades de "+ msg.params.message,
     }
 
-    const info = await transporter.sendMail(mensaje);
+    await transporter.sendMail(mensaje);
 
     return 1;
 }
 
 const enviarMail = (message,res) => {
-    const aux = sendCustomEmail(message)
+    sendCustomEmail(message)
     res.status(200).send({ message: "Se envio el correo con exito" })
 }
 

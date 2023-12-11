@@ -15,8 +15,8 @@ const usuarioSchema = mongoose.Schema({
       required: true
     },
     tipoUsuario: {
-      // 0 = Admin  1= Conserje
-      type: Number, enum: [0, 1],
+      // 0 = Admin  1= Conserje 2= Superadministrador
+      type: Number, enum: [0, 1, 2],
       required: true
     },
     estadoUsuario: {

@@ -3,10 +3,13 @@ const Proyecto = require('../models/ProyectoModel');
 // Crear un nuevo proyecto
 const crearProyecto = async (req, res) => {
 	try {
-		const { nombre, materiales } = req.body;
+		const { nombre, materiales ,cliente,fechaInicio,fechaTermino} = req.body;
 		const proyecto = new Proyecto({
 		nombre,
-		materiales
+		materiales,
+		cliente,
+		fechaInicio,
+		fechaTermino:"0"
 	});
 		const nuevoProyecto = await proyecto.save();
 		res.status(201).json(nuevoProyecto);
@@ -68,10 +71,20 @@ const agregarMaterialAProyecto = (req, res) => {
 	});
 };
 
+const updateProyecto = (req, res) => {
+	let id = req.params.id
+    Proyecto.findByIdAndUpdate(id, req.body, (err, proyecto) => {
+		if (err){
+            res.status(400).send({ message: "Error al modificar el proyecto"})
+        }res.status(200).send(proyecto);
+	})
+}
+
 
 module.exports = {
     crearProyecto,
     obtenerProyectos,
     obtenerProyectoPorId,
-	agregarMaterialAProyecto
+	agregarMaterialAProyecto,
+	updateProyecto
 };

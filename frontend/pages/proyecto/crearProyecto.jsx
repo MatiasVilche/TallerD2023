@@ -9,7 +9,10 @@ const Proyectos = () => {
     const [proyecto, setProyecto] = useState({
         _id: '',
         nombre: '',
-        materiales: []
+        materiales: [],
+        cliente:'',
+        fechaInicio:'',
+        fechaTermino:''
     })
 
     const router = useRouter()
@@ -28,7 +31,7 @@ const Proyectos = () => {
         })
 
         Swal.fire({
-            title: 'Se agrego un material',
+            title: 'Se agregó un material',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK'
         }).then((result) => {
@@ -41,11 +44,19 @@ const Proyectos = () => {
     return (
         <Container maxW="container.xl" mt={10}>
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Crear un proyecto</Heading>
-            <Button variant='outline' onClick={()=> router.push('./mostrar')}>Atras</Button>
+            <Button variant='outline' onClick={()=> router.push('./proyecto')}>Atras</Button>
             <Stack spacing={4} mt={10}>
                 <FormControl id="nombre"> 
                     <FormLabel>Nombre</FormLabel>
-                    <Input pattern="[a-zA-Z]+" name={"nombre"} placeholder="Perfil aluminio 10 metros" type="text" onChange = {handleChange}/>
+                    <Input pattern="[a-zA-Z]+" name={"nombre"} placeholder="Proyecto liceo AB12" type="text" onChange = {handleChange}/>
+                </FormControl>
+                <FormControl id="cliente"> 
+                    <FormLabel>Nombre del cliente</FormLabel>
+                    <Input pattern="[a-zA-Z]+" name={"cliente"} placeholder="Carlos Oyarzún" type="text" onChange = {handleChange}/>
+                </FormControl>
+                <FormControl id="cliente"> 
+                    <FormLabel>Fecha de inicio</FormLabel>
+                    <input type="date" name="fechaInicio"  onChange = {handleChange}/>
                 </FormControl>
                 </Stack>
             <HStack>

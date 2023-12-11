@@ -15,8 +15,21 @@ const getProyecto = async () => {
     return response
 }
 
+const getProyectoEspecifico = async (id) => {
+    const response = await axios.get(`${process.env.SERVIDOR}/Proyecto/search/${id}`)
+    return response
+}
+
+
+const updateProyecto = (id, proyecto) => {
+    const response = axios.put(`${process.env.SERVIDOR}/Proyecto/actualizar/${id}`,proyecto)
+    return response
+}
+
 module.exports = {
     createProyecto,
     agregarMaterialAProyecto,
-    getProyecto
+    getProyecto,
+    getProyectoEspecifico,
+    updateProyecto
 }

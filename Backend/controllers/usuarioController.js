@@ -100,10 +100,14 @@ const isAdmin = (req, res) => {
 		if (err) return res.status(400).send({msg:err})
 		if(result){	
 			//console.log(result)
-			if (result.tipoUsuario === 0)
+			if (result.tipoUsuario === 0){
 			return res.status(202).send({msg: "TRUE", userId: result._id})
-
-			return res.status(200).send({msg: "FALSE", userId: result._id})
+			}
+			if (result.tipoUsuario === 1){
+				return res.status(200).send({msg: "FALSE", userId: result._id})
+			}
+			if (result.tipoUsuario === 2)
+			return res.status(203).send({msg: "FALSE", userId: result._id})
 		}
 	})
 

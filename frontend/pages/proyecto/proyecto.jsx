@@ -1,11 +1,9 @@
 import React from 'react'
 import { useState,useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Spacer , Input, VStack, StackDivider,Th} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex , Input, VStack, StackDivider,Th,Center} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {getProyecto} from '../../data/proyecto'
-import { getUsuarios  } from '../../data/usuarios'
 import { getMateriales} from '../../data/materiales'
-
 
 const Proyectos = () => {
 
@@ -28,17 +26,21 @@ const Proyectos = () => {
 
     const contentTable = () => {
         return (
-            
             Array.isArray(proyecto) && proyecto.map((proyecto, index) => (
-                
                 <Tr key={index}>
                     <Td>{proyecto.nombre}</Td>
-                    <Td>{proyecto.materiales.map(material => material._id).join(', ')}</Td>
+                    <Td>{proyecto.cliente}</Td>
+                    <Td>{proyecto.fechaInicio}</Td>
+                    <Td style={{visibility: proyecto.fechaTermino === "0" ? 'hidden' : 'visible'}}>{proyecto.fechaTermino}</Td>
                     <Td>{proyecto.materiales.map(material => material.nombre).join(', ')}</Td>
                     <Td>{proyecto.materiales.map(material => material.cantidad).join(', ')}</Td>
                     <Td>
-                        <HStack>
-                        </HStack>
+
+                    <HStack>
+                        <Button colorScheme={"orange"} onClick={() => router.push(`./editarMateriales/${proyecto._id}`)}>Ver materiales</Button>
+                        <Button colorScheme={"green"} onClick={() => router.push(`./editar/${proyecto._id}`)}>Editar proyecto</Button>
+                        <Button colorScheme={"blue"} onClick={() => router.push(`./editar/${proyecto._id}`)}>Generar PDF</Button>
+                    </HStack>
                     </Td>
                 </Tr>
             ))
@@ -76,33 +78,29 @@ const Proyectos = () => {
         <>
         <Container maxW="container.xl">
             <Heading as="h1" size="2xl" textAlign="center" mt="10">
-                Historial de retiro de materiales
+                Proyectos
             </Heading>
-            <Button variant='outline' colorScheme='red'  onClick={()=> router.push('../mostrar')}>
+            <Flex>
+                <Button variant='outline' colorScheme='red'  onClick={()=> router.push('../mostrar')}>
                 Salir
-            </Button>
-            <Button variant='outline' colorScheme='blue'  onClick={()=> router.push('./crearProyecto')}>
+                </Button>
+
+                <Button marginLeft='85%' variant='outline' colorScheme='green'  onClick={()=> router.push('./crearProyecto')}>
                 Crear proyecto
-            </Button>
-            <Flex>
-                        <Input placeholder='Ingrese el nombre del proyecto que desesa buscar' size='lg' onChange={(e) => filterNames(e)}/>
-                    </Flex>
-            <VStack divider={<StackDivider borderColor='gray.200' />}spacing={4} align='stretch'>
-            <Flex>
-                <Stack spacing={4} direction={['column', 'row']}>
-                </Stack>
+                </Button>
             </Flex>
-            <Flex>
-                
-            </Flex>
-            </VStack>
+            <Center mt="3%">
+                        <Input textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterNames(e)}/>
+            </Center>
 
             <Stack spacing={4} mt="10">
             <Table variant="simple">
                 <Thead>
                 <Tr>
                     <Th>Nombre del Proyecto</Th>
-                    <Th>Id de los materiales</Th>
+                    <Th>Cliente</Th>
+                    <Th>Fecha de inicio</Th>
+                    <Th>Fecha de término</Th>
                     <Th>Nombre de los materiales</Th>
                     <Th>Cantidad</Th>
                 </Tr>
