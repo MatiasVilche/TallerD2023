@@ -19,6 +19,7 @@ const mailerRoute = require('./routes/mailerRoute')
 const historialRoute = require('./routes/historialRoute')
 const usuarioRoute = require('./routes/usuarioRoute')
 const proyectoRoute = require('./routes/proyectoRoute')
+const clienteRoute = require('./routes/clienteRoute')
 
 const app = express();
 app.use(cors());
@@ -30,6 +31,7 @@ app.use('/api/Mailer', mailerRoute)
 app.use('/api/Historial',historialRoute)
 app.use('/api/Usuario', usuarioRoute)
 app.use('/api/Proyecto', proyectoRoute)
+app.use('/api/Cliente', clienteRoute)
 
 
 mongoose.set('strictQuery', false);

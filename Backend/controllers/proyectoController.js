@@ -3,13 +3,14 @@ const Proyecto = require('../models/ProyectoModel');
 // Crear un nuevo proyecto
 const crearProyecto = async (req, res) => {
 	try {
-		const { nombre, materiales ,cliente,fechaInicio,fechaTermino} = req.body;
+		const { nombre, materiales ,cliente,fechaInicio,fechaTermino,estado} = req.body;
 		const proyecto = new Proyecto({
 		nombre,
 		materiales,
 		cliente,
 		fechaInicio,
-		fechaTermino:"0"
+		fechaTermino:"0",
+		estado:"0"	
 	});
 		const nuevoProyecto = await proyecto.save();
 		res.status(201).json(nuevoProyecto);
@@ -80,11 +81,49 @@ const updateProyecto = (req, res) => {
 	})
 }
 
+const deleteMaterialFromProject = (req, res) => {
+	let projectId = req.params.id;
+	let materialId = req.body.idMaterial; // Cambia esta línea
+
+	Proyecto.findById(projectId, (err, project) => {
+		if (err) {
+			res.status(400).send({ message: err });
+		} else {
+			// Comprueba si el proyecto y sus materiales existen
+			if (!project || !project.materiales) {
+				res.status(400).send({ message: "No se encontraron el proyecto o los materiales" });
+			} else {
+				// Comprueba si el material que queremos eliminar existe en el array de materiales
+				for (let i = 0; i < project.materiales.length; i++) {
+					if (project.materiales[i]._id == materialId) {
+						
+						materialExists = project.materiales[i]
+
+						// Elimina el material del array
+						project.materiales.pull(project.materiales[i]);
+						
+						// Actualiza el proyecto
+						Proyecto.updateOne({ _id: projectId }, { $set: { materiales: project.materiales } }, (err) => {
+							if (err) {
+								res.status(500).send({ message: err });
+							} else {
+								res.status(200).send({ message: "Material eliminado" });
+							}
+						});
+						
+						break;
+					}
+				}
+			}
+		}
+	})
+}
 
 module.exports = {
     crearProyecto,
     obtenerProyectos,
     obtenerProyectoPorId,
 	agregarMaterialAProyecto,
-	updateProyecto
+	updateProyecto,
+	deleteMaterialFromProject
 };

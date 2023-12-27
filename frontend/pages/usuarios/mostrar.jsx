@@ -55,14 +55,14 @@ const Mostrar = () => {
         return conserjes.map((conserje,index) => {
             return (               
                 <Tr key={index}>
-                    <Td>{conserje.nombre}</Td>
-                    <Td>{conserje.rut}</Td>
-                    <Td>{conserje.email}</Td>
-                    <Td>{conserje.numero}</Td>
-                    <Td>{conserje.domicilio}</Td>
-                    <Td>{showTipo(conserje.tipoUsuario)}</Td>
-                    <Td>{showEstado(conserje.estadoUsuario)}</Td>
-                    <Td>
+                    <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{conserje.nombre}</Td>
+                    <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{conserje.rut}</Td>
+                    <Td border="2px" borderColor="black.200">{conserje.email}</Td>
+                    <Td border="2px" borderColor="black.200">{conserje.numero}</Td>
+                    <Td border="2px" borderColor="black.200">{conserje.domicilio}</Td>
+                    <Td border="2px" borderColor="black.200">{showTipo(conserje.tipoUsuario)}</Td>
+                    <Td border="2px" borderColor="black.200">{showEstado(conserje.estadoUsuario)}</Td>
+                    <Td border="2px" borderColor="black.200">
                         <HStack>
                             <Button colorScheme={"green"} onClick={() => router.push(`./perfil/${conserje._id}`)}>Ver perfil</Button>    
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${conserje._id}`)}>Modificar</Button>      
@@ -115,17 +115,17 @@ const Mostrar = () => {
                 </Flex>
 
                 <Stack spacing={4} mt="10">
-                    <Table variant="striped">        
+                    <Table variant="simple">        
                         <Thead>
-                            <Tr>
-                                <Td>Nombre</Td>
-                                <Td>RUT</Td>
-                                <Td>E-mail</Td>
-                                <Td>Numero</Td>
-                                <Td>Domicilio</Td>
-                                <Td>Tipo de usuario</Td>
-                                <Td>Estado</Td>
-                                <Td>Acciones</Td>
+                            <Tr border="2px" borderColor="black.200">
+                                <Td textAlign="center">Nombre</Td>
+                                <Td textAlign="center">RUT</Td>
+                                <Td textAlign="center">E-mail</Td>
+                                <Td textAlign="center">Numero</Td>
+                                <Td textAlign="center">Domicilio</Td>
+                                <Td textAlign="center">Tipo de usuario</Td>
+                                <Td textAlign="center" borderRight="2px" borderColor="black.200">Estado</Td>
+                                <Td textAlign="center">Acciones</Td>
                             </Tr>
                         </Thead>
                         <Tbody>

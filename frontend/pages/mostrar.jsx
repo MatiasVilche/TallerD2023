@@ -68,8 +68,17 @@ const Mostrar = () => {
 
     const handleSubmit = async() => {
         //Se agrega fecha a historial
+
         const currentDate = new Date();
-        const formattedDate = currentDate.toDateString(); // Formatea la fecha como una cadena ISO
+
+        let diaDeLaSemana = currentDate.toLocaleString('es-ES', { weekday: 'long' });
+        let año = currentDate.getFullYear();
+        let mes = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+        let dia = ("0" + currentDate.getDate()).slice(-2);
+        let hora = ("0" + currentDate.getHours()).slice(-2);
+        let minuto = ("0" + currentDate.getMinutes()).slice(-2);
+
+        const formattedDate = `${diaDeLaSemana} ${dia}-${mes}-${año} ${hora}:${minuto}`
         const formDataToSend = { ...formData, fecha: formattedDate };
 
         //Cantidad actual de material
@@ -202,14 +211,14 @@ const Mostrar = () => {
 
             material.map((material,index) => {
             return (
-                <Tr key={index}>
-                    <Td>{material.codigo}</Td>
-                    <Td>{material.nombre}</Td>
-                    <Td>{material.descripcion}</Td>
-                    <Td>{material.cantidad}</Td>
-                    <Td>
+                <Tr border="2px" borderColor="black.200" key={index}>
+                    <Td border="2px" borderColor="black.200">{material.codigo}</Td>
+                    <Td border="2px" borderColor="black.200">{material.nombre}</Td>
+                    <Td border="2px" borderColor="black.200">{material.descripcion}</Td>
+                    <Td border="2px" borderColor="black.200">{material.cantidad}</Td>
+                    <Td> 
                         <HStack>
-                            <Button colorScheme={"yellow"} onClick={() => {fetchData(usuarios,proyecto,material.cantidad); onOpen(); setFormData({ ...formData, codigoProducto: material._id });}}>Ajustar Stock</Button>
+                            <Button colorScheme={"blue"} onClick={() => {fetchData(usuarios,proyecto,material.cantidad); onOpen(); setFormData({ ...formData, codigoProducto: material._id });}}>Ajustar Stock</Button>
                             <Button colorScheme={"green"} onClick={() => router.push(`./editar/${material._id}`)}>Modificar material</Button>
                             <Button colorScheme={"red"} onClick={() => confirmDelete(material._id)}>Eliminar material</Button>
     <Modal
@@ -294,24 +303,25 @@ const Mostrar = () => {
         <Sidebar/>
             <Container maxW="container.xl">
                 <Heading as="h1" size="2xl" textAlign="center" mt="10">Lista de materiales</Heading>
-                <VStack divider={<StackDivider borderColor='gray.200' />}spacing={4} align='stretch'>
-                    <Button marginLeft='auto' variant='outline' colorScheme='green'  width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
+                <VStack spacing={4} align='stretch'>
+                    <Button marginLeft='auto' colorScheme='orange'  width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
                         <Center>
-                        <Input width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
+                        <Input border="2px" borderColor="black.200" width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
                         </Center>
                 </VStack>
 
                 <Stack spacing={4} mt="10">
-                    <Table variant="striped">
+                    <Table variant="simple">
                         <Thead>
-                            <Tr>
-                                <Td>Codigo</Td>
-                                <Td>Nombre del producto</Td>
-                                <Td>Descripcion</Td>
-                                <Td>Cantidad</Td>
+                            <Tr border="2px" borderColor="black.200">
+                                <Td textAlign="center">Codigo</Td>
+                                <Td textAlign="center">Nombre del producto</Td>
+                                <Td textAlign="center">Descripcion</Td>
+                                <Td textAlign="center">Cantidad</Td>
+                                <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
                             </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody >
                             {ContentTable()}
                         </Tbody>
                     </Table>

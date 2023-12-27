@@ -26,10 +26,16 @@ const updateProyecto = (id, proyecto) => {
     return response
 }
 
+const deleteMaterialFromProject = (id, idMaterial) => {
+    const response = axios.put(`${process.env.SERVIDOR}/Proyecto/actualizarMaterial/${id}`, { idMaterial: idMaterial })
+    return response
+}
+
 module.exports = {
     createProyecto,
     agregarMaterialAProyecto,
     getProyecto,
     getProyectoEspecifico,
-    updateProyecto
+    updateProyecto,
+    deleteMaterialFromProject
 }

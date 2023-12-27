@@ -27,16 +27,15 @@ const Sidebar = () => {
         p="4"
         position="Fixed"
         zIndex={isOpen ? '1' : '0'}
-        width={isOpen ? '300px' : '40px'}
-        height={isOpen ? '40%' : '40px'}
+        width={isOpen ? '300px' : '75px'}
+        height={isOpen ? '47%' : '75px'}
         transition="width 0.3s, height 0.3s"
+        border="2px" borderColor="black.200"
       >
-        
-        
         <IconButton
           aria-label={isOpen ? 'Cerrar barra lateral' : 'Abrir barra lateral'}
           icon={isOpen ? <HamburgerIcon color="gray.200"/> : <HamburgerIcon color="gray.200"/>} 
-          position="absolute"
+          position={isOpen ? 'absolute' : 'center'}
           top="4"
           right={isOpen ? '4' : '0'}
           zIndex="2"
@@ -51,6 +50,7 @@ const Sidebar = () => {
               <Button variant='outline' colorScheme='blue' width='80%' className="sidebar-button" onClick={()=> router.push('./historial')}>Ver historial</Button>
               <Button variant='outline' colorScheme='yellow' width='80%' className="sidebar-button" onClick={()=> router.push('./usuarios/mostrar')}>Ver usuarios</Button>
               <Button variant='outline' colorScheme='purple' width='80%' className="sidebar-button" onClick={()=> router.push('./proyecto/proyecto')}>Ver proyectos</Button>
+              <Button variant='outline' colorScheme='yellow' width='80%' className="sidebar-button" onClick={()=> router.push('./clientes/mostrar')}>Ver clientes</Button>
             </Stack>
 
             <Flex marginTop='25%'>

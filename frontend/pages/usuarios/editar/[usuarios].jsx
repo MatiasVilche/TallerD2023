@@ -62,8 +62,7 @@ const Editar = ({ data }) => {
         })
 
     }
-
-    //console.log(usuario.rut)
+    
     const submitUsuario =(e) => {
         e.preventDefault()
 

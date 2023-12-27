@@ -9,6 +9,7 @@ api.get('/search/:id', proyectoController.obtenerProyectoPorId);
 api.put('/agregar/:id', proyectoController.agregarMaterialAProyecto);
 
 api.put('/actualizar/:id', proyectoController.updateProyecto);
+api.put('/actualizarMaterial/:id',proyectoController.deleteMaterialFromProject);
 
 //api.delete('/eliminar/:id', proyectoController.eliminarProyecto);
 

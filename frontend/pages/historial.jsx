@@ -4,6 +4,7 @@ import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody,
 import {getHistorial} from '../data/historial'
 import { getUsuarios  } from '../data/usuarios'
 import { getMateriales} from '../data/materiales'
+import { getProyecto} from '../data/proyecto'
 import { useState,useEffect } from 'react'
 
 const Mostrar = () => {
@@ -36,34 +37,30 @@ const Mostrar = () => {
         cantidad: ''
     }])
 
-    const router = useRouter()
+    const [proyectos, setProyectos] = useState([]);
 
-    
+    const router = useRouter()
 
     const contentTable = () => {
         return (
-
             historial.map((historial,index) => {
                 const trabajador = conserjes.find((t) => t._id === historial.rutTrabajador);
                 const materiales = material.find((t) => t._id === historial.codigoProducto);
-            return (
-                <Tr key={index}>
-                    <Td>{trabajador ? trabajador.nombre : ''}</Td>
-                    <Td>{materiales ? materiales.nombre : ''}</Td>
-                    <Td>{historial.tipo}</Td>
-                    <Td>{historial.proyecto}</Td>
-                    <Td>{historial.descripcion}</Td>
-                    <Td>{historial.cantidad}</Td>   
-                    <Td>{historial.fecha}</Td>
-                    <Td>
-                        <HStack>
-                        </HStack>
-                    </Td>
-                </Tr>
-            )
-        }))
+                const proyectoHistorial = proyectos.find(p => p._id === historial.proyecto);
+                return (
+                    <Tr key={index}>
+                        <Td border="2px" borderColor="black.200">{trabajador ? trabajador.nombre : ''}</Td>
+                        <Td border="2px" borderColor="black.200">{materiales ? materiales.nombre : ''}</Td>
+                        <Td border="2px" borderColor="black.200">{showRazon(historial.tipo)}</Td>
+                        <Td border="2px" borderColor="black.200">{proyectoHistorial ? proyectoHistorial.nombre : 'Proyecto no encontrado'}</Td>
+                        <Td border="2px" borderColor="black.200">{historial.descripcion}</Td>
+                        <Td border="2px" borderColor="black.200">{historial.cantidad}</Td>  
+                        <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{historial.fecha}</Td>
+                    </Tr>
+                )
+            })
+        )
     }
-
 
     useEffect(() => {
         getHistorial().then(res => {
@@ -84,6 +81,13 @@ const Mostrar = () => {
         })
     }, [])
 
+    //Trae la lista de proyectos
+    useEffect(() => {
+        getProyecto().then(res => {
+            setProyectos(res.data);
+        })
+    }, [])
+
     const filterNames = e => {
         //console.log(e.target.value)
         if(e.target.value.toLowerCase() === ""){
@@ -98,6 +102,18 @@ const Mostrar = () => {
             setHistorial(filteredNames)}
     }
 
+    function showRazon(a){
+        var s = ""
+        if(a === 0){
+            s = "Venta"
+        }else if(a === 1){
+            s = "Prestamo"    
+        }else if(a === 2){
+            s = "Fabricación"    
+        }
+            return s
+        }
+
     return (
         <>
             <Container maxW="container.xl">
@@ -105,21 +121,21 @@ const Mostrar = () => {
                 <Button mt="5%" variant='outline' colorScheme='red'  onClick={()=> router.push('./mostrar')}>Salir</Button>
                 <VStack divider={<StackDivider borderColor='gray.200' />}spacing={4} align='stretch'>
                         <Center>
-                            <Input width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
+                            <Input border="2px" borderColor="black.200" width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
                         </Center>
                 </VStack>
 
                 <Stack spacing={4} mt="10">
-                    <Table variant="striped">
+                    <Table variant="simple" >
                         <Thead>
-                            <Tr>
-                                <Td>Nombre del trabajador</Td>
-                                <Td>Nombre del producto</Td>
-                                <Td>Razon</Td>
-                                <Td>Proyecto</Td>
-                                <Td>Descripción</Td>
-                                <Td>Cantidad</Td>
-                                <Td>Fecha de retiro</Td>
+                            <Tr border="2px" borderColor="black.200">
+                                <Td textAlign="center">Nombre del trabajador</Td>
+                                <Td textAlign="center">Nombre del producto</Td>
+                                <Td textAlign="center">Razon</Td>
+                                <Td textAlign="center">Proyecto</Td>
+                                <Td textAlign="center">Descripción</Td>
+                                <Td textAlign="center">Cantidad</Td>
+                                <Td textAlign="center">Fecha de retiro</Td>
                             </Tr>
                         </Thead>
                         <Tbody>

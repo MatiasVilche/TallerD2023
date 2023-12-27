@@ -2,7 +2,7 @@ const Usuario = require('../models/Usuario')
 
 // CREACION DE NUEVO USUARIO
 const createUsuario = async (req, res) => {
-  	const { rut, nombre, numero, tipoUsuario,estadoUsuario} = req.body;	  
+	const { rut, nombre, numero, tipoUsuario,estadoUsuario} = req.body;	  
 	const newUsuario = new Usuario({
 		rut,
 		nombre,
@@ -85,13 +85,15 @@ const getCurrentAdmin = (req, res) => {
 const login = (req, res) => {
 	
 	Usuario.findOne({rut: req.body.rut}, (err, result) => {
-		if (err) return res.status(400).send({msg: err})
+		if (err) return res.status(200).send({success: false, message: "Ocurrio un error"})
 		
-		if(result)
-		return res.status(200).send({message: "Logged in correctly", user: result.tipoUsuario})
+		if(result) {
+			return res.status(200).send({success: true, message: "Inicio exitoso", user: result.tipoUsuario})
+		} else {
+			return res.status(200).send({success: false, message: "Usuario no encontrado"});
+		}
 	})
 }
-// mover
 
 const isAdmin = (req, res) => {
 	let reqRut = req.params.id

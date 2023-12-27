@@ -43,7 +43,7 @@ const Usuarios = () => {
 
     return (
         <Container maxW="container.xl" mt={10}>
-            <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Agregue un material</Heading>
+            <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Ingrese los datos del material a ingresar</Heading>
             <Button variant='outline' colorScheme="red" onClick={()=> router.push('./mostrar')}>Atras</Button>
             <Stack spacing={4} mt={10}>
                 <FormControl id="codigo"> 
