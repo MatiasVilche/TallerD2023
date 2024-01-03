@@ -2,11 +2,11 @@ const Cliente = require('../models/Cliente')
 
 // CREACION DE NUEVO CLIENTE
 const createCliente = async (req, res) => {
-    const { nombre, numero, mail,estadoCliente} = req.body;	  
+    const { nombre, numero, email,estadoCliente} = req.body;	  
 	const newCliente = new Cliente({
 		nombre,
 		numero,
-        mail,
+        email,
         estadoCliente
 	});
 

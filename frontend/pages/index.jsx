@@ -22,8 +22,8 @@ const Index = () => {
 		let rutF = format(rut);
 	
 		const response = await login(rutF);
-	
-		if (response.success && response.message === "Inicio exitoso") {
+
+		if (response.data.success === true && response.data.message === "Inicio exitoso") {
 			const usrType = await isAdmin(rutF);
 			const usrState = await getUsuario(usrType.data.userId);
 			
@@ -59,31 +59,33 @@ const Index = () => {
 	}
 
 	return (
-		<Box
-      bgGradient="linear(to-r, #007bff, #8a2be2)"
-      height="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      onKeyDown={handleKeyDown}
-  >
-      <Box
-      bg="transparent"
-      p={8}
-      mx="auto"
-      maxWidth="500px"
-      textAlign="center"
-      >
-      <Heading as="h1" size="2xl" fontFamily="Giorgia" mt="10">
-		<Image src={Logo} alt='logo' width="1%" height="1%" placeholder='blur'></Image>
-          Sistema de inventario Biosur
+	<Box
+    	bgGradient="linear(to-r, #007bff, #8a2be2)"
+    	height="100vh"
+    	display="flex"
+    	alignItems="center"
+    	justifyContent="center"
+    	onKeyDown={handleKeyDown}
+  	>
+
+    <Box
+      	bg="white"
+      	p={8}
+      	mx="auto"
+      	maxWidth="700px"
+      	textAlign="center"
+    >
+      <Heading as="h1" size="2xl" fontFamily="Calibri">
+	  	<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+   			<Image src={Logo} alt='logo' width={400} height={150} />
+		</div>
+          Sistema de inventario BIOSUR
       </Heading>
       <Stack my={5}>
-          <FormControl>
-						<FormLabel></FormLabel>
-						<Input placeholder = "Ingrese su RUT" onChange={handleChange} />
+          			<FormControl>
+						<Input placeholder = "Ingrese su RUT" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black'}} onChange={handleChange} />
 					</FormControl>
-          <Button onClick={onSubmit} mx="auto">
+          <Button mt={5} colorScheme="green" onClick={onSubmit} mx="auto">
           Ingresar
           </Button>
       	</Stack>

@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, FormControl, FormLabel,Input,Select } from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, FormControl, FormLabel,Input,Select,Box} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {createProyecto} from '../../data/proyecto'
 import { getClientes} from '../../data/cliente'
@@ -51,18 +51,30 @@ const Proyectos = () => {
     }
 
     return (
+        <Box
+    	    bgGradient="linear(to-r, #007bff, #8a2be2)"
+    	    height="100vh"
+    	    display="flex"
+    	    alignItems="center"
+    	    justifyContent="center"
+  	    >
+            <Box
+      	        bg="white"
+      	        p={8}
+      	        mx="auto"
+      	        maxWidth="700px"
+            >
         <Container maxW="container.xl" mt={10}>
-            <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Crear un proyecto</Heading>
-            <Button variant='outline' colorScheme="red" onClick={()=> router.push('./proyecto')}>Atras</Button>
+            <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Ingrese los datos del proyecto a crear</Heading>
             <Stack spacing={4} mt={10}>
                 <FormControl id="nombre"> 
                     <FormLabel>Nombre</FormLabel>
-                    <Input pattern="[a-zA-Z]+" name={"nombre"} placeholder="Proyecto liceo AB12" type="text" onChange = {handleChange}/>
+                    <Input width="60%" backgroundColor= 'white' borderColor= 'black'color='black' pattern="[a-zA-Z]+" name={"nombre"} placeholder="Proyecto liceo AB12" type="text" onChange = {handleChange}/>
                 </FormControl>
 
                 <FormControl id="cliente"> 
                 <FormLabel>Nombre del cliente</FormLabel>
-                    <Select name={"cliente"} onChange = {handleChange}>
+                    <Select width="60%" backgroundColor= 'white' borderColor= 'black'color='black' placeholder="Seleccione el cliente" name={"cliente"} onChange = {handleChange}>
                         {clientes.map((cliente, index) => (
                         <option key={index} value={cliente._id}>{cliente.nombre}</option>
                     ))}
@@ -75,10 +87,12 @@ const Proyectos = () => {
                 </FormControl>
                 </Stack>
             <HStack>
-                <Button colorScheme="blue" mt={10} mb={10} onClick={submitProduct}>Crear</Button>
+                <Button colorScheme="green" mt={10} mb={10} onClick={submitProduct}>Crear proyecto</Button>
                 <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('./proyecto')}>Cancelar</Button>
             </HStack>
         </Container> 
+        </Box>
+        </Box>
     )
 }
 

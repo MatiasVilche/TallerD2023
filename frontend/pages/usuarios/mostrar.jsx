@@ -106,16 +106,17 @@ const Mostrar = () => {
 
     return (
         <> 
+        <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
             <Container maxW="container.xl">
-                <Heading as="h1" size="2xl" textAlign="center" mt="5%">Usuarios</Heading>
+                <Heading visibility="hidden">a</Heading>
+                <Heading as="h1" size="2xl" textAlign="center">Usuarios</Heading>
                 <Flex mt="3%"> 
-                <Button variant='outline'  colorScheme='red' onClick={()=> router.push('../mostrar')}>Atras</Button>
-                <Spacer></Spacer>
-                <Button variant='outline' colorScheme='green'  onClick={()=> router.push('./crear')}>Crear Usuario</Button>
+                    <Button colorScheme='red' onClick={()=> router.push('../mostrar')}>Atras</Button>
+                    <Button colorScheme='green' marginLeft='85%' onClick={()=> router.push('./crear')}>Crear Usuario</Button>
                 </Flex>
 
                 <Stack spacing={4} mt="10">
-                    <Table variant="simple">        
+                    <Table variant="simple" bg="white">        
                         <Thead>
                             <Tr border="2px" borderColor="black.200">
                                 <Td textAlign="center">Nombre</Td>
@@ -134,6 +135,7 @@ const Mostrar = () => {
                     </Table>
                 </Stack>
             </Container>
+            </Box>
         </>
     )
 }

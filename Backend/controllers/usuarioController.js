@@ -88,7 +88,7 @@ const login = (req, res) => {
 		if (err) return res.status(200).send({success: false, message: "Ocurrio un error"})
 		
 		if(result) {
-			return res.status(200).send({success: true, message: "Inicio exitoso", user: result.tipoUsuario})
+			return res.status(200).send({success: true, message: "Inicio exitoso"})
 		} else {
 			return res.status(200).send({success: false, message: "Usuario no encontrado"});
 		}

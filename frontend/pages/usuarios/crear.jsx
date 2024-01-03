@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Container, Heading, HStack, Stack,Select, FormControl, FormLabel, FormHelperText,Input, FormErrorMessage} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack,Select, FormControl, FormLabel, FormHelperText,Input, FormErrorMessage,Box} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {createUsuario} from '../../data/usuarios'
 import  Swal  from 'sweetalert2'
@@ -85,13 +85,25 @@ const Usuarios = () => {
     }
 
     return (
+        <Box
+    	    bgGradient="linear(to-r, #007bff, #8a2be2)"
+    	    height="100vh"
+    	    display="flex"
+    	    alignItems="center"
+    	    justifyContent="center"
+  	    >
+            <Box
+      	        bg="white"
+      	        p={8}
+      	        mx="auto"
+      	        maxWidth="700px"
+            >
         <Container maxW="container.xl" mt={10}>
-            <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Crear Usuario</Heading>
-            <Button variant='outline' colorScheme="red" onClick={()=> router.push('../mostrar')}>Atras</Button>
+            <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Ingrese los datos del usuario a crear</Heading>
             <Stack spacing={4} mt={10}>
                 <FormControl id="rut" isRequired> 
                     <FormLabel>RUT</FormLabel>
-                    <Input name="rut" placeholder="12.345.678-9" type="text" maxLength="12" onChange = {handleChangeRut}/>
+                    <Input width="25%" backgroundColor= 'white' borderColor= 'black'color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" onChange = {handleChangeRut}/>
                     {!validate(Usuario.rut) ? (
                         <FormHelperText>
                             Rut Invalido
@@ -103,23 +115,24 @@ const Usuarios = () => {
 
                 <FormControl id="nombre"> 
                     <FormLabel>Nombre</FormLabel>
-                    <Input pattern="[a-zA-Z]+" name={"nombre"} placeholder="Norman Vergara" type="text" onChange = {handleChange}/>
+                    <Input width="60%" backgroundColor= 'white' borderColor= 'black'color='black' pattern="[a-zA-Z]+" name={"nombre"} placeholder="Norman Vergara" type="text" onChange = {handleChange}/>
                 </FormControl> 
+
                 <FormControl id="numero"> 
                     <FormLabel>Número de teléfono</FormLabel>
-                    <Input name={"numero"} placeholder="12345678" type="tel" maxLength="8" onChange = {handleChange}/>   
+                    <Input width="60%" backgroundColor= 'white' borderColor= 'black'color='black' name={"numero"} placeholder="12345678" type="tel" maxLength="8" onChange = {handleChange}/>   
                 </FormControl> 
 
                 <FormControl id="tipoUsuario">
                     <h1>Tipo de usuario</h1>
-                    <Select name={"tipoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario'>
+                    <Select width="60%" backgroundColor= 'white' borderColor= 'black'color='black' name={"tipoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario'>
                         <option name={"tipoUsuario"} onChange = {handleChange} value='0'>Administrador</option>
                         <option name={"tipoUsuario"} onChange = {handleChange} value='1'>Trabajador</option>
                     </Select>
                 </FormControl> 
                 <FormControl id="estadoUsuario">
                     <h1>Estado del usuario</h1>
-                    <Select name={"estadoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario'>
+                    <Select width="60%" backgroundColor= 'white' borderColor= 'black'color='black' name={"estadoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario'>
                         <option name={"estadoUsuario"} onChange = {handleChange} value='0'>Empleado activo</option>
                         <option name={"estadoUsuario"} onChange = {handleChange} value='1'>Empleado desvinculado</option>
                     </Select>
@@ -127,10 +140,12 @@ const Usuarios = () => {
 
                 </Stack>
             <HStack>
-                <Button colorScheme="blue" mt={10} mb={10} onClick={submitProduct}>Crear</Button>
-                <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../mostrar')}>Cancelar</Button>
+                <Button colorScheme="green" mt={10} mb={10} onClick={submitProduct}>Crear usuario</Button>
+                <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('./mostrar')}>Cancelar</Button>
             </HStack>
         </Container> 
+        </Box>
+        </Box>
     )
 }
 

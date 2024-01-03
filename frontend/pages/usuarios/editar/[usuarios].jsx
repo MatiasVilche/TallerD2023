@@ -2,8 +2,9 @@ import {useState} from 'react'
 import {useRouter} from 'next/router'
 import InputForm from '../../../components/InputForm'
 import Swal from 'sweetalert2'
-import { Button, Container, Heading,Stack,Select, FormControl} from '@chakra-ui/react'
+import { Button, Container, Heading,Stack,Select, FormControl, Box,HStack} from '@chakra-ui/react'
 import { getUsuario,updateUsuario} from '../../../data/usuarios'
+import { format } from 'rut.js'
 
 export const getServerSideProps = async (context) => {
     const response = await getUsuario(context.query.usuarios)
@@ -60,7 +61,6 @@ const Editar = ({ data }) => {
             ...usuario,
             [e.target.name]: e.target.value
         })
-
     }
     
     const submitUsuario =(e) => {
@@ -103,34 +103,52 @@ const Editar = ({ data }) => {
     );
     
         return(   
-            <Container maxW="container.xl" mt={10}>
+            <Box
+    	    bgGradient="linear(to-r, #007bff, #8a2be2)"
+    	    height="100vh"
+    	    display="flex"
+    	    alignItems="center"
+    	    justifyContent="center"
+  	    >
+            <Box
+      	        bg="white"
+      	        p={8}
+      	        mx="auto"
+      	        maxWidth="700px"
+            >
+            <Container maxW="container.xl">
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar Usuario: {data.nombre}</Heading>
             <Stack spacing={4} mt={10}>
-                <InputForm label="Rut" handleChange={handleChange} name="rut" placeholder="Actualizar rut" type="text" value={usuario.rut}/>
-                <InputForm label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={usuario.nombre}/>
-                <InputForm label="Domicilio" handleChange={handleChange} name="domicilio" placeholder="Actualizar domicilio" type="text" value={usuario.domicilio}/>
-                <InputForm label="Email" handleChange={handleChange} name="email" placeholder="Actualizar email" type="text" value={usuario.email}/> 
-                <InputForm label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="8" value={usuario.numero}/> 
+                <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Rut" handleChange={handleChange} name="rut" placeholder="Actualizar rut" type="text" value={usuario.rut}/>
+                <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={usuario.nombre}/>
+                <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Domicilio" handleChange={handleChange} name="domicilio" placeholder="Actualizar domicilio" type="text" value={usuario.domicilio}/>
+                <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Email" handleChange={handleChange} name="email" placeholder="Actualizar email" type="text" value={usuario.email}/> 
+                <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="8" value={usuario.numero}/> 
                 
                 <FormControl id="tipoUsuario">
                     <h1>Tipo de usuario</h1>
-                    <Select name={"tipoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.tipoUsuario}>
+                    <Select width="50%" backgroundColor= 'white' borderColor= 'black'color='black' name={"tipoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.tipoUsuario}>
                         <option name={"tipoUsuario"} onChange = {handleChange} value='0'>Administrador</option>
                         <option name={"tipoUsuario"} onChange = {handleChange} value='1'>Conserje</option>
+                        <option name={"tipoUsuario"} onChange = {handleChange} value='2'>Superadministrador</option>
                     </Select>
                 </FormControl> 
 
                 <FormControl id="estadoUsuario"> 
                     <h1>Estado del usuario</h1>
-                    <Select name={"estadoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.estadoUsuario}>
+                    <Select width="40%" backgroundColor= 'white' borderColor= 'black'color='black' name={"estadoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.estadoUsuario}>
                         <option name={"estadoUsuario"} onChange = {handleChange} value='0'>Empleado</option>
                         <option name={"estadoUsuario"} onChange = {handleChange} value='1'>Desvinculado de la empresa</option>
                     </Select>
                 </FormControl> 
                 </Stack>
-                <Button colorScheme="green" mt={10} mb={10} onClick={submitUsuario}>Modificar Usuario</Button>
-                <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../mostrar')}>Cancelar</Button>
+                <HStack>
+                    <Button colorScheme="green" mt={10} mb={10} onClick={submitUsuario}>Modificar Usuario</Button>
+                    <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../mostrar')}>Cancelar</Button>
+                </HStack>
         </Container>
+        </Box>
+        </Box>
 )
 }
 

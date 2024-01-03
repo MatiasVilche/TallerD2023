@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState,useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex , Input, VStack, StackDivider,Th,Center} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex , Input, VStack, StackDivider,Th,Center,Box} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {getProyecto,getProyectoEspecifico} from '../../data/proyecto'
 import { getMateriales} from '../../data/materiales'
@@ -35,32 +35,49 @@ const Proyectos = () => {
         estadoCliente: ''
     }])
 
+    let styles = {
+        title: {
+            fontSize: 18,
+            bold: true,
+            alignment: 'center'
+        }
+    };
 
     const generatePDF = async (proyecto) => {
 
         let proyectoActual = await getProyectoEspecifico(proyecto)
 
         let materialesParaPDF = proyectoActual.data.materiales.map((material, index) => {
-            return { text: 'Material ' + (index + 1) + ': ' + material.nombre +'.'+' Cantidad: '+material.cantidad};
+            return { nombre: material.nombre, cantidad: material.cantidad };
         });
 
-        const docDefinition = { 
+        let cuerpoTabla = materialesParaPDF.map(material => {
+            return [material.nombre, material.cantidad];
+        });
+
+        const docDefinition = {
+            styles: styles,
             content: [
+                { text: 'Biosur ventanas PVC', style: 'title' },
                 //Info proyecto
                 'Proyecto: ' + proyectoActual.data.nombre,
                 'Cliente: ' + proyectoActual.data.cliente,
                 'Fecha de inicio: ' + proyectoActual.data.fechaInicio,
                 'Fecha de termino: '+ proyectoActual.data.fechaTermino,
                 '\n',
-
                 //Info materiales proyecto
-                ...materialesParaPDF
+                {
+                    style: 'tableExample',
+                    table: {
+                        body: [['Nombre del material', 'Cantidad']].concat(cuerpoTabla)
+                    }
+                }
             ]
         };
 
-        pdfMake.createPdf(docDefinition).download();
+        pdfMake.createPdf(docDefinition).download('Informe proyecto ' + proyectoActual.data.nombre);
     }
-    
+
     const router = useRouter()
 
     const contentTable = () => {
@@ -69,14 +86,14 @@ const Proyectos = () => {
                 // Busca el cliente correspondiente al ID del cliente en el proyecto
                 const clienteProyecto = clientes.find(cliente => cliente._id === proyecto.cliente);
                 return (
-                <Tr key={index}>
-                    <Td>{proyecto.nombre}</Td>
-                    <Td>{clienteProyecto ? clienteProyecto.nombre : 'Cliente no encontrado'}</Td>
-                    <Td>{proyecto.fechaInicio}</Td>
-                    <Td style={{visibility: proyecto.fechaTermino === "0" ? 'hidden' : 'visible'}}>{proyecto.fechaTermino}</Td>
-                    <Td>{proyecto.estado === 0 ? 'Activo' : proyecto.estado}</Td>
-                    <Td>{proyecto.materiales.map(material => material.nombre).join(', ')}</Td>
-                    <Td>{proyecto.materiales.map(material => material.cantidad).join(', ')}</Td>
+                <Tr border="2px" borderColor="black.200" key={index}>
+                    <Td border="2px" borderColor="black.200">{proyecto.nombre}</Td>
+                    <Td border="2px" borderColor="black.200">{clienteProyecto ? clienteProyecto.nombre : 'Cliente no encontrado'}</Td>
+                    <Td border="2px" borderColor="black.200">{proyecto.fechaInicio}</Td>
+                    <Td border="2px" borderColor="black.200" style={{visibility: proyecto.fechaTermino === "0" ? 'hidden' : 'visible'}}>{proyecto.fechaTermino}</Td>
+                    <Td border="2px" borderColor="black.200">{proyecto.estado === 0 ? 'Activo' : proyecto.estado}</Td>
+                    <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.nombre).join(', ')}</Td>
+                    <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.cantidad).join(', ')}</Td>
                     <Td>
                         <HStack>
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editarMateriales/${proyecto._id}`)}>Ver materiales</Button>
@@ -127,49 +144,55 @@ const Proyectos = () => {
     
     return (
         <>
+        <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
         <Container maxW="container.xl">
-            <Heading as="h1" size="2xl" textAlign="center" mt="10">
+            <Heading visibility="hidden">a</Heading>
+            <Heading as="h1" size="2xl" textAlign="center">
                 Proyectos
             </Heading>
             <Flex>
-                <Button variant='outline' colorScheme='red'  onClick={()=> router.push('../mostrar')}>
-                Salir
+                <Button  colorScheme='red'  onClick={()=> router.push('../mostrar')}>
+                Atras
                 </Button>
-
-                <Button marginLeft='85%' variant='outline' colorScheme='green'  onClick={()=> router.push('./crearProyecto')}>
+                <Button marginLeft='65%' colorScheme='green'  onClick={()=> router.push('./crearProyecto')}>
                 Crear proyecto
                 </Button>
-
-            </Flex>
-            <Button mt="3%" marginLeft='85%' variant='outline' colorScheme='orange'  onClick={()=> router.push('')}>
+                
+                <Button ml="1%" colorScheme='orange'  onClick={()=> router.push('')}>
                 Ver proyectos terminados
                 </Button>
-            <Center mt="3%">
-                        <Input textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterNames(e)}/>
-            </Center>
+                
+            </Flex>
+            
+            <VStack spacing={4} align='stretch'>
+                <Center mt="2%">
+                        <Input border="2px" borderColor="black.200" backgroundColor= 'white' textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterNames(e)}/>
+                </Center>
+            </VStack>
 
             <Stack spacing={4} mt="10">
-            <Table variant="simple">
+            <Table variant="simple" bg="white">
                 <Thead>
-                <Tr>
-                    <Th>Nombre del Proyecto</Th>
-                    <Th>Cliente</Th>
-                    <Th>Fecha de inicio</Th>
-                    <Th>Fecha de término</Th>
-                    <Th>Estado del proyecto</Th>
-                    <Th>Nombre de los materiales</Th>
-                    <Th>Cantidad</Th>
+                <Tr border="2px" borderColor="black.200">
+                    <Td textAlign="center">Nombre del Proyecto</Td>
+                    <Td textAlign="center">Cliente</Td>
+                    <Td textAlign="center">Fecha de inicio</Td>
+                    <Td textAlign="center">Fecha de término</Td>
+                    <Td textAlign="center">Estado del proyecto</Td>
+                    <Td textAlign="center">Nombre de los materiales</Td>
+                    <Td textAlign="center" >Cantidad</Td>
+                    <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
                 </Tr>
                 </Thead>
                 <Tbody>
-                {contentTable()}
+                    {contentTable()}
                 </Tbody>
             </Table>
             </Stack>
         </Container>
+        </Box>
         </>
     )
-
 }
 
 export default Proyectos

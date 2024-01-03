@@ -1,9 +1,10 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Input,Select, VStack, StackDivider,useDisclosure,FormControl,FormLabel,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Slider, SliderTrack, SliderFilledTrack, SliderThumb,Text,Center} from '@chakra-ui/react'
-import { getMateriales, deleteMaterial} from '../data/materiales'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Input,Select, VStack, StackDivider,useDisclosure,FormControl,FormLabel,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Slider, SliderTrack, SliderFilledTrack, SliderThumb,Text,Center, Box} from '@chakra-ui/react'
+import { getMateriales, deleteMaterial,updateCantidadMaterial} from '../data/materiales'
 import { getUsuarios} from '../data/usuarios'
 import { getProyecto} from '../data/proyecto'
+import {createHistorial} from '../data/historial'
 import { sendEmail} from '../data/mailer'
 import  Swal  from 'sweetalert2'
 import { useState,useEffect} from 'react'
@@ -86,15 +87,9 @@ const Mostrar = () => {
         const data = parseInt(responseCantidad.data.cantidad);
         const newC = data - formDataToSend.cantidad 
 
-        axios.post(`${process.env.SERVIDOR}/Historial/`, formDataToSend)
-        .then(response => {
-            axios({
-                method:'PUT',
-                url: process.env.SERVIDOR+'/Material/actualizar/'+formDataToSend.codigoProducto+'',  
-                data:{
-                    cantidad: newC
-                }
-            }).then(res => {
+        createHistorial(formDataToSend).then(response => {
+            updateCantidadMaterial(formDataToSend.codigoProducto,newC)
+            .then(res => {
                 if(formDataToSend.proyecto !== "") {
                     const options = {
                         method: 'PUT',
@@ -129,12 +124,12 @@ const Mostrar = () => {
             showDenyButton: true,
             confirmButtonText: 'Si',
             denyButtonText: 'No',
-            confirmButtonColor:'green',
-            denyButtonColor:'red',
+            confirmButtonColor:'red',
+            denyButtonColor:'green',
             }).then((result) => {
 
             if (result.isDenied) {
-                Swal.fire({title: 'No se eliminó el material',confirmButtonColor:'green'})
+                Swal.fire({title: 'No se eliminó el material',confirmButtonColor:'blue'})
             }else if (result.isConfirmed) {
                 delMat(id)
                 Swal.fire({
@@ -301,17 +296,19 @@ const Mostrar = () => {
     return (
         <>
         <Sidebar/>
-            <Container maxW="container.xl">
-                <Heading as="h1" size="2xl" textAlign="center" mt="10">Lista de materiales</Heading>
+        <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
+            <Container  maxW="container.xl">
+                <Heading visibility="hidden">a</Heading>
+                <Heading as="h1" size="2xl" textAlign="center">Lista de materiales</Heading>
                 <VStack spacing={4} align='stretch'>
                     <Button marginLeft='auto' colorScheme='orange'  width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
                         <Center>
-                        <Input border="2px" borderColor="black.200" width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
+                        <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
                         </Center>
                 </VStack>
 
                 <Stack spacing={4} mt="10">
-                    <Table variant="simple">
+                    <Table variant="simple" bg="white">
                         <Thead>
                             <Tr border="2px" borderColor="black.200">
                                 <Td textAlign="center">Codigo</Td>
@@ -327,6 +324,7 @@ const Mostrar = () => {
                     </Table>
                 </Stack>
             </Container>
+            </Box>
         </>
     )
 }

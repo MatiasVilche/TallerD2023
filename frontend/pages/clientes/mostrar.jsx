@@ -48,15 +48,14 @@ const Mostrar = () => {
         
         return clientes.map((cliente,index) => {
             return (               
-                <Tr key={index}>
-                    <Td>{cliente.nombre}</Td>
-                    <Td>{cliente.numero}</Td>
-                    <Td>{cliente.mail}</Td>
-                    <Td>{showEstado(cliente.estadoCliente)}</Td>
+                <Tr border="2px" borderColor="black.200" key={index}>
+                    <Td border="2px" borderColor="black.200">{cliente.nombre}</Td>
+                    <Td border="2px" borderColor="black.200">{cliente.numero}</Td>
+                    <Td border="2px" borderColor="black.200">{cliente.email}</Td>
+                    <Td border="2px" borderColor="black.200">{showEstado(cliente.estadoCliente)}</Td>
                     <Td>
-                        <HStack>
-                            <Button colorScheme={"green"} >Ver perfil</Button>    
-                            <Button colorScheme={"orange"} >Modificar</Button>      
+                        <HStack justifyContent="center">
+                            <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${cliente._id}`)}>Modificar</Button>      
                             <Button colorScheme={"red"} >Eliminar</Button>
                         </HStack>
                     </Td>
@@ -85,23 +84,24 @@ const Mostrar = () => {
 
     return (
         <> 
+        <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
             <Container maxW="container.xl">
-                <Heading as="h1" size="2xl" textAlign="center" mt="5%">Clientes</Heading>
+                <Heading visibility="hidden">a</Heading>
+                <Heading as="h1" size="2xl" textAlign="center">Clientes</Heading>
                 <Flex mt="3%"> 
-                <Button variant='outline'  colorScheme='red' onClick={()=> router.push('../mostrar')}>Atras</Button>
-                <Spacer></Spacer>
-                <Button variant='outline' colorScheme='green'  onClick={()=> router.push('./crear')}>Crear cliente</Button>
+                    <Button colorScheme='red' onClick={()=> router.push('../mostrar')}>Atras</Button>
+                    <Button colorScheme='green' marginLeft='85%' onClick={()=> router.push('./crear')}>Crear cliente</Button>
                 </Flex>
 
                 <Stack spacing={4} mt="10">
-                    <Table variant="striped">        
+                    <Table variant="simple" bg="white">        
                         <Thead>
-                            <Tr>
-                                <Td>Nombre</Td>
-                                <Td>Numero</Td>
-                                <Td>E-mail</Td>
-                                <Td>Estado</Td>
-                                <Td>Acciones</Td>
+                            <Tr border="2px" borderColor="black.200">
+                                <Td textAlign="center">Nombre</Td>
+                                <Td textAlign="center">Numero</Td>
+                                <Td textAlign="center">E-mail</Td>
+                                <Td textAlign="center">Estado</Td>
+                                <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -110,6 +110,7 @@ const Mostrar = () => {
                     </Table>
                 </Stack>
             </Container>
+        </Box>
         </>
     )
 }
