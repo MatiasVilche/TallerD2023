@@ -1,76 +1,87 @@
 import { useState, useEffect } from 'react'
 import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Box, Spacer } from '@chakra-ui/react'
-import { getUsuarios,deleteUsuario  } from '../../data/usuarios'
+import { getUsuarios,deleteUsuario,updateEstadoUsuario} from '../../data/usuarios'
 import { useRouter } from 'next/router'
 import  Swal  from 'sweetalert2'
 
 const Mostrar = () => {
-    const [conserjes, setConserjes] = useState([{
-        id: '',
+    const [usuarios, setUsuarios] = useState([{
         rut: '',
         nombre: '',
-        domicilio: '',
-        email: '',
         numero: '',
         tipoUsuario: '',
         estadoUsuario: ''
     }])
     const router = useRouter()
 
-    const delUser = async (id) => {
-        //e.preventDefault()
-        const response = await deleteUsuario(id,1)
-        //if (response.status === 200)
-        //console.log("Eliminado")
+    const modEstado = async (id) => {
+
+        const response = await updateEstadoUsuario(id)
     }
 
-    const confirmDelete = async (id) => {
+    const confirmDelete = async (id,tipo) => {
+        console.log(id)
+        console.log(tipo)
+
         Swal.fire({
             title: 'Esta seguro que quiere eliminar este usuario?',
             showDenyButton: true,
             //showCancelButton: true,
             confirmButtonText: 'Si',
             denyButtonText: 'No',
+            confirmButtonColor: 'red',
+            denyButtonColor: 'green'
             }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
 
             if (result.isDenied) {
-                Swal.fire('No se elimino el usuario')
-                return
-            }else if (result.isConfirmed) {
-                delUser(id)
                 Swal.fire({
-                    title:'Eliminado', 
-                    showConfirmButton: true
-                }).then((result) => {
-                    if (result.isConfirmed)
-                    router.reload()})            
+                    title:'No se elimino el usuario',
+                    confirmButtonColor: 'green'
+                })
+                return
+            } else if (result.isConfirmed) {
+                if (tipo === 2) {
+                    Swal.fire(
+                    {
+                        title:'No se puede eliminar este usuario',
+                        confirmButtonColor: 'green'
+                    })
+                    
+                } else {
+                    //delUser(id,tipo)
+                    //modEstado(id)
+                    modEstado(id)
+                    Swal.fire({
+                        title:'Eliminado', 
+                        showConfirmButton: true
+                    }).then((result) => {
+                        if (result.isConfirmed)
+                        router.reload()})         
+                }
             } 
             }
         )
     }
 
     const contentTable = () => {
-        
-        return conserjes.map((conserje,index) => {
-            return (               
+        return usuarios.map((usuario, index) => {
+            if (usuario.estadoUsuario === 2) {
+                return null;
+            }
+            return (
                 <Tr key={index}>
-                    <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{conserje.nombre}</Td>
-                    <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{conserje.rut}</Td>
-                    <Td border="2px" borderColor="black.200">{conserje.email}</Td>
-                    <Td border="2px" borderColor="black.200">{conserje.numero}</Td>
-                    <Td border="2px" borderColor="black.200">{conserje.domicilio}</Td>
-                    <Td border="2px" borderColor="black.200">{showTipo(conserje.tipoUsuario)}</Td>
-                    <Td border="2px" borderColor="black.200">{showEstado(conserje.estadoUsuario)}</Td>
+                    <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{usuario.nombre}</Td>
+                    <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{usuario.rut}</Td>
+                    <Td border="2px" borderColor="black.200">{usuario.numero}</Td>
+                    <Td border="2px" borderColor="black.200">{showTipo(usuario.tipoUsuario)}</Td>
+                    <Td border="2px" borderColor="black.200">{showEstado(usuario.estadoUsuario)}</Td>
                     <Td border="2px" borderColor="black.200">
-                        <HStack>
-                            <Button colorScheme={"green"} onClick={() => router.push(`./perfil/${conserje._id}`)}>Ver perfil</Button>    
-                            <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${conserje._id}`)}>Modificar</Button>      
-                            <Button colorScheme={"red"} onClick={() => confirmDelete(conserje._id)}>Eliminar</Button>
+                        <HStack justifyContent="center">
+                            <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${usuario._id}`)}>Modificar</Button>     
+                            <Button colorScheme={"red"} onClick={() => confirmDelete(usuario._id,usuario.tipoUsuario)}>Eliminar</Button>
                         </HStack>
                     </Td>
                 </Tr>
-                
             )
         })
     }
@@ -100,7 +111,7 @@ const Mostrar = () => {
     //conserje.tipoUsuario
     useEffect(() => {
         getUsuarios().then(res => {
-            setConserjes(res.data)
+            setUsuarios(res.data)
         })
     }, [])
 
@@ -121,9 +132,7 @@ const Mostrar = () => {
                             <Tr border="2px" borderColor="black.200">
                                 <Td textAlign="center">Nombre</Td>
                                 <Td textAlign="center">RUT</Td>
-                                <Td textAlign="center">E-mail</Td>
                                 <Td textAlign="center">Numero</Td>
-                                <Td textAlign="center">Domicilio</Td>
                                 <Td textAlign="center">Tipo de usuario</Td>
                                 <Td textAlign="center" borderRight="2px" borderColor="black.200">Estado</Td>
                                 <Td textAlign="center">Acciones</Td>

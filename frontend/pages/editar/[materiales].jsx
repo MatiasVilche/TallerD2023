@@ -120,6 +120,12 @@ const Editar = ({ data }) => {
                     </FormLabel>
                 </FormControl>
                 <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Cantidad" handleChange={handleChange} name="cantidad" type="text" value={material.cantidad}/>
+                <FormLabel>{"Estado del material"}
+                <Select width="40%" backgroundColor= 'white' borderColor= 'black'color='black' name={"estadoMaterial"} onChange = {handleChange} placeholder='Seleccione el estado del cliente' value={material.estadoMaterial}>
+                    <option name={"estadoMaterial"} onChange = {handleChange} value='0'>Material activo</option>
+                    <option name={"estadoMaterial"} onChange = {handleChange} value='1'>Material inactivo</option>
+                </Select>
+                </FormLabel>
             </Stack>
                 <Button colorScheme="green" mt={10} mb={10} mr="1%" onClick={submitMaterial}>Modificar Material</Button>
                 <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../mostrar')}>Cancelar</Button>

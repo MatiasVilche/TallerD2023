@@ -16,6 +16,12 @@ const materialSchema = mongoose.Schema({
     cantidad:{
         type: Number,
         required: true
+    },
+    estadoMaterial:{
+        // 0 = Material activo  1= Material inactivo(eliminacion logica)
+        defaultValue: 0,
+        type: Number, enum: [0, 1],
+        required: true
     }
 })
 

@@ -10,7 +10,8 @@ const Usuarios = () => {
         codigo: '',
         nombre: '',
         descripcion: '',
-        cantidad: ''
+        cantidad: '',
+        estadoMaterial: ''
     }])
 
     const router = useRouter()
@@ -18,15 +19,33 @@ const Usuarios = () => {
     const handleChange = (e) => {
         setMaterial({
             ...material,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
+            estadoMaterial: 0
         })
-        //console.log(e.target.value)
+    }
+
+    function validar(){
+
+        let codigo = document.getElementById("codigo").value;
+        let nombre = document.getElementById("nombre").value;
+        let cantidad = document.getElementById("cantidad").value;
+
+        if(codigo === "" || nombre === "" || cantidad === ""){
+            return false;
+        }else{
+            return true;
+        }
     }
 
 
     const submitProduct = (e) => {
-            e.preventDefault()
 
+        const v = validar();
+
+        if (v === false){
+            alert("Todos los campos son obligatorios");
+        }else if (v === true){
+            e.preventDefault()
         if (material.cantidad <= 0) {
             alert("La cantidad debe ser un número positivo");
             return;
@@ -37,7 +56,7 @@ const Usuarios = () => {
         })
 
         Swal.fire({
-            title: 'Se agrego un material',
+            title: 'Se agregó un material',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK'
         }).then((result) => {
@@ -45,6 +64,8 @@ const Usuarios = () => {
             router.push('./mostrar')
             }
         })
+        
+        }
     }
 
     return (
@@ -66,7 +87,7 @@ const Usuarios = () => {
             <Stack spacing={4} mt={10}>
                 <FormControl id="codigo"> 
                     <FormLabel>Codigo</FormLabel>
-                    <Input width="35%" backgroundColor= 'white' borderColor= 'black'color='black' name="codigo" placeholder="1234" type="text" maxLength="12" onChange = {handleChange}/>
+                    <Input width="35%" backgroundColor= 'white' borderColor= 'black'color='black' name="codigo" placeholder="1234" type="number" maxLength="12" onChange = {handleChange}/>
                 </FormControl> 
 
                 <FormControl id="nombre"> 

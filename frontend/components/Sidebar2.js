@@ -5,7 +5,7 @@ import {HamburgerIcon} from '@chakra-ui/icons';
 
 const Sidebar = () => {
     const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
       // Set the value received from the local storage to a local state
       const [nombreUsuario, setnombreUsuario] = useState("")
@@ -46,11 +46,11 @@ const Sidebar = () => {
         <Collapse in={isOpen} animateOpacity>
           <div className={isOpen ? '' : 'hidden'}>
             <Stack spacing='24px'>
-              <Button variant='outline' colorScheme='green' width='80%' className="sidebar-button" onClick={()=> router.push('./mostrar')}>Ver materiales</Button>
-              <Button variant='outline' colorScheme='blue' width='80%' className="sidebar-button" onClick={()=> router.push('./historial')}>Ver historial</Button>
-              <Button variant='outline' colorScheme='yellow' width='80%' className="sidebar-button" onClick={()=> router.push('./usuarios/mostrar')}>Ver usuarios</Button>
-              <Button variant='outline' colorScheme='purple' width='80%' className="sidebar-button" onClick={()=> router.push('./proyecto/proyecto')}>Ver proyectos</Button>
-              <Button variant='outline' colorScheme='yellow' width='80%' className="sidebar-button" onClick={()=> router.push('./clientes/mostrar')}>Ver clientes</Button>
+              <Button colorScheme='green' width='80%' className="sidebar-button" onClick={()=> router.push('./mostrar')}>Ver materiales</Button>
+              <Button colorScheme='blue' width='80%' className="sidebar-button" onClick={()=> router.push('./historial')}>Ver historial</Button>
+              <Button colorScheme='yellow' width='80%' className="sidebar-button" onClick={()=> router.push('./usuarios/mostrar')}>Ver usuarios</Button>
+              <Button colorScheme='purple' width='80%' className="sidebar-button" onClick={()=> router.push('./proyecto/proyecto')}>Ver proyectos</Button>
+              <Button colorScheme='orange' width='80%' className="sidebar-button" onClick={()=> router.push('./clientes/mostrar')}>Ver clientes</Button>
             </Stack>
 
             <Flex marginTop='25%'>

@@ -23,31 +23,21 @@ const Editar = ({ data }) => {
 
     function validar(){
 
-        var rut,nombre,domicilio,email,numero,tipoUsuario,estadoUsuario;
+        var rut,nombre,numero,tipoUsuario,estadoUsuario;
     
         rut = usuario.rut;
         nombre = usuario.nombre;
-        domicilio = usuario.domicilio;
-        email = usuario.email;
         numero = usuario.numero;
         tipoUsuario = usuario.tipoUsuario;
         estadoUsuario = usuario.estadoUsuario;
 
         const expresionNombre = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
-        const expresionDomicilio =/[a-zA-Z]+\s[A-Za-z0-9]+/;
-        const expresionEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
-        const expresionTelefono = /^\d{8}$/;
+        const expresionTelefono = /^\d{9}$/;
 
-        if(rut === "" || nombre === "" || domicilio === "" || email === "" || numero === "" || tipoUsuario === "" || estadoUsuario === ""){
+        if(rut === "" || nombre === "" || numero === "" || tipoUsuario === "" || estadoUsuario === ""){
             return false;
         }else if(!expresionNombre.test(nombre)){
             alert("El nombre no es valido")
-            return false;
-        }else if(!expresionEmail.test(email)){
-            alert("El email no es valido")
-            return false;
-        }else if(!expresionDomicilio.test(domicilio)){
-            alert("El domicilio no valido")
             return false;
         }else if(!expresionTelefono.test(numero)){
             alert("El número de teléfono no valido (maximos 8 números)")
@@ -121,16 +111,13 @@ const Editar = ({ data }) => {
             <Stack spacing={4} mt={10}>
                 <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Rut" handleChange={handleChange} name="rut" placeholder="Actualizar rut" type="text" value={usuario.rut}/>
                 <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={usuario.nombre}/>
-                <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Domicilio" handleChange={handleChange} name="domicilio" placeholder="Actualizar domicilio" type="text" value={usuario.domicilio}/>
-                <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Email" handleChange={handleChange} name="email" placeholder="Actualizar email" type="text" value={usuario.email}/> 
-                <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="8" value={usuario.numero}/> 
+                <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={usuario.numero}/> 
                 
                 <FormControl id="tipoUsuario">
                     <h1>Tipo de usuario</h1>
                     <Select width="50%" backgroundColor= 'white' borderColor= 'black'color='black' name={"tipoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.tipoUsuario}>
                         <option name={"tipoUsuario"} onChange = {handleChange} value='0'>Administrador</option>
                         <option name={"tipoUsuario"} onChange = {handleChange} value='1'>Conserje</option>
-                        <option name={"tipoUsuario"} onChange = {handleChange} value='2'>Superadministrador</option>
                     </Select>
                 </FormControl> 
 

@@ -5,14 +5,21 @@ import { login, isAdmin, getUsuario } from '../data/usuarios'
 import { format } from 'rut.js'
 import Image from 'next/image'
 import Logo from '../public/logoBiosur.png'
+import bcrypt from 'bcryptjs'
+import Cookies from 'js-cookie';
 
 const Index = () => {
 
 	const [rut, setRUT] = useState('')
+	const [password, setPassword] = useState('')
 	const router = useRouter()
 
 	const handleChange = (e) => {
 		setRUT(e.target.value)
+	}
+
+	const handleChangePassword = (e) => {
+		setPassword(e.target.value)
 	}
 
 	const toast = useToast()
@@ -27,24 +34,41 @@ const Index = () => {
 			const usrType = await isAdmin(rutF);
 			const usrState = await getUsuario(usrType.data.userId);
 			
-			if(usrState.data.estadoUsuario === 0){
-				localStorage.setItem('token', usrState.data.userId);
-				localStorage.setItem('userType', usrState.data.tipoUsuario);
-				localStorage.setItem('nombreUsuario', usrState.data.nombre);
-				router.push('./mostrar');
-			} else {
-				toast({
-					title: 'Login invalido',
-					description: "El rut que ingreso no corresponde a empleados activos de la empresa.",
-					status: 'error',
-					duration: 2000,
-					isClosable: false,
-				});				
-			}
+			console.log(password)
+
+			bcrypt.compare(password, usrState.data.password, (err, response) =>{
+				if(err){
+					toast({
+						title: 'Login invalido',
+						description: 'El usuario no existe o la contraseña es incorrecta, ingrese los datos nuevamente.',
+						status: 'error',
+						duration: 8000,
+						isClosable: true,
+					});
+				}
+				if(response){
+					if(usrState.data.estadoUsuario === 0){
+						Cookies.set('token', usrState.data.userId);
+						localStorage.setItem('token', usrState.data.userId);
+						localStorage.setItem('userType', usrState.data.tipoUsuario);
+						localStorage.setItem('nombreUsuario', usrState.data.nombre);
+						router.push('./mostrar');
+					} else {
+						toast({
+							title: 'Login invalido',
+							description: "El rut que ingreso no corresponde a empleados activos de la empresa.",
+							status: 'error',
+							duration: 2000,
+							isClosable: false,
+						});				
+					}
+				}
+			})
+
 		} else {
 			toast({
-				title: 'El rut ingresado no es valido, ingrese su RUT nuevamente.',
-				description: response.message,
+				title: 'Login invalido',
+				description: 'El rut ingresado no es valido, ingrese su RUT nuevamente.',
 				status: 'error',
 				duration: 8000,
 				isClosable: true,
@@ -84,6 +108,7 @@ const Index = () => {
       <Stack my={5}>
           			<FormControl>
 						<Input placeholder = "Ingrese su RUT" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black'}} onChange={handleChange} />
+						<Input mt='1' placeholder = "Ingrese su contraseña" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black'}} onChange={handleChangePassword}/>
 					</FormControl>
           <Button mt={5} colorScheme="green" onClick={onSubmit} mx="auto">
           Ingresar

@@ -41,6 +41,10 @@ const updateUsuario = (id, usuario) => {
     return response
 }
 
+const updateEstadoUsuario = (id) => {
+    const response = axios.put(`${process.env.SERVIDOR}/Usuario/updateEstado/${id}`)
+    return response
+}
 
 module.exports = {
     login,
@@ -49,5 +53,6 @@ module.exports = {
     isAdmin,
     createUsuario,
     deleteUsuario,
-    updateUsuario
+    updateUsuario,
+    updateEstadoUsuario
 }

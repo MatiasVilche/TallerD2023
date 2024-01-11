@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Input,Select, VStack, StackDivider,useDisclosure,FormControl,FormLabel,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Slider, SliderTrack, SliderFilledTrack, SliderThumb,Text,Center, Box} from '@chakra-ui/react'
-import { getMateriales, deleteMaterial,updateCantidadMaterial} from '../data/materiales'
+import { getMateriales,updateCantidadMaterial,updateEstadoMaterial} from '../data/materiales'
 import { getUsuarios} from '../data/usuarios'
 import { getProyecto} from '../data/proyecto'
 import {createHistorial} from '../data/historial'
@@ -17,7 +17,8 @@ const Mostrar = () => {
         codigo: '',
         nombre: '',
         descripcion: '',
-        cantidad: ''
+        cantidad: '',
+        estadoMaterial: ''
     }])
 
     const [formData, setFormData] = useState({
@@ -42,9 +43,10 @@ const Mostrar = () => {
         });
     };
 
-    const handleButtonClick = () => {
+    const handleButtonClick = async () => {
         onClose();
         resetFormData();
+        return true;
     };
 
     const [usuarios, setUsuarios]= useState({
@@ -61,11 +63,6 @@ const Mostrar = () => {
     })
 
     const router = useRouter()
-
-    //Eliminar materiales
-    const delMat = async (id) => {
-        const response = await deleteMaterial(id)
-    }
 
     const handleSubmit = async() => {
         //Se agrega fecha a historial
@@ -107,13 +104,29 @@ const Mostrar = () => {
                     });
                 }else if(newC <= 10){
                     sendEmail(responseCantidad.data.nombre).then(res => {router.reload('./mostrar')})
-                }else(router.reload('./mostrar'))
+                }else(
+                    handleButtonClick().then(res =>{
+                        Swal.fire({
+                            title: 'Material retirado',
+                            confirmButtonColor: 'blue',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                router.reload('./mostrar');
+                            }
+                            })
+                    })
+                    )
             } 
             )
         })
         .catch(error => {
         });
-    };
+    }
+
+    //Eliminar materiales
+    const delMat = async (id) => {
+        const response = await updateEstadoMaterial(id)
+    }
 
     //Funcion para nombres en retiro material
 
@@ -167,15 +180,48 @@ const Mostrar = () => {
 
     //Barra de busqueda
     const filterNames = e => {
+        const search = e.target.value.toLowerCase()
+        const filteredNames = material.filter(material => material.nombre.toLowerCase().includes(search))
+        setMaterial(filteredNames)
+
         if(e.target.value.toLowerCase() === ""){
             getMateriales().then(res => {
                 setMaterial(res.data)
             })
-        }else{
-        const search = e.target.value.toLowerCase()
-        const filteredNames = material.filter(names => names.nombre.toLowerCase().includes(search))
-        setMaterial(filteredNames)}
+        }
+        
     }
+
+    const filterCodigo = e => {
+        const search = e.target.value.toLowerCase()
+        const filteredNames = material.filter(material => material.codigo.toLowerCase().includes(search))
+        setMaterial(filteredNames)
+
+        if(e.target.value.toLowerCase() === ""){
+            getMateriales().then(res => {
+                setMaterial(res.data)
+            })
+        }
+        
+    }
+
+    const [filterFunction, setFilterFunction] = useState(() => () => {});
+
+    const handleSelectChange = (event) => {
+        switch (event.target.value) {
+            case 'default':
+                setFilterFunction(() => () => {});
+                break;
+            case 'names':
+                setFilterFunction(() => filterNames);
+                break;
+            case 'code':
+                setFilterFunction(() => filterCodigo);
+                break;
+            default:
+                setFilterFunction(() => () => {});
+        }
+    };
 
     //Dialog para retiro de materiales
 
@@ -202,9 +248,11 @@ const Mostrar = () => {
     const ContentTable = () => {
         const [showAdditionalField, setShowAdditionalField] = useState(false);
         
+        const filteredMaterial = material.filter(item => item.estadoMaterial !== 1);
+
         return (
 
-            material.map((material,index) => {
+            filteredMaterial.map((material,index) => {
             return (
                 <Tr border="2px" borderColor="black.200" key={index}>
                     <Td border="2px" borderColor="black.200">{material.codigo}</Td>
@@ -213,7 +261,7 @@ const Mostrar = () => {
                     <Td border="2px" borderColor="black.200">{material.cantidad}</Td>
                     <Td> 
                         <HStack>
-                            <Button colorScheme={"blue"} onClick={() => {fetchData(usuarios,proyecto,material.cantidad); onOpen(); setFormData({ ...formData, codigoProducto: material._id });}}>Ajustar Stock</Button>
+                            <Button colorScheme={"blue"} onClick={() => {fetchData(usuarios,proyecto,material.cantidad); onOpen(); setFormData({ ...formData, codigoProducto: material._id });}}>Realizar retiro</Button>
                             <Button colorScheme={"green"} onClick={() => router.push(`./editar/${material._id}`)}>Modificar material</Button>
                             <Button colorScheme={"red"} onClick={() => confirmDelete(material._id)}>Eliminar material</Button>
     <Modal
@@ -302,8 +350,14 @@ const Mostrar = () => {
                 <Heading as="h1" size="2xl" textAlign="center">Lista de materiales</Heading>
                 <VStack spacing={4} align='stretch'>
                     <Button marginLeft='auto' colorScheme='orange'  width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
+                    <Button marginLeft='auto' colorScheme='blue'  width='15%' className="sidebar-button"onClick={()=> router.push('./matInactivos')}>Ver materiales inactivos</Button>
                         <Center>
-                        <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterNames(e)}/>
+                        <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
+                                <option value="default">Seleccione un filtro</option>
+                                <option value="names">Filtrar por nombre</option>
+                                <option value="code">Filtrar por codigo</option>
+                        </Select>
+                        <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterFunction(e)}/>
                         </Center>
                 </VStack>
 

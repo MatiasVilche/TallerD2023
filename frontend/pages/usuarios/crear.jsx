@@ -4,11 +4,13 @@ import { useRouter } from 'next/router'
 import {createUsuario} from '../../data/usuarios'
 import  Swal  from 'sweetalert2'
 import {  validate, format } from 'rut.js'
+import bcrypt from 'bcryptjs'
 
 const Usuarios = () => {
-
+    
     const [Usuario, setProduct] = useState({
         rut:'',
+        password:'',
         nombre:'',
         numero:'',
         tipoUsuario:'',
@@ -19,17 +21,18 @@ const Usuarios = () => {
 
     function validar(){
 
-        var rut,nombre,numero,tipoUsuario,estadoUsuario;
-    
-        rut = document.getElementById("rut").value;
-        nombre = document.getElementById("nombre").value;
-        numero = document.getElementById("numero").value;
-        tipoUsuario = document.getElementById("tipoUsuario").value;
-        estadoUsuario = document.getElementById("estadoUsuario").value;
-        const expresionNombre = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
-        const expresionTelefono = /^\d{8}$/;
+        let rut = document.getElementById("rut").value;
+        let password = document.getElementById("password").value;
+        let nombre = document.getElementById("nombre").value;
+        let numero = document.getElementById("numero").value;
+        let tipoUsuario = document.getElementById("tipoUsuario").value;
+        let estadoUsuario = document.getElementById("estadoUsuario").value;
 
-        if(rut === "" || nombre === "" || numero === "" || tipoUsuario === ""){
+        const expresionNombre = /^([a-zA-ZÁÉÍÓÚáéíóú]{2,}\s[a-zA-ZÁÉÍÓÚáéíóú]{1,}'?[a-zA-ZÁÉÍÓÚáéíóú]{2,}\s?([a-zA-ZÁÉÍÓÚáéíóú]{1,})?)/;
+
+        const expresionTelefono = /^\d{9}$/;
+
+        if(rut === "" || password ==="" || nombre === "" || numero === "" || tipoUsuario === "" || estadoUsuario === ""){
             return false;
         }else if(!validate(rut)){
             alert("El rut no es valido")
@@ -58,30 +61,31 @@ const Usuarios = () => {
         })  
     }
 
-    const submitProduct = (e) => {
-
+    const submitProduct = async (e) => {
         const v = validar();
 
         if (v === false){
             alert("Todos los campos son obligatorios");
-        }else if (v === true){
+        } else if (v === true){
             e.preventDefault()
-        createUsuario(Usuario).then(res => {
-            //console.log(res.data.name)
-        })
-        
-        
-        Swal.fire({
-            title: 'Se creo un nuevo usuario',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'OK'
-        }).then((result) => {
-            if (result.isConfirmed) {
-            router.push('../mostrar')
-            }
-        })    
+
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(Usuario.password, salt);
+
+            Usuario.password = hashedPassword;
+
+            createUsuario(Usuario).then(res => {
+                Swal.fire({
+                    title: 'Nuevo usuario creado',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                    router.push('./mostrar')
+                    }
+                }) 
+            })
         }
-        
     }
 
     return (
@@ -109,18 +113,22 @@ const Usuarios = () => {
                             Rut Invalido
                         </FormHelperText>
                     ) : 
-                        <FormErrorMessage>Email is required.</FormErrorMessage>
+                        <FormErrorMessage>El rut es obligatorio</FormErrorMessage>
                     }
                 </FormControl> 
+                <FormControl id="password" isRequired> 
+                    <FormLabel>Contraseña</FormLabel>
+                    <Input width="60%" backgroundColor= 'white' borderColor= 'black'color='black' pattern="[a-zA-Z]+" name={"password"} placeholder="********" type="text" onChange = {handleChange}/>
+                </FormControl> 
 
-                <FormControl id="nombre"> 
-                    <FormLabel>Nombre</FormLabel>
+                <FormControl id="nombre" isRequired> 
+                    <FormLabel>Nombre y apellido</FormLabel>
                     <Input width="60%" backgroundColor= 'white' borderColor= 'black'color='black' pattern="[a-zA-Z]+" name={"nombre"} placeholder="Norman Vergara" type="text" onChange = {handleChange}/>
                 </FormControl> 
 
-                <FormControl id="numero"> 
+                <FormControl id="numero" isRequired> 
                     <FormLabel>Número de teléfono</FormLabel>
-                    <Input width="60%" backgroundColor= 'white' borderColor= 'black'color='black' name={"numero"} placeholder="12345678" type="tel" maxLength="8" onChange = {handleChange}/>   
+                    <Input width="60%" backgroundColor= 'white' borderColor= 'black'color='black' name={"numero"} placeholder="12345678" type="tel" maxLength="9" onChange = {handleChange}/>   
                 </FormControl> 
 
                 <FormControl id="tipoUsuario">

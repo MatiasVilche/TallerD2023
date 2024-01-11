@@ -2,9 +2,10 @@ const Usuario = require('../models/Usuario')
 
 // CREACION DE NUEVO USUARIO
 const createUsuario = async (req, res) => {
-	const { rut, nombre, numero, tipoUsuario,estadoUsuario} = req.body;	  
+	const { rut, password,nombre, numero, tipoUsuario,estadoUsuario} = req.body;	  
 	const newUsuario = new Usuario({
 		rut,
+		password,
 		nombre,
         numero,
         tipoUsuario,
@@ -112,18 +113,26 @@ const isAdmin = (req, res) => {
 			return res.status(203).send({msg: "FALSE", userId: result._id})
 		}
 	})
-
-
 }
 
+const updateEstadoUsuario = (req, res) => {
+	let id = req.params.id
+
+    Usuario.findByIdAndUpdate(id,{"estadoUsuario": 2}, (err, usuario) => {
+		if (err){
+            res.status(400).send({ message: "Error al modificar el estado del usuario"})
+        }res.status(200).send(usuario);
+	})
+}
 
 module.exports = {
-  createUsuario,
-  getUsuarios,
-  getUsuario,
-  updateUsuario,
-  deleteUsuario,
-  getCurrentAdmin,
-  isAdmin,
-  login
+	createUsuario,
+	getUsuarios,
+	getUsuario,
+	updateUsuario,
+	deleteUsuario,
+	getCurrentAdmin,
+	isAdmin,
+	login,
+	updateEstadoUsuario
 }

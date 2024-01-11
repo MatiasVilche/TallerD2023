@@ -2,7 +2,7 @@ import {useState} from 'react'
 import {useRouter} from 'next/router'
 import InputForm from '../../..//components/InputForm'
 import Swal from 'sweetalert2'
-import { Button, Container, Heading,Stack,Select, FormControl, Box,HStack} from '@chakra-ui/react'
+import { Button, Container, Heading,Stack,Select, FormControl, Box,HStack,FormLabel} from '@chakra-ui/react'
 import {getCliente,updateCliente} from '../../../data/cliente'
 
 export const getServerSideProps = async (context) => {
@@ -114,11 +114,12 @@ const Editar = ({ data }) => {
             <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={cliente.numero}/> 
 
             <FormControl id="estadoCliente"> 
-                <h1>Estado del cliente</h1>
+                <FormLabel>{"Estado del material"}
                 <Select width="40%" backgroundColor= 'white' borderColor= 'black'color='black' name={"estadoCliente"} onChange = {handleChange} placeholder='Seleccione el estado del cliente' value={cliente.estadoCliente}>
                     <option name={"estadoCliente"} onChange = {handleChange} value='0'>Cliente activo</option>
                     <option name={"estadoCliente"} onChange = {handleChange} value='1'>Cliente inactivo</option>
                 </Select>
+                </FormLabel>
             </FormControl> 
             </Stack>
             <HStack>

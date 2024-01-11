@@ -31,11 +31,23 @@ const updateCantidadMaterial = (id, cantidad) => {
     return response
 }
 
+const updateEstadoMaterial = (id) => {
+    const response = axios.put(`${process.env.SERVIDOR}/Material/updateEstado/${id}`)
+    return response
+}
+
+const updateEstadoMaterial2 = (id) => {
+    const response = axios.put(`${process.env.SERVIDOR}/Material/updateEstadoInactivo/${id}`)
+    return response
+}
+
 module.exports = {
     createMaterial,
     getMateriales,
     deleteMaterial,
     updateMaterial,
     getMaterial,
-    updateCantidadMaterial
+    updateCantidadMaterial,
+    updateEstadoMaterial,
+    updateEstadoMaterial2
 }

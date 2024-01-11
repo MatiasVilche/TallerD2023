@@ -11,5 +11,6 @@ api.put('/update/:id/:typeUser', usuarioController.updateUsuario);
 api.get('/admin/', usuarioController.getCurrentAdmin);
 api.post('/usr/login/', usuarioController.login);
 api.get('/query/:id', usuarioController.isAdmin);
+api.put('/updateEstado/:id', usuarioController.updateEstadoUsuario);
 
 module.exports = api;

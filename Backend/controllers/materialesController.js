@@ -2,12 +2,13 @@ const Material = require('../models/Materiales')
 
 // CREACION DE MATERIAL
 const createMaterial = (req, res) => {
-	const { codigo, nombre , descripcion, cantidad } = req.body
+	const { codigo, nombre , descripcion, cantidad, estadoMaterial} = req.body
 	const newMaterial = new Material({
 		codigo,
 		nombre,
 		descripcion,
-		cantidad
+		cantidad,
+		estadoMaterial
 	})
 
 	newMaterial.save((err, material) => {
@@ -68,6 +69,25 @@ const updateCantidadMaterial = (req, res) => {
 	})
 }
 
+const updateEstadoMaterial = (req, res) => {
+	let id = req.params.id
+
+    Material.findByIdAndUpdate(id,{"estadoMaterial": 1}, (err, material) => {
+		if (err){
+            res.status(400).send({ message: "Error al modificar el estado del material"})
+        }res.status(200).send(material);
+	})
+}
+
+const updateEstadoMaterial2 = (req, res) => {
+	let id = req.params.id
+
+    Material.findByIdAndUpdate(id,{"estadoMaterial": 0}, (err, material) => {
+		if (err){
+            res.status(400).send({ message: "Error al modificar el estado del material"})
+        }res.status(200).send(material);
+	})
+}
 
 module.exports = {
     createMaterial,
@@ -75,5 +95,7 @@ module.exports = {
     updateMaterial,
     deleteMaterial,
 	getMaterial,
-	updateCantidadMaterial
+	updateCantidadMaterial,
+	updateEstadoMaterial,
+	updateEstadoMaterial2
 }

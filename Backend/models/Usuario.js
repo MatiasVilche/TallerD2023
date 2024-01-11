@@ -6,6 +6,11 @@ const usuarioSchema = mongoose.Schema({
       required: true,
       unique: true
     },
+    password: {
+      type: String,
+      required: true
+    }
+    ,
     nombre: {
       type: String,
       required: true
@@ -20,9 +25,9 @@ const usuarioSchema = mongoose.Schema({
       required: true
     },
     estadoUsuario: {
-      // 0 = Empleado activo  1= Empleado desvinculado
+      // 0 = Empleado activo  1= Empleado desvinculado 2= Inactivo(eliminacion logica)
       defaultValue: 0,
-      type: Number, enum: [0, 1],
+      type: Number, enum: [0, 1 , 2],
       required: true
     }
 })

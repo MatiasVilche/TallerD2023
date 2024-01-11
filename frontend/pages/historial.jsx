@@ -19,12 +19,10 @@ const Mostrar = () => {
         fecha: '',
     }])
 
-    const [conserjes, setConserjes] = useState([{
+    const [usuarios, setUsuarios] = useState([{
         id: '',
         rut: '',
         nombre: '',
-        domicilio: '',
-        email: '',
         numero: '',
         tipoUsuario: '',
         estadoUsuario: ''
@@ -49,7 +47,7 @@ const Mostrar = () => {
     const contentTable = () => {
         return (
             historial.map((historial,index) => {
-                const trabajador = conserjes.find((t) => t._id === historial.rutTrabajador);
+                const trabajador = usuarios.find((t) => t._id === historial.rutTrabajador);
                 const materiales = material.find((t) => t._id === historial.codigoProducto);
                 const proyectoHistorial = proyectos.find(p => p._id === historial.proyecto);
                 return (
@@ -57,7 +55,7 @@ const Mostrar = () => {
                         <Td border="2px" borderColor="black.200">{trabajador ? trabajador.nombre : ''}</Td>
                         <Td border="2px" borderColor="black.200">{materiales ? materiales.nombre : ''}</Td>
                         <Td border="2px" borderColor="black.200">{showRazon(historial.tipo)}</Td>
-                        <Td border="2px" borderColor="black.200">{proyectoHistorial ? proyectoHistorial.nombre : 'Proyecto no encontrado'}</Td>
+                        <Td border="2px" borderColor="black.200">{historial.tipo === 2 ? (proyectoHistorial ? proyectoHistorial.nombre : 'Proyecto no encontrado') : null}</Td>
                         <Td border="2px" borderColor="black.200">{historial.descripcion}</Td>
                         <Td border="2px" borderColor="black.200">{historial.cantidad}</Td>  
                         <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{historial.fecha}</Td>
@@ -75,7 +73,7 @@ const Mostrar = () => {
 
     useEffect(() => {
         getUsuarios().then(res => {
-            setConserjes(res.data)
+            setUsuarios(res.data)
         })
     }, [])
 
@@ -94,44 +92,46 @@ const Mostrar = () => {
     }, [])
 
     const filterNames = e => {
+        
+        const search = e.target.value.toLowerCase()
+        const filteredTrabajadores = usuarios.filter(names => names.nombre.toLowerCase().includes(search))
+        const filteredTrabajadoresIds = filteredTrabajadores.map(conserje => conserje._id);
+        const filteredNames = historial.filter(names => filteredTrabajadoresIds.includes(names.rutTrabajador));
+        setHistorial(filteredNames)
+
         if(e.target.value.toLowerCase() === ""){
             getHistorial().then(res => {
                 setHistorial(res.data)
             })
-        }else{
-            const search = e.target.value.toLowerCase()
-            const filteredTrabajadores = conserjes.filter(names => names.nombre.toLowerCase().includes(search))
-            const filteredTrabajadoresIds = filteredTrabajadores.map(conserje => conserje._id);
-            const filteredNames = historial.filter(names => filteredTrabajadoresIds.includes(names.rutTrabajador));
-            setHistorial(filteredNames)}
+        };
     }
 
     const filterProducts = e => {
+        const search = e.target.value.toLowerCase()
+        const filteredProducts = material.filter(material => material.nombre.toLowerCase().includes(search))
+        const filteredProductIds = filteredProducts.map(material => material._id);
+        const filteredNames = historial.filter(product => filteredProductIds.includes(product.codigoProducto));
+        setHistorial(filteredNames)
+
         if(e.target.value.toLowerCase() === ""){
             getHistorial().then(res => {
                 setHistorial(res.data)
             })
-        }else{
-            const search = e.target.value.toLowerCase()
-            const filteredProducts = material.filter(material => material.nombre.toLowerCase().includes(search))
-            const filteredProductIds = filteredProducts.map(material => material._id);
-            const filteredNames = historial.filter(product => filteredProductIds.includes(product.codigoProducto));
-            setHistorial(filteredNames)
-        }
+        };
     }
 
     const filterProjects = e => {
+        const search = e.target.value.toLowerCase()
+        const filteredProjects = proyectos.filter(proyectos => proyectos.nombre.toLowerCase().includes(search))
+        const filteredProjectIds = filteredProjects.map(proyectos => proyectos._id);
+        const filteredNames = historial.filter(proyectos => filteredProjectIds.includes(proyectos.proyecto));
+        setHistorial(filteredNames)
+
         if(e.target.value.toLowerCase() === ""){
             getHistorial().then(res => {
                 setHistorial(res.data)
             })
-        }else{
-            const search = e.target.value.toLowerCase()
-            const filteredProjects = proyectos.filter(proyectos => proyectos.nombre.toLowerCase().includes(search))
-            const filteredProjectIds = filteredProjects.map(proyectos => proyectos._id);
-            const filteredNames = historial.filter(proyectos => filteredProjectIds.includes(proyectos.proyecto));
-            setHistorial(filteredNames)
-        }
+        };
     }
 
     const [filterFunction, setFilterFunction] = useState(() => () => {});
