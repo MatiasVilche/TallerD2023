@@ -90,7 +90,7 @@ const Mostrar = () => {
                             <Button colorScheme={"blue"} onClick={() => router.push(`./editarPassword/${usuario._id}`)}>Cambiar contraseña</Button> 
                             <Button colorScheme={"red"} onClick={() => confirmDelete(usuario._id,usuario.tipoUsuario)}>Eliminar</Button>
                         </HStack>
-                    </Td>
+                    </Td>   
                     )}
 
                 </Tr>
