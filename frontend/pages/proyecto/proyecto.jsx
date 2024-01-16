@@ -1,10 +1,12 @@
 import React from 'react'
 import { useState,useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex , Input, VStack, StackDivider,Th,Center,Box} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex , Input, VStack, StackDivider,Th,Center,Box,Select} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import {getProyecto,getProyectoEspecifico} from '../../data/proyecto'
+import {getProyecto,getProyectoEspecifico,updateEstadoProyecto} from '../../data/proyecto'
 import { getMateriales} from '../../data/materiales'
 import { getClientes} from '../../data/cliente'
+import Sidebar from '../../components/Sidebar2';
+import  Swal  from 'sweetalert2'
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -15,9 +17,17 @@ import Logo from '../../public/logoBiosur.png'
 
 const Proyectos = () => {
 
+    const [userType, setUserType] = useState("")
+
+    useEffect(() => {
+        let currentLogUser = localStorage.getItem('userType') || ""
+        setUserType(currentLogUser)
+    }, [])
+
     const [proyecto, setProyecto] = useState({
         _id: '',
         nombre: '',
+        cliente:'',
         materiales: []
     })
 
@@ -78,6 +88,37 @@ const Proyectos = () => {
         pdfMake.createPdf(docDefinition).download('Informe proyecto ' + proyectoActual.data.nombre);
     }
 
+    //Desactivar proyectos
+    const delProyect = async (id) => {
+        const response = await updateEstadoProyecto(id)
+    }
+
+    const confirmDelete = async (id) => {
+
+        Swal.fire({
+            title: 'Está seguro que quiere deshabilitar el proyecto?',
+            showDenyButton: true,
+            confirmButtonText: 'Si',
+            denyButtonText: 'No',
+            confirmButtonColor:'red',
+            denyButtonColor:'green',
+            }).then((result) => {
+
+            if (result.isDenied) {
+                Swal.fire({title: 'No se deshabilito el proyecto',confirmButtonColor:'blue'})
+            }else if (result.isConfirmed) {
+                delProyect(id)
+                Swal.fire({
+                    title:'Proyecto deshabilitado',
+                    showConfirmButton: true
+                }).then((result) => {
+                    if (result.isConfirmed)
+                    router.reload()})
+            }
+            }
+        )
+    }
+
     const router = useRouter()
 
     const contentTable = () => {
@@ -94,37 +135,26 @@ const Proyectos = () => {
                     <Td border="2px" borderColor="black.200">{proyecto.estado === 0 ? 'Activo' : proyecto.estado}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.nombre).join(', ')}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.cantidad).join(', ')}</Td>
+                    {userType != 1 ? (
                     <Td>
                         <HStack>
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editarMateriales/${proyecto._id}`)}>Ver materiales</Button>
                             <Button colorScheme={"green"} onClick={() => router.push(`./editar/${proyecto._id}`)}>Editar proyecto</Button>
                             <Button colorScheme={"blue"} onClick={() => generatePDF(proyecto._id)}>Generar PDF</Button>
-                            <Button colorScheme={"red"} >Eliminar proyecto</Button>
+                            <Button colorScheme={"red"} onClick={() => confirmDelete(proyecto._id)}>Eliminar proyecto</Button>
                         </HStack>
                     </Td>
+                    ) : null}
                     </Tr>
                 )
             })
         )
     }
 
-    const filterNames = e => {
-        const search = e.target.value.toLowerCase();
-        if (search === "") {
-            getProyecto().then(res => {
-                setProyecto(res.data);
-            });
-        } else {
-            const filteredProyecto = proyecto.filter(names => names.nombre.toLowerCase().includes(search));
-            setProyecto(filteredProyecto);
-        }
-    }
-
     //Trae la lista de proyectos
     useEffect(() => {
         getProyecto().then(res => {
-            const proyectoData = res.data;
-            setProyecto(proyectoData);
+            setProyecto(res.data);
         })
     }, [])
 
@@ -141,34 +171,78 @@ const Proyectos = () => {
             setClientes(res.data)
         })
     }, [])
+
+    const filterProjects = e => {
+        
+        const search = e.target.value.toLowerCase()
+        const filteredProjects = proyecto.filter(proyecto => proyecto.nombre.toLowerCase().includes(search))
+        setProyecto(filteredProjects)
+
+        if(e.target.value.toLowerCase() === ""){
+            getProyecto().then(res => {
+                setProyecto(res.data);
+            })
+        };
+    }
+
+    const filterNames = e => {
+        const search = e.target.value.toLowerCase()
+        const filteredClientes = clientes.filter(clientes => clientes.nombre.toLowerCase().includes(search))
+        const filteredClientesIds = filteredClientes.map(cliente => cliente._id);
+
+        const filteredNames = proyecto.filter(clientes => filteredClientesIds.includes(clientes.cliente));
+        setProyecto(filteredNames)
+
+        if(e.target.value.toLowerCase() === ""){
+            getProyecto().then(res => {
+                setProyecto(res.data);
+            })
+        };
+    }
+
+    const [filterFunction, setFilterFunction] = useState(() => () => {});
+
+    const handleSelectChange = (event) => {
+        switch (event.target.value) {
+            case 'default':
+                setFilterFunction(() => () => {});
+                break;
+            case 'names':
+                setFilterFunction(() => filterNames);
+                break;
+            case 'projects':
+                setFilterFunction(() => filterProjects);
+                break;
+            default:
+                setFilterFunction(() => () => {});
+        }
+    };
     
     return (
         <>
+        <Sidebar/>
         <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
         <Container maxW="container.xl">
             <Heading visibility="hidden">a</Heading>
             <Heading as="h1" size="2xl" textAlign="center">
                 Proyectos
             </Heading>
-            <Flex>
-                <Button  colorScheme='red'  onClick={()=> router.push('../mostrar')}>
-                Atras
-                </Button>
-                <Button marginLeft='65%' colorScheme='green'  onClick={()=> router.push('./crearProyecto')}>
-                Crear proyecto
-                </Button>
-                
-                <Button ml="1%" colorScheme='orange'  onClick={()=> router.push('')}>
-                Ver proyectos terminados
-                </Button>
-                
-            </Flex>
-            
             <VStack spacing={4} align='stretch'>
-                <Center mt="2%">
-                        <Input border="2px" borderColor="black.200" backgroundColor= 'white' textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterNames(e)}/>
-                </Center>
+                {userType != 1 ? (
+                <Button width='15%' marginLeft='auto' colorScheme='green'  onClick={()=> router.push('./crearProyecto')}>Crear proyecto</Button>
+                ) : null}
+                <Button width='15%' marginLeft='auto' colorScheme='orange'  onClick={()=> router.push('./proyectoinactivos')}>Proyectos terminados</Button>
             </VStack>
+            <VStack divider={<StackDivider borderColor='gray.200' />}spacing={4} align='stretch'>
+                        <Center mt="5">
+                            <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
+                                <option value="default">Seleccione un filtro</option>
+                                <option value="projects">Filtrar por proyecto</option>
+                                <option value="names">Filtrar por nombre</option>
+                            </Select>
+                            <Input border="2px" borderColor="black.200" backgroundColor= 'white' textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterFunction(e)}/>
+                        </Center>
+                </VStack>
 
             <Stack spacing={4} mt="10">
             <Table variant="simple" bg="white">
@@ -181,7 +255,10 @@ const Proyectos = () => {
                     <Td textAlign="center">Estado del proyecto</Td>
                     <Td textAlign="center">Nombre de los materiales</Td>
                     <Td textAlign="center" >Cantidad</Td>
-                    <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
+                    {userType != 1 ? (
+                                <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
+                    ) : null}
+                    
                 </Tr>
                 </Thead>
                 <Tbody>

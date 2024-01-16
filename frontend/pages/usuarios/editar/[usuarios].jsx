@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 import { Button, Container, Heading,Stack,Select, FormControl, Box,HStack} from '@chakra-ui/react'
 import { getUsuario,updateUsuario} from '../../../data/usuarios'
 import { format } from 'rut.js'
+import bcrypt from 'bcryptjs'
 
 export const getServerSideProps = async (context) => {
     const response = await getUsuario(context.query.usuarios)
@@ -34,7 +35,7 @@ const Editar = ({ data }) => {
         const expresionNombre = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
         const expresionTelefono = /^\d{9}$/;
 
-        if(rut === "" || nombre === "" || numero === "" || tipoUsuario === "" || estadoUsuario === ""){
+        if(rut === "" ||nombre === "" || numero === "" || tipoUsuario === "" || estadoUsuario === ""){
             return false;
         }else if(!expresionNombre.test(nombre)){
             alert("El nombre no es valido")
@@ -53,15 +54,19 @@ const Editar = ({ data }) => {
         })
     }
     
-    const submitUsuario =(e) => {
-        e.preventDefault()
+    const submitUsuario = async (e) => {
 
         const v = validar();
 
         if (v === false){
-
+            alert("Todos los campos son obligatorios");
         }else if (v === true){
+            e.preventDefault()
 
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(usuario.password, salt);
+
+            usuario.password = hashedPassword;
 
             let timerInterval
         updateUsuario(usuarios,usuario).then(res => {
@@ -113,13 +118,15 @@ const Editar = ({ data }) => {
                 <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={usuario.nombre}/>
                 <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={usuario.numero}/> 
                 
-                <FormControl id="tipoUsuario">
+                {usuario.tipoUsuario !== 2 && (
+                    <FormControl id="tipoUsuario">
                     <h1>Tipo de usuario</h1>
-                    <Select width="50%" backgroundColor= 'white' borderColor= 'black'color='black' name={"tipoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.tipoUsuario}>
-                        <option name={"tipoUsuario"} onChange = {handleChange} value='0'>Administrador</option>
-                        <option name={"tipoUsuario"} onChange = {handleChange} value='1'>Conserje</option>
-                    </Select>
-                </FormControl> 
+                    <Select width="50%" backgroundColor= 'white' borderColor= 'black' color='black' name={"tipoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.tipoUsuario}>
+                            <option name={"tipoUsuario"} onChange = {handleChange} value='0'>Administrador</option>
+                            <option name={"tipoUsuario"} onChange = {handleChange} value='1'>Conserje</option>
+                        </Select>
+                    </FormControl>
+                )}
 
                 <FormControl id="estadoUsuario"> 
                     <h1>Estado del usuario</h1>

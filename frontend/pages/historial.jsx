@@ -6,6 +6,7 @@ import { getUsuarios  } from '../data/usuarios'
 import { getMateriales} from '../data/materiales'
 import { getProyecto} from '../data/proyecto'
 import { useState,useEffect } from 'react'
+import Sidebar from '../components/Sidebar2';
 
 const Mostrar = () => {
 
@@ -169,11 +170,11 @@ const Mostrar = () => {
 
     return (
         <>
+        <Sidebar/>
         <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
             <Container maxW="container.xl">
             <Heading visibility="hidden">a</Heading>
                 <Heading as="h1" size="2xl" textAlign="center">Historial de retiro de materiales</Heading>
-                <Button mt="5%" colorScheme='red'  onClick={()=> router.push('./mostrar')}>Atras</Button>
                 <VStack divider={<StackDivider borderColor='gray.200' />}spacing={4} align='stretch'>
                         <Center mt="5">
                             <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>

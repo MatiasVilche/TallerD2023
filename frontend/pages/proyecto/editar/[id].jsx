@@ -1,7 +1,8 @@
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import {useRouter} from 'next/router'
-import { Container, Heading,Stack, Button} from '@chakra-ui/react'
+import { Container, Heading,Stack, Button,Box,Select,FormLabel} from '@chakra-ui/react'
 import {getProyectoEspecifico,updateProyecto} from '../../../data/proyecto'
+import {getClientes} from '../../../data/cliente'
 import InputForm from '../../../components/InputForm'
 import InputFormDates from '../../../components/InputFormDates'
 import Swal from 'sweetalert2'
@@ -21,18 +22,37 @@ const Editar = ({ data }) => {
 
     const [proyecto, setProyecto] = useState(data);
 
+    const [clientes, setClientes] = useState([{
+        nombre: '',
+        numero: '',
+        mail: '',
+        estadoCliente: ''
+    }])
+
     const router = useRouter()
     const { id } = router.query
 
     const handleChange = (e) => {
         setProyecto({
             ...proyecto,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
+            cliente: event.target.value
         });
     };
 
+    useEffect(() => {
+        getClientes().then(res => {
+            setClientes(res.data)
+        })
+    }, [])
+
     const submitProyecto =(e) => {
         e.preventDefault()
+
+        if (!proyecto.cliente) {
+            alert('Por favor, selecciona un cliente antes de actualizar el proyecto.');
+            return;
+        }
 
         let timerInterval
 
@@ -65,11 +85,34 @@ const Editar = ({ data }) => {
     );
     
     return(
+        <Box
+    	    bgGradient="linear(to-r, #007bff, #8a2be2)"
+    	    height="100vh"
+    	    display="flex"
+    	    alignItems="center"
+    	    justifyContent="center"
+  	    >
+            <Box
+      	        bg="white"
+      	        p={8}
+      	        mx="auto"
+      	        maxWidth="700px"
+            >
         <Container maxW="container.xl" mt={10}>
         <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar proyecto: {data.nombre}</Heading>
         <Stack spacing={4} mt={10}>
             <InputForm label="Nombre del proyecto" handleChange={handleChange} placeholder="Escriba el nombre del proyecto" name="nombre" type="text" value={proyecto.nombre}/>
-            <InputForm label="Nombre del cliente" handleChange={handleChange} placeholder="Escriba el nombre del cliente" name="cliente" type="text" value={proyecto.cliente}/>
+
+            <FormLabel htmlFor="cliente">Nombre del cliente
+            <Select placeholder="Seleccione un cliente" onChange={handleChange} value={proyecto.cliente}>
+                {clientes.map((cliente) => (
+                    <option key={cliente._id} value={cliente._id}>
+                        {cliente.nombre}
+                    </option>
+                ))}
+            </Select>
+            </FormLabel>
+
             <InputFormDates label="Fecha de inicio" handleChange={handleChange} name="fechaInicio" type="date" value={proyecto.fechaInicio}/>
             <InputFormDates label="Fecha de término" handleChange={handleChange} name="fechaTermino" min={proyecto.fechaInicio} type="date" value={proyecto.fechaTermino}/>
 
@@ -77,7 +120,10 @@ const Editar = ({ data }) => {
             <Button colorScheme="green" mt={10} mb={10} onClick={submitProyecto}>Modificar Material</Button>
             <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../proyecto')}>Cancelar</Button>
     </Container>
+    </Box>
+    </Box>
     )
 }
 
 export default Editar
+

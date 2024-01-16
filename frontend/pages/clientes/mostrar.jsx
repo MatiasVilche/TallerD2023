@@ -1,10 +1,20 @@
 import { useState, useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Box, Spacer } from '@chakra-ui/react'
-import { getClientes,deleteCliente } from '../../data/cliente'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Box, Spacer,VStack} from '@chakra-ui/react'
+import { getClientes,updateEstadoCliente} from '../../data/cliente'
 import { useRouter } from 'next/router'
 import  Swal  from 'sweetalert2'
+import Sidebar from '../../components/Sidebar2';
+
 
 const Mostrar = () => {
+
+    const [userType, setUserType] = useState("")
+
+    useEffect(() => {
+        let currentLogUser = localStorage.getItem('userType') || ""
+        setUserType(currentLogUser)
+    }, [])
+
     const [clientes, setClientes] = useState([{
         id: '',
         nombre: '',
@@ -14,67 +24,62 @@ const Mostrar = () => {
     }])
     const router = useRouter()
 
-    const delUser = async (id) => {
-        const response = await deleteCliente(id,1)
+    const modEstado = async (id) => {
+
+        const response = await updateEstadoCliente(id)
     }
 
     const confirmDelete = async (id) => {
+
         Swal.fire({
-            title: 'Esta seguro que quiere eliminar este cliente?',
+            title: 'Esta seguro que quiere deshabilitar este cliente?',
             showDenyButton: true,
             //showCancelButton: true,
             confirmButtonText: 'Si',
             denyButtonText: 'No',
+            confirmButtonColor: 'red',
+            denyButtonColor: 'green'
             }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
 
             if (result.isDenied) {
-                Swal.fire('No se elimino el cliente')
-                return
-            }else if (result.isConfirmed) {
-                delUser(id)
                 Swal.fire({
-                    title:'Eliminado', 
-                    showConfirmButton: true
-                }).then((result) => {
-                    if (result.isConfirmed)
-                    router.reload()})            
+                    title:'No se deshabilito el cliente',
+                    confirmButtonColor: 'green'
+                })
+                return
+            } else if (result.isConfirmed) {
+                    modEstado(id)
+                    Swal.fire({
+                        title:'Eliminado', 
+                        showConfirmButton: true
+                    }).then((result) => {
+                        if (result.isConfirmed)
+                        router.reload()})         
             } 
             }
         )
     }
 
     const contentTable = () => {
-        
-        return clientes.map((cliente,index) => {
-            return (               
+        return clientes.filter(cliente => cliente.estadoCliente === 0).map((cliente, index) => {
+            return (              
                 <Tr border="2px" borderColor="black.200" key={index}>
                     <Td border="2px" borderColor="black.200">{cliente.nombre}</Td>
                     <Td border="2px" borderColor="black.200">{cliente.numero}</Td>
                     <Td border="2px" borderColor="black.200">{cliente.email}</Td>
-                    <Td border="2px" borderColor="black.200">{showEstado(cliente.estadoCliente)}</Td>
+                    {userType != 1 ? (
                     <Td>
                         <HStack justifyContent="center">
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${cliente._id}`)}>Modificar</Button>      
-                            <Button colorScheme={"red"} >Eliminar</Button>
+                            <Button colorScheme={"red"} onClick={() => confirmDelete(cliente._id)}>Eliminar</Button>
                         </HStack>
                     </Td>
+                    ) : null}
                 </Tr>
                 
             )
         })
     }
-
-    function showEstado(a){
-        console.log(a)
-        var s = ""
-        if(a === 0){
-            s = "Cliente activo"
-        }else if(a === 1){
-            s = "Cliente inactivo"    
-        }
-            return s
-        }
 
     useEffect(() => {
         getClientes().then(res => {
@@ -84,14 +89,17 @@ const Mostrar = () => {
 
     return (
         <> 
+        <Sidebar/>
         <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
             <Container maxW="container.xl">
                 <Heading visibility="hidden">a</Heading>
                 <Heading as="h1" size="2xl" textAlign="center">Clientes</Heading>
-                <Flex mt="3%"> 
-                    <Button colorScheme='red' onClick={()=> router.push('../mostrar')}>Atras</Button>
+                <VStack spacing={4} align='stretch'>
+                    {userType != 1 ? (
                     <Button colorScheme='green' marginLeft='85%' onClick={()=> router.push('./crear')}>Crear cliente</Button>
-                </Flex>
+                    ) : null}
+                    <Button colorScheme='blue' marginLeft='85%' onClick={()=> router.push('./mostrarinactivos')}>Ver clientes inactivos</Button>
+                </VStack>
 
                 <Stack spacing={4} mt="10">
                     <Table variant="simple" bg="white">        
@@ -100,8 +108,9 @@ const Mostrar = () => {
                                 <Td textAlign="center">Nombre</Td>
                                 <Td textAlign="center">Numero</Td>
                                 <Td textAlign="center">E-mail</Td>
-                                <Td textAlign="center">Estado</Td>
+                                {userType != 1 ? (
                                 <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
+                                ) : null}
                             </Tr>
                         </Thead>
                         <Tbody>

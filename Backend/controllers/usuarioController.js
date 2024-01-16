@@ -125,6 +125,16 @@ const updateEstadoUsuario = (req, res) => {
 	})
 }
 
+const updateEstadoUsuario2 = (req, res) => {
+	let id = req.params.id
+
+    Usuario.findByIdAndUpdate(id,{"estadoUsuario": 0}, (err, usuario) => {
+		if (err){
+            res.status(400).send({ message: "Error al modificar el estado del usuario"})
+        }res.status(200).send(usuario);
+	})
+}
+
 module.exports = {
 	createUsuario,
 	getUsuarios,
@@ -134,5 +144,6 @@ module.exports = {
 	getCurrentAdmin,
 	isAdmin,
 	login,
-	updateEstadoUsuario
+	updateEstadoUsuario,
+	updateEstadoUsuario2
 }

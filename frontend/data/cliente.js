@@ -18,7 +18,7 @@ const getCliente = async (id) => {
 }
 
 const updateCliente = (id, cliente) => {
-    const response = axios.put(`${process.env.SERVIDOR}/Cliente//update/${id}/1`,cliente)
+    const response = axios.put(`${process.env.SERVIDOR}/Cliente/update/${id}/1`,cliente)
     return response
 }
 
@@ -27,11 +27,23 @@ const deleteCliente = (id,x) => {
     return response
 }
 
+const updateEstadoCliente = (id) => {
+    const response = axios.put(`${process.env.SERVIDOR}/Cliente/updateEstado/${id}`)
+    return response
+}
+
+const updateEstadoCliente2 = (id) => {
+    const response = axios.put(`${process.env.SERVIDOR}/Cliente/updateEstado2/${id}`)
+    return response
+}
+
 module.exports = {
     createCliente,
     getClientes,
     getCliente,
     updateCliente,
-    deleteCliente
+    deleteCliente,
+    updateEstadoCliente,
+    updateEstadoCliente2
     
 }

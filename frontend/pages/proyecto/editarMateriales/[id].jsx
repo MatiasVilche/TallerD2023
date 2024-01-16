@@ -1,6 +1,6 @@
 import {useState,useEffect} from 'react'
 import {useRouter} from 'next/router'
-import { Container,Stack, Button,Table,Thead,Tr,Th,Tbody,Td,HStack,Heading} from '@chakra-ui/react'
+import { Container,Stack, Button,Table,Thead,Tr,Th,Tbody,Td,Heading,Box,Flex} from '@chakra-ui/react'
 import {getProyectoEspecifico,deleteMaterialFromProject} from '../../../data/proyecto'
 import {getMaterial,updateCantidadMaterial} from '../../../data/materiales'
 import Swal from 'sweetalert2'
@@ -67,9 +67,9 @@ const EditarMateriales = ({ data }) => {
         return (
             proyecto.materiales.map((material, index) => (
                 <Tr key={index}>
-                    <Td>{material.nombre}</Td>
-                    <Td>{material.cantidad}</Td>
-                    <Td>
+                    <Td border="2px" borderColor="black.200">{material.nombre}</Td>
+                    <Td border="2px" borderColor="black.200">{material.cantidad}</Td>
+                    <Td border="2px" borderColor="black.200">
                         <Button colorScheme={"red"} onClick={(e) => eliminarMaterial(material._id,material.cantidad, e)}>Eliminar material</Button>
                     </Td>
                 </Tr>
@@ -79,15 +79,31 @@ const EditarMateriales = ({ data }) => {
     }
 
     return(
+        <Box
+    	    bgGradient="linear(to-r, #007bff, #8a2be2)"
+    	    height="100vh"
+    	    display="flex"
+    	    alignItems="center"
+    	    justifyContent="center"
+  	    >
+            <Box
+      	        bg="white"
+      	        p={8}
+      	        mx="auto"
+      	        maxWidth="700px"
+            >
         <Container maxW="container.xl" mt={10}>
             <Heading as="h1" size="2xl" textAlign="center" mt="10">Materiales proyecto: {data.nombre}</Heading>
-            <Button variant='outline' colorScheme="red" onClick={()=> router.push('../proyecto')}>Atras</Button>
+            <Flex mt="3%"> 
+                <Button colorScheme="red" onClick={()=> router.push('../proyecto')}>Atras</Button>
+            </Flex>
         <Stack spacing={4} mt={10}>
         <Table variant="simple">
                 <Thead>
-                    <Tr>
-                        <Th>Nombre de los materiales</Th>
-                        <Th>Cantidad</Th>
+                    <Tr border="2px" borderColor="black.200">
+                        <Th textAlign="center">Nombre de los materiales</Th>
+                        <Th textAlign="center">Cantidad</Th>
+                        <Th textAlign="center">Acciones</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -95,8 +111,9 @@ const EditarMateriales = ({ data }) => {
                 </Tbody>
             </Table>
         </Stack>
-            
     </Container>
+    </Box>
+    </Box>
     )
 }
 

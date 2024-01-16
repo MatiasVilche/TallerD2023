@@ -116,7 +116,7 @@ const Mostrar = () => {
                         <Td border="2px" borderColor="black.200">{material.descripcion}</Td>
                         <Td border="2px" borderColor="black.200">{material.cantidad}</Td>
                     <Td>
-                        <HStack>
+                        <HStack justifyContent="center">
                             <Button colorScheme={"green"} onClick={() => confirmRestore(material._id)}>Retornar material</Button>
                         </HStack>
                     </Td>

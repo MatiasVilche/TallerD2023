@@ -17,7 +17,7 @@ export default function HomePage() {
                     setTimeout(() => {
                         setLoading(false);
                     }, 10);
-                }, 500);
+                }, 100);
 
         } else if (router.pathname === '/') {
             setLoading(false);

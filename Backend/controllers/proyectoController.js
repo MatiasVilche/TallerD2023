@@ -119,11 +119,35 @@ const deleteMaterialFromProject = (req, res) => {
 	})
 }
 
+//Deshabilitar el proyecto
+const updateEstadoProyecto = (req, res) => {
+	let id = req.params.id
+
+    Proyecto.findByIdAndUpdate(id,{"estado": 1}, (err, proyecto) => {
+		if (err){
+            res.status(400).send({ message: "Error al modificar el estado del usuario"})
+        }res.status(200).send(proyecto);
+	})
+}
+
+//Habilitar el proyecto
+const updateEstadoProyecto2 = (req, res) => {
+	let id = req.params.id
+
+    Proyecto.findByIdAndUpdate(id,{"estado": 0}, (err, proyecto) => {
+		if (err){
+            res.status(400).send({ message: "Error al modificar el estado del usuario"})
+        }res.status(200).send(proyecto);
+	})
+}
+
 module.exports = {
     crearProyecto,
     obtenerProyectos,
     obtenerProyectoPorId,
 	agregarMaterialAProyecto,
 	updateProyecto,
-	deleteMaterialFromProject
+	deleteMaterialFromProject,
+	updateEstadoProyecto,
+	updateEstadoProyecto2
 };

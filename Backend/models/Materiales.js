@@ -3,8 +3,7 @@ const mongoose = require('mongoose')
 const materialSchema = mongoose.Schema({
     codigo: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     nombre: {
         type: String,

@@ -12,7 +12,9 @@ const Proyectos = () => {
     const [proyecto, setProyecto] = useState({
         _id: '',
         nombre: '',
-        materiales: [],
+        materiales: [
+            
+        ],
         cliente:'',
         fechaInicio:'',
         fechaTermino:''
@@ -34,7 +36,13 @@ const Proyectos = () => {
     }
 
     const submitProduct = (e) => {
-            e.preventDefault()
+        e.preventDefault()
+
+        if (!proyecto.cliente || !proyecto.nombre || !proyecto.fechaInicio) {
+            alert('Por favor, completa todos los campos requeridos antes de enviar el proyecto.');
+            return;
+        }
+
             createProyecto(proyecto).then(res => {
             console.log(res.data)
         })

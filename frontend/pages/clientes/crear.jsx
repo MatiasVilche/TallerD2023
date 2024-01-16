@@ -30,7 +30,7 @@ const Clientes = () => {
         estadoCliente = document.getElementById("estadoCliente").value;
 
         const expresionNombre = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
-        const expresionTelefono = /^\d{8}$/;
+        const expresionTelefono = /^\d{9}$/;
         const expresionMail = /^[a-z0-9]+(?:[-\._]?[a-z0-9]+)*@(?:[a-z0-9]+(?:-?[a-z0-9]+)*\.)+[a-z]+$/;
 
         if(nombre === "" || numero === "" || email === "" || estadoCliente === ""){

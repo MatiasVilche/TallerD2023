@@ -31,7 +31,8 @@ const Editar = ({ data }) => {
         const expresionEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
         const expresionTelefono = /^\d{9}$/;
 
-        if(nombre === "" ||email === "" || numero === "" ||estadoCliente === ""){
+        if(nombre === "" ||email === "" || numero === ""){
+            alert("Todos los campos son obligatorios")
             return false;
         }else if(!expresionNombre.test(nombre)){
             alert("El nombre no es valido")
@@ -40,7 +41,7 @@ const Editar = ({ data }) => {
             alert("El email no es valido")
             return false;
         }else if(!expresionTelefono.test(numero)){
-            alert("El número de teléfono no valido (maximos 8 números)")
+            alert("El número de teléfono no valido (maximos 9 números)")
             return false;
         }
         return true; 
@@ -107,23 +108,14 @@ const Editar = ({ data }) => {
             maxWidth="700px"
             >
         <Container maxW="container.xl">
-        <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar Usuario: {data.nombre}</Heading>
+        <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar cliente: {data.nombre}</Heading>
         <Stack spacing={4} mt={10}>
             <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={cliente.nombre}/>
             <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Email" handleChange={handleChange} name="email" placeholder="Actualizar email" type="text" value={cliente.email}/> 
-            <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={cliente.numero}/> 
-
-            <FormControl id="estadoCliente"> 
-                <FormLabel>{"Estado del material"}
-                <Select width="40%" backgroundColor= 'white' borderColor= 'black'color='black' name={"estadoCliente"} onChange = {handleChange} placeholder='Seleccione el estado del cliente' value={cliente.estadoCliente}>
-                    <option name={"estadoCliente"} onChange = {handleChange} value='0'>Cliente activo</option>
-                    <option name={"estadoCliente"} onChange = {handleChange} value='1'>Cliente inactivo</option>
-                </Select>
-                </FormLabel>
-            </FormControl> 
+            <InputForm width="35%" backgroundColor= 'white' borderColor= 'black'color='black' label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={cliente.numero}/> 
             </Stack>
             <HStack>
-                <Button colorScheme="green" mt={10} mb={10} onClick={submitCliente}>Modificar Usuario</Button>
+                <Button colorScheme="green" mt={10} mb={10} onClick={submitCliente}>Modificar cliente</Button>
                 <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../mostrar')}>Cancelar</Button>
             </HStack>
     </Container>

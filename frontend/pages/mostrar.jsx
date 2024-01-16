@@ -13,6 +13,13 @@ import Sidebar from '../components/Sidebar2';
 
 const Mostrar = () => {
 
+    const [userType, setUserType] = useState("")
+
+    useEffect(() => {
+        let currentLogUser = localStorage.getItem('userType') || ""
+        setUserType(currentLogUser)
+    }, [])
+
     const [material, setMaterial] = useState([{
         codigo: '',
         nombre: '',
@@ -92,7 +99,7 @@ const Mostrar = () => {
                         method: 'PUT',
                         url: process.env.SERVIDOR+'/Proyecto/agregar/'+formDataToSend.proyecto+'',
                         headers: {'Content-Type': 'application/json'},
-                        data: {material: {_id: formDataToSend.codigoProducto, cantidad: formDataToSend.cantidad , codigo: responseCantidad.data.codigo ,nombre: responseCantidad.data.nombre , descripcion: responseCantidad.data.descripcion }}
+                        data: {material: {_id: formDataToSend.codigoProducto, cantidad: formDataToSend.cantidad , codigo: responseCantidad.data.codigo ,nombre: responseCantidad.data.nombre , descripcion: responseCantidad.data.descripcion, estadoMaterial: responseCantidad.data.estadoMaterial ,}}
                     };
                     
                     axios.request(options).then(function (response) {
@@ -259,6 +266,7 @@ const Mostrar = () => {
                     <Td border="2px" borderColor="black.200">{material.nombre}</Td>
                     <Td border="2px" borderColor="black.200">{material.descripcion}</Td>
                     <Td border="2px" borderColor="black.200">{material.cantidad}</Td>
+                    {userType != 1 ? (
                     <Td> 
                         <HStack>
                             <Button colorScheme={"blue"} onClick={() => {fetchData(usuarios,proyecto,material.cantidad); onOpen(); setFormData({ ...formData, codigoProducto: material._id });}}>Realizar retiro</Button>
@@ -336,6 +344,7 @@ const Mostrar = () => {
     </Modal>
                         </HStack>
                     </Td>
+                    ) : null}
                 </Tr>
             )
         }))
@@ -348,9 +357,15 @@ const Mostrar = () => {
             <Container  maxW="container.xl">
                 <Heading visibility="hidden">a</Heading>
                 <Heading as="h1" size="2xl" textAlign="center">Lista de materiales</Heading>
+                
                 <VStack spacing={4} align='stretch'>
+                    <Heading visibility="hidden">a</Heading>
+                    {userType != 1 ? (
                     <Button marginLeft='auto' colorScheme='orange'  width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
-                    <Button marginLeft='auto' colorScheme='blue'  width='15%' className="sidebar-button"onClick={()=> router.push('./matInactivos')}>Ver materiales inactivos</Button>
+                    ) : null}
+                    {userType != 1 ? (
+                    <Button marginLeft='auto' colorScheme='blue'  width='15%' className="sidebar-button"onClick={()=> router.push('./matInactivos')}>Materiales inactivos</Button>
+                    ) : null}
                         <Center>
                         <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
                                 <option value="default">Seleccione un filtro</option>
@@ -360,6 +375,7 @@ const Mostrar = () => {
                         <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterFunction(e)}/>
                         </Center>
                 </VStack>
+                
 
                 <Stack spacing={4} mt="10">
                     <Table variant="simple" bg="white">
@@ -369,7 +385,9 @@ const Mostrar = () => {
                                 <Td textAlign="center">Nombre del producto</Td>
                                 <Td textAlign="center">Descripcion</Td>
                                 <Td textAlign="center">Cantidad</Td>
+                                {userType != 1 ? (
                                 <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
+                                ) : null}
                             </Tr>
                         </Thead>
                         <Tbody >
@@ -384,4 +402,3 @@ const Mostrar = () => {
 }
 
 export default Mostrar
-

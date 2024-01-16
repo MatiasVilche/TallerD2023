@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState,useEffect} from 'react'
 import { Button, Container, Heading, HStack, Stack,Select, FormControl, FormLabel, FormHelperText,Input, FormErrorMessage,Box,Textarea} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import {createMaterial} from '../data/materiales'
+import {createMaterial,getMateriales} from '../data/materiales'
 import  Swal  from 'sweetalert2'
 
 const Usuarios = () => {
@@ -14,6 +14,8 @@ const Usuarios = () => {
         estadoMaterial: ''
     }])
 
+    const [allMaterials, setAllMaterials] = useState([]);
+
     const router = useRouter()
 
     const handleChange = (e) => {
@@ -24,19 +26,29 @@ const Usuarios = () => {
         })
     }
 
+    useEffect(() => {
+        getMateriales().then(res => {
+            setAllMaterials(res.data);
+        });
+    }, []);
+    
     function validar(){
-
         let codigo = document.getElementById("codigo").value;
         let nombre = document.getElementById("nombre").value;
         let cantidad = document.getElementById("cantidad").value;
 
+        // Comprueba si el código ya existe
+        if (allMaterials.some(material => material.codigo === codigo)) {
+            alert("El código del material ya existe");
+            return false;
+        }
+    
         if(codigo === "" || nombre === "" || cantidad === ""){
             return false;
-        }else{
+        } else {
             return true;
         }
     }
-
 
     const submitProduct = (e) => {
 

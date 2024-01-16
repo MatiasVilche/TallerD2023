@@ -31,11 +31,23 @@ const deleteMaterialFromProject = (id, idMaterial) => {
     return response
 }
 
+const updateEstadoProyecto = (id) => {
+    const response = axios.put(`${process.env.SERVIDOR}/Proyecto/deshabilitar/${id}`)
+    return response
+}
+
+const updateEstadoProyecto2 = (id) => {
+    const response = axios.put(`${process.env.SERVIDOR}/Proyecto/habilitar/${id}`)
+    return response
+}
+
 module.exports = {
     createProyecto,
     agregarMaterialAProyecto,
     getProyecto,
     getProyectoEspecifico,
     updateProyecto,
-    deleteMaterialFromProject
+    deleteMaterialFromProject,
+    updateEstadoProyecto,
+    updateEstadoProyecto2
 }

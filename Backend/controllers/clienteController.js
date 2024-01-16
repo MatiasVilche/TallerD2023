@@ -69,11 +69,33 @@ const deleteCliente = (req, res) => {
 		return res.status(400).send({ message: "No tiene los permisos para eliminar un cliente" })
 	})
 }
+// de activo a inactivo
+const updateEstadoCliente = (req, res) => {
+	let id = req.params.id
+
+    Cliente.findByIdAndUpdate(id,{"estadoCliente": 1}, (err, cliente) => {
+		if (err){
+            res.status(400).send({ message: "Error al modificar el estado del cliente"})
+        }res.status(200).send(cliente);
+	})
+}
+// de inactivo a activo
+const updateEstadoCliente2 = (req, res) => {
+	let id = req.params.id
+
+    Cliente.findByIdAndUpdate(id,{"estadoCliente": 0}, (err, cliente) => {
+		if (err){
+            res.status(400).send({ message: "Error al modificar el estado del cliente"})
+        }res.status(200).send(cliente);
+	})
+}
 
 module.exports = {
     createCliente,
     getClientes,
     getCliente,
     updateCliente,
-    deleteCliente
+    deleteCliente,
+	updateEstadoCliente,
+	updateEstadoCliente2
 }

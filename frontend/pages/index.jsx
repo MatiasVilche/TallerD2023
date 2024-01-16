@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Heading, Input, Stack, FormControl, FormLabel, useToast, Box } from '@chakra-ui/react'
+import { Button, Heading, Input, Stack, FormControl, FormLabel, useToast, Box ,Center} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { login, isAdmin, getUsuario } from '../data/usuarios'
 import { format } from 'rut.js'
@@ -33,11 +33,9 @@ const Index = () => {
 		if (response.data.success === true && response.data.message === "Inicio exitoso") {
 			const usrType = await isAdmin(rutF);
 			const usrState = await getUsuario(usrType.data.userId);
-			
-			console.log(password)
 
 			bcrypt.compare(password, usrState.data.password, (err, response) =>{
-				if(err){
+				if(response === false){
 					toast({
 						title: 'Login invalido',
 						description: 'El usuario no existe o la contraseña es incorrecta, ingrese los datos nuevamente.',
@@ -46,7 +44,7 @@ const Index = () => {
 						isClosable: true,
 					});
 				}
-				if(response){
+				if(response === true){
 					if(usrState.data.estadoUsuario === 0){
 						Cookies.set('token', usrState.data.userId);
 						localStorage.setItem('token', usrState.data.userId);
@@ -107,8 +105,8 @@ const Index = () => {
       </Heading>
       <Stack my={5}>
           			<FormControl>
-						<Input placeholder = "Ingrese su RUT" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black'}} onChange={handleChange} />
-						<Input mt='1' placeholder = "Ingrese su contraseña" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black'}} onChange={handleChangePassword}/>
+							<Input placeholder = "Ingrese su RUT" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black',textAlign: 'center'}} onChange={handleChange} />
+							<Input mt='1' type="password" placeholder = "Ingrese su contraseña" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black',textAlign: 'center'}} onChange={handleChangePassword}/>
 					</FormControl>
           <Button mt={5} colorScheme="green" onClick={onSubmit} mx="auto">
           Ingresar
