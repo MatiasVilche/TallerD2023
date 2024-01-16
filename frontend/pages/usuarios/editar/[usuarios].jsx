@@ -123,7 +123,7 @@ const Editar = ({ data }) => {
                     <h1>Tipo de usuario</h1>
                     <Select width="50%" backgroundColor= 'white' borderColor= 'black' color='black' name={"tipoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.tipoUsuario}>
                             <option name={"tipoUsuario"} onChange = {handleChange} value='0'>Administrador</option>
-                            <option name={"tipoUsuario"} onChange = {handleChange} value='1'>Conserje</option>
+                            <option name={"tipoUsuario"} onChange = {handleChange} value='1'>Trabajador</option>
                         </Select>
                     </FormControl>
                 )}

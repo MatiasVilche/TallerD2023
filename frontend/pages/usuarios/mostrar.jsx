@@ -80,15 +80,19 @@ const Mostrar = () => {
                     <Td border="2px" borderColor="black.200">{usuario.numero}</Td>
                     <Td border="2px" borderColor="black.200">{showTipo(usuario.tipoUsuario)}</Td>
                     <Td border="2px" borderColor="black.200">{showEstado(usuario.estadoUsuario)}</Td>
-                    {userType != 1 ? (
+                    
+                    {(userType != 2 && usuario.tipoUsuario == 2) ? (
+                        <></>
+                        ) : (
                     <Td border="2px" borderColor="black.200">
                         <HStack justifyContent="center">
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${usuario._id}`)}>Modificar</Button>
-                            <Button colorScheme={"blue"} onClick={() => router.push(`./editarPassword/${usuario._id}`)}>Cambiar contraseña</Button>      
+                            <Button colorScheme={"blue"} onClick={() => router.push(`./editarPassword/${usuario._id}`)}>Cambiar contraseña</Button> 
                             <Button colorScheme={"red"} onClick={() => confirmDelete(usuario._id,usuario.tipoUsuario)}>Eliminar</Button>
                         </HStack>
                     </Td>
-                    ) : null}
+                    )}
+
                 </Tr>
             )
         })
@@ -99,7 +103,7 @@ const Mostrar = () => {
     if(a === 0){
         s = "Administrador"
     }else if(a === 1){
-        s = "Conserje"    
+        s = "Trabajador"    
     }else if(a === 2){
         s = "Superadministrador"    
     }

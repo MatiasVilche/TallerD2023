@@ -2,8 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/usuarios/mostrar": "pages/usuarios/mostrar.js",
   "/proyecto/proyecto": "pages/proyecto/proyecto.js",
-  "/": "pages/index.js",
-  "/proyecto/proyectoinactivos": "pages/proyecto/proyectoinactivos.js",
-  "/mostrar": "pages/mostrar.js"
+  "/": "pages/index.js"
 }
