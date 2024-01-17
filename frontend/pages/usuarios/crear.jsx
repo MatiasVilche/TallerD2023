@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect} from 'react'
 import { Button, Container, Heading, HStack, Stack,Select, FormControl, FormLabel, FormHelperText,Input, FormErrorMessage,Box} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {createUsuario} from '../../data/usuarios'
@@ -7,6 +7,13 @@ import {  validate, format } from 'rut.js'
 import bcrypt from 'bcryptjs'
 
 const Usuarios = () => {
+
+    const [userType, setUserType] = useState("")
+
+    useEffect(() => {
+        let currentLogUser = localStorage.getItem('userType') || ""
+        setUserType(currentLogUser)
+    }, [])
     
     const [Usuario, setProduct] = useState({
         rut:'',
@@ -134,7 +141,10 @@ const Usuarios = () => {
                 <FormControl id="tipoUsuario">
                     <h1>Tipo de usuario</h1>
                     <Select width="60%" backgroundColor= 'white' borderColor= 'black'color='black' name={"tipoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario'>
-                        <option name={"tipoUsuario"} onChange = {handleChange} value='0'>Administrador</option>
+                        {(userType != 2) ? (
+                        <></>
+                        ) : 
+                        (<option name={"tipoUsuario"} onChange = {handleChange} value='0'>Administrador</option>)}
                         <option name={"tipoUsuario"} onChange = {handleChange} value='1'>Trabajador</option>
                     </Select>
                 </FormControl> 
