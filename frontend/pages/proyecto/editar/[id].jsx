@@ -36,8 +36,11 @@ const Editar = ({ data }) => {
         setProyecto({
             ...proyecto,
             [e.target.name]: e.target.value,
-            cliente: event.target.value
         });
+    };
+
+    const handleChangeCliente = (e) => {
+        setProyecto({ cliente: event.target.value });
     };
 
     useEffect(() => {
@@ -104,7 +107,7 @@ const Editar = ({ data }) => {
             <InputForm label="Nombre del proyecto" handleChange={handleChange} placeholder="Escriba el nombre del proyecto" name="nombre" type="text" value={proyecto.nombre}/>
 
             <FormLabel htmlFor="cliente">Nombre del cliente
-            <Select placeholder="Seleccione un cliente" onChange={handleChange} value={proyecto.cliente}>
+            <Select placeholder="Seleccione un cliente" onChange={handleChangeCliente} value={proyecto.cliente}>
                 {clientes.map((cliente) => (
                     <option key={cliente._id} value={cliente._id}>
                         {cliente.nombre}
@@ -117,8 +120,8 @@ const Editar = ({ data }) => {
             <InputFormDates label="Fecha de término" handleChange={handleChange} name="fechaTermino" min={proyecto.fechaInicio} type="date" value={proyecto.fechaTermino}/>
 
         </Stack>
-            <Button colorScheme="green" mt={10} mb={10} onClick={submitProyecto}>Modificar Material</Button>
-            <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../proyecto')}>Cancelar</Button>
+            <Button colorScheme="green" mt={10} mb={10} onClick={submitProyecto}>Modificar Proyecto</Button>
+            <Button colorScheme="red" ml="1"mt={10} mb={10} onClick={() => router.push('../proyecto')}>Cancelar</Button>
     </Container>
     </Box>
     </Box>

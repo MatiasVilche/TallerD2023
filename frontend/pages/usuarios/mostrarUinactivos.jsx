@@ -22,25 +22,25 @@ const Mostrar = () => {
     const confirmDelete = async (id,tipo) => {
 
         Swal.fire({
-            title: 'Esta seguro que quiere retornar este usuario?',
+            title: 'Esta seguro que quiere reincorporar este usuario?',
             showDenyButton: true,
             //showCancelButton: true,
             confirmButtonText: 'Si',
             denyButtonText: 'No',
-            confirmButtonColor: 'red',
-            denyButtonColor: 'green'
+            confirmButtonColor: 'green',
+            denyButtonColor: 'red'
             }).then((result) => {
 
             if (result.isDenied) {
                 Swal.fire({
-                    title:'No se retorno el usuario',
-                    confirmButtonColor: 'green'
+                    title:'No se reincorporó el usuario.',
+                    confirmButtonColor: 'red'
                 })
                 return
             } else if (result.isConfirmed) {
                     modEstado(id)
                     Swal.fire({
-                        title:'Retornado', 
+                        title:'Usuario reincorporado exitosamente.', 
                         showConfirmButton: true
                     }).then((result) => {
                         if (result.isConfirmed)
@@ -76,7 +76,7 @@ const Mostrar = () => {
     if(a === 0){
         s = "Administrador"
     }else if(a === 1){
-        s = "Conserje"    
+        s = "Trabajador"    
     }else if(a === 2){
         s = "Superadministrador"    
     }
@@ -105,7 +105,7 @@ const Mostrar = () => {
         <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
             <Container maxW="container.xl">
                 <Heading visibility="hidden">a</Heading>
-                <Heading as="h1" size="2xl" textAlign="center">Usuarios inactivos</Heading>
+                <Heading as="h1" size="2xl" textAlign="center">Usuarios desvinculados</Heading>
                 <Flex mt="3%"> 
                     <Button colorScheme='red' onClick={()=> router.push('./mostrar')}>Atras</Button>
                 </Flex>

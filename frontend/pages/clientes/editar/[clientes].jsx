@@ -2,7 +2,7 @@ import {useState} from 'react'
 import {useRouter} from 'next/router'
 import InputForm from '../../..//components/InputForm'
 import Swal from 'sweetalert2'
-import { Button, Container, Heading,Stack,Select, FormControl, Box,HStack,FormLabel} from '@chakra-ui/react'
+import { Button, Container, Heading,Stack,Select, FormControl, Box,HStack,FormLabel,InputGroup,InputLeftAddon} from '@chakra-ui/react'
 import {getCliente,updateCliente} from '../../../data/cliente'
 
 export const getServerSideProps = async (context) => {
@@ -111,8 +111,16 @@ const Editar = ({ data }) => {
         <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar cliente: {data.nombre}</Heading>
         <Stack spacing={4} mt={10}>
             <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={cliente.nombre}/>
-            <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Email" handleChange={handleChange} name="email" placeholder="Actualizar email" type="text" value={cliente.email}/> 
-            <InputForm width="35%" backgroundColor= 'white' borderColor= 'black'color='black' label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={cliente.numero}/> 
+            <FormControl id="numero" isRequired> 
+                    <FormLabel>Número de teléfono</FormLabel>
+                    <InputGroup display="flex" alignItems="center">
+                    <InputLeftAddon lineHeight="normal">
+                        +56
+                    </InputLeftAddon>
+                    <InputForm showLabel={false} width="25%" backgroundColor= 'white' borderColor= 'black'color='black'handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={cliente.numero}/> 
+                    </InputGroup>
+                </FormControl>
+            <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Email" handleChange={handleChange} name="email" placeholder="Actualizar email" type="text" value={cliente.email}/> 
             </Stack>
             <HStack>
                 <Button colorScheme="green" mt={10} mb={10} onClick={submitCliente}>Modificar cliente</Button>

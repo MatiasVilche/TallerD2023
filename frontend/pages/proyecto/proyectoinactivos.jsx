@@ -132,7 +132,6 @@ const Proyectos = () => {
                     <Td border="2px" borderColor="black.200">{clienteProyecto ? clienteProyecto.nombre : 'Cliente no encontrado'}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.fechaInicio}</Td>
                     <Td border="2px" borderColor="black.200" style={{visibility: proyecto.fechaTermino === "0" ? 'hidden' : 'visible'}}>{proyecto.fechaTermino}</Td>
-                    <Td border="2px" borderColor="black.200">{proyecto.estado === 0 ? 'Activo' : proyecto.estado}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.nombre).join(', ')}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.cantidad).join(', ')}</Td>
                     <Td>
@@ -209,7 +208,6 @@ const Proyectos = () => {
                     <Td textAlign="center">Cliente</Td>
                     <Td textAlign="center">Fecha de inicio</Td>
                     <Td textAlign="center">Fecha de término</Td>
-                    <Td textAlign="center">Estado del proyecto</Td>
                     <Td textAlign="center">Nombre de los materiales</Td>
                     <Td textAlign="center" >Cantidad</Td>
                     <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>

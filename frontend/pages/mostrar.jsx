@@ -286,12 +286,12 @@ const Mostrar = () => {
         <ModalBody pb={6} >
 
             <FormControl>
-                <FormLabel htmlFor="nombreTrabajador">Nombre del trabajador</FormLabel>    
+                <FormLabel htmlFor="nombreTrabajador">Nombre del trabajador</FormLabel>   
                 <Select id="nombreTrabajador" placeholder="Seleccione el usuario que retira" value={formData.rutTrabajador} onChange={(e) => {const selectedUserId = e.target.options[e.target.selectedIndex].value; setFormData({ ...formData, rutTrabajador: selectedUserId });}}>
-                {modalVariable.usu.map((usuario) => (
-                <option key={usuario._id} value={usuario._id}>
-                    {usuario.nombre}
-                </option>
+                {modalVariable.usu.filter(usuario => usuario.estadoUsuario === 0).map((usuario) => (
+                    <option key={usuario._id} value={usuario._id}>
+                        {usuario.nombre}
+                    </option>
                 ))}
                 </Select>
             </FormControl>
@@ -317,14 +317,14 @@ const Mostrar = () => {
             </FormControl>
             {showAdditionalField && (
                 <FormControl mt={4}>
-                    <FormLabel htmlFor="proyecto">Proyecto</FormLabel>
-                    <Select id="proyecto" placeholder="Ingrese a qué proyecto pertenece el material" value={formData.proyecto} onChange={(e) => {const selectedProyectId = e.target.options[e.target.selectedIndex].value; setFormData({ ...formData, proyecto: selectedProyectId })}}>
-                    {modalVariable.proyecto.map((proyecto) => (
+                <FormLabel htmlFor="proyecto">Proyecto</FormLabel>
+                <Select id="proyecto" placeholder="Ingrese a qué proyecto pertenece el material" value={formData.proyecto} onChange={(e) => {const selectedProyectId = e.target.options[e.target.selectedIndex].value; setFormData({ ...formData, proyecto: selectedProyectId })}}>
+                {modalVariable.proyecto.filter(proyecto => proyecto.estado === 0).map((proyecto) => (
                     <option key={proyecto._id} value={proyecto._id}>
-                    {proyecto.nombre}
+                        {proyecto.nombre}
                     </option>
-                    ))}
-                    </Select>
+                ))}
+                </Select>
                 </FormControl>
             )}
 
@@ -357,26 +357,23 @@ const Mostrar = () => {
             <Container  maxW="container.xl">
                 <Heading visibility="hidden">a</Heading>
                 <Heading as="h1" size="2xl" textAlign="center">Lista de materiales</Heading>
-                
-                <VStack spacing={4} align='stretch'>
-                    <Heading visibility="hidden">a</Heading>
-                    {userType != 1 ? (
-                    <Button marginLeft='auto' colorScheme='orange'  width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
-                    ) : null}
-                    {userType != 1 ? (
-                    <Button marginLeft='auto' colorScheme='blue'  width='15%' className="sidebar-button"onClick={()=> router.push('./matInactivos')}>Materiales inactivos</Button>
-                    ) : null}
-                        <Center>
-                        <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
-                                <option value="default">Seleccione un filtro</option>
-                                <option value="names">Filtrar por nombre</option>
-                                <option value="code">Filtrar por codigo</option>
-                        </Select>
-                        <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterFunction(e)}/>
-                        </Center>
-                </VStack>
-                
 
+                <Center display="flex" justifyContent="space-between" marginTop="20px">
+                <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
+                    <option value="default">Seleccione un filtro</option>
+                    <option value="names">Filtrar por nombre</option>
+                    <option value="code">Filtrar por codigo</option>
+                </Select>
+
+                <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterFunction(e)}/>
+                {userType != 1 ? (
+                    <>
+                    <Button marginLeft='auto' ml='1' colorScheme='orange' width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
+                    <Button marginLeft='auto' ml='1' colorScheme='blue' width='15%' className="sidebar-button"onClick={()=> router.push('./matInactivos')}>Materiales inactivos</Button>
+                    </>
+                ) : null}
+                </Center>
+                
                 <Stack spacing={4} mt="10">
                     <Table variant="simple" bg="white">
                         <Thead>

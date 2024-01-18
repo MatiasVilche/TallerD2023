@@ -1,10 +1,10 @@
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import {useRouter} from 'next/router'
 import InputForm from '../../../components/InputForm'
 import Swal from 'sweetalert2'
-import { Button, Container, Heading,Stack,Select, FormControl, Box,HStack} from '@chakra-ui/react'
+import { Button, Container, Heading,Stack,Select, FormControl, Box,HStack,FormErrorMessage,FormHelperText,Input,FormLabel,InputGroup,InputLeftAddon } from '@chakra-ui/react'
 import { getUsuario,updateUsuario} from '../../../data/usuarios'
-import { format } from 'rut.js'
+import {  validate, format } from 'rut.js'
 import bcrypt from 'bcryptjs'
 
 export const getServerSideProps = async (context) => {
@@ -14,13 +14,20 @@ export const getServerSideProps = async (context) => {
             data: response.data
         }
     }
-}
+}       
 
 const Editar = ({ data }) => {
 
     const [usuario, setUsuario] = useState(data)
     const router = useRouter()
     const { usuarios } = router.query
+
+    const [userType, setUserType] = useState("")
+
+    useEffect(() => {
+        let currentLogUser = localStorage.getItem('userType') || ""
+        setUserType(currentLogUser)
+    }, [])
 
     function validar(){
 
@@ -32,12 +39,13 @@ const Editar = ({ data }) => {
         tipoUsuario = usuario.tipoUsuario;
         estadoUsuario = usuario.estadoUsuario;
 
-        const expresionNombre = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
+        const expresionNombre = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/ug;
         const expresionTelefono = /^\d{9}$/;
 
         if(rut === "" ||nombre === "" || numero === "" || tipoUsuario === "" || estadoUsuario === ""){
             return false;
         }else if(!expresionNombre.test(nombre)){
+            console.log(nombre)
             alert("El nombre no es valido")
             return false;
         }else if(!expresionTelefono.test(numero)){
@@ -53,6 +61,17 @@ const Editar = ({ data }) => {
             [e.target.name]: e.target.value
         })
     }
+
+    const handleChangeRut = (e) => {
+        setUsuario({
+            ...usuario,
+            [e.target.name]: format(e.target.value)
+        })  
+    }
+    
+    const handleChangeNumero = (e) => {
+        setUsuario({ numero: event.target.value });
+    };
     
     const submitUsuario = async (e) => {
 
@@ -67,6 +86,7 @@ const Editar = ({ data }) => {
             const hashedPassword = await bcrypt.hash(usuario.password, salt);
 
             usuario.password = hashedPassword;
+            //usuario.numero = '+56' + usuario.numero; 
 
             let timerInterval
         updateUsuario(usuarios,usuario).then(res => {
@@ -114,10 +134,60 @@ const Editar = ({ data }) => {
             <Container maxW="container.xl">
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar Usuario: {data.nombre}</Heading>
             <Stack spacing={4} mt={10}>
-                <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Rut" handleChange={handleChange} name="rut" placeholder="Actualizar rut" type="text" value={usuario.rut}/>
+                {(usuario.tipoUsuario === 2 && userType === "2") && (
+                    <FormControl id="rut" isRequired> 
+                    <FormLabel>RUT</FormLabel>
+                        <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={usuario.rut} onChange = {handleChangeRut}/>
+                        {!validate(usuario.rut) ? (
+                        <FormHelperText>
+                            Rut Invalido
+                        </FormHelperText>
+                            ) : 
+                        <FormErrorMessage>El rut es obligatorio</FormErrorMessage>
+                        }
+                    </FormControl>
+                )}
+                {(usuario.tipoUsuario === 1 && (userType === "0" || userType === "2")) && (
+                    <FormControl id="rut" isRequired> 
+                    <FormLabel>RUT</FormLabel>
+                        <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={usuario.rut} onChange = {handleChangeRut}/>
+                        {!validate(usuario.rut) ? (
+                        <FormHelperText>
+                            Rut Invalido
+                        </FormHelperText>
+                            ) : 
+                        <FormErrorMessage>El rut es obligatorio</FormErrorMessage>
+                        }
+                    </FormControl>
+                )}
+                {(usuario.tipoUsuario === 0 && userType === "2") && (
+                    <FormControl id="rut" isRequired> 
+                    <FormLabel>RUT</FormLabel>
+                        <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={usuario.rut} onChange = {handleChangeRut}/>
+                        {!validate(usuario.rut) ? (
+                        <FormHelperText>
+                            Rut Invalido
+                        </FormHelperText>
+                            ) : 
+                        <FormErrorMessage>El rut es obligatorio</FormErrorMessage>
+                        }
+                    </FormControl>
+                )}
+
+                <FormControl id="nombre" isRequired>
                 <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={usuario.nombre}/>
-                <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Numero" handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={usuario.numero}/> 
-                
+                </FormControl>
+
+                <FormControl id="numero" isRequired> 
+                    <FormLabel>Número de teléfono</FormLabel>
+                    <InputGroup display="flex" alignItems="center">
+                    <InputLeftAddon lineHeight="normal">
+                        +56
+                    </InputLeftAddon>
+                    <InputForm showLabel={false} width="25%" backgroundColor= 'white' borderColor= 'black'color='black'handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={usuario.numero}/> 
+                    </InputGroup>
+                </FormControl>
+
                 {usuario.tipoUsuario !== 2 && (
                     <FormControl id="tipoUsuario">
                     <h1>Tipo de usuario</h1>
@@ -128,6 +198,7 @@ const Editar = ({ data }) => {
                     </FormControl>
                 )}
 
+                {usuario.tipoUsuario !== 2 && (
                 <FormControl id="estadoUsuario"> 
                     <h1>Estado del usuario</h1>
                     <Select width="40%" backgroundColor= 'white' borderColor= 'black'color='black' name={"estadoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.estadoUsuario}>
@@ -135,6 +206,7 @@ const Editar = ({ data }) => {
                         <option name={"estadoUsuario"} onChange = {handleChange} value='1'>Desvinculado de la empresa</option>
                     </Select>
                 </FormControl> 
+                )}
                 </Stack>
                 <HStack>
                     <Button colorScheme="green" mt={10} mb={10} onClick={submitUsuario}>Modificar Usuario</Button>

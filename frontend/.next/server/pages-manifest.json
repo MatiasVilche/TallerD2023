@@ -2,8 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/usuarios/crear": "pages/usuarios/crear.js",
   "/usuarios/mostrar": "pages/usuarios/mostrar.js",
-  "/mostrar": "pages/mostrar.js",
-  "/": "pages/index.js"
+  "/": "pages/index.js",
+  "/usuarios/editar/[usuarios]": "pages/usuarios/editar/[usuarios].js",
+  "/mostrar": "pages/mostrar.js"
 }

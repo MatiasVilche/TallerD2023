@@ -56,7 +56,7 @@ const Sidebar = () => {
 
             <Flex marginTop='15%'>
             <Box border="1px" borderColor="gray.200" borderRadius="md" p="2">
-              <Text fontSize='100%' as='ins'>Bienvenido, {nombreUsuario}</Text>
+              <Text fontSize='100%'>Bienvenido, <Text as="span" style={{textDecoration: "underline"}}>{nombreUsuario}</Text></Text>
             </Box>
               <Button marginLeft='auto' variant='outline' width='25%' colorScheme='red' className="sidebar-button" 
                 onClick={() => {

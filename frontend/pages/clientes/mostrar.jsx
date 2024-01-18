@@ -65,13 +65,13 @@ const Mostrar = () => {
             return (              
                 <Tr border="2px" borderColor="black.200" key={index}>
                     <Td border="2px" borderColor="black.200">{cliente.nombre}</Td>
-                    <Td border="2px" borderColor="black.200">{cliente.numero}</Td>
+                    <Td style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minHeight: '1em' }} border="2px" borderColor="black.200">{'+56 ' + cliente.numero}</Td>
                     <Td border="2px" borderColor="black.200">{cliente.email}</Td>
                     {userType != 1 ? (
                     <Td>
                         <HStack justifyContent="center">
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${cliente._id}`)}>Modificar</Button>      
-                            <Button colorScheme={"red"} onClick={() => confirmDelete(cliente._id)}>Eliminar</Button>
+                            <Button colorScheme={"red"} onClick={() => confirmDelete(cliente._id)}>Deshabilitar</Button>
                         </HStack>
                     </Td>
                     ) : null}

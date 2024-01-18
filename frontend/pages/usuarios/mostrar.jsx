@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Box, Spacer,VStack} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Box, Spacer,Center} from '@chakra-ui/react'
 import { getUsuarios,deleteUsuario,updateEstadoUsuario} from '../../data/usuarios'
 import { useRouter } from 'next/router'
 import  Swal  from 'sweetalert2'
@@ -31,7 +31,7 @@ const Mostrar = () => {
     const confirmDelete = async (id,tipo) => {
 
         Swal.fire({
-            title: 'Esta seguro que quiere eliminar este usuario?',
+            title: 'Esta seguro que quiere desvincular este usuario?',
             showDenyButton: true,
             //showCancelButton: true,
             confirmButtonText: 'Si',
@@ -42,7 +42,7 @@ const Mostrar = () => {
 
             if (result.isDenied) {
                 Swal.fire({
-                    title:'No se elimino el usuario',
+                    title:'No se desvinculo el usuario',
                     confirmButtonColor: 'green'
                 })
                 return
@@ -50,14 +50,14 @@ const Mostrar = () => {
                 if (tipo === 2) {
                     Swal.fire(
                     {
-                        title:'No se puede eliminar este usuario',
+                        title:'No se puede desvincular este usuario',
                         confirmButtonColor: 'red'
                     })
                     
                 } else {
                     modEstado(id)
                     Swal.fire({
-                        title:'Eliminado', 
+                        title:'Desvinculado', 
                         showConfirmButton: true
                     }).then((result) => {
                         if (result.isConfirmed)
@@ -70,27 +70,28 @@ const Mostrar = () => {
 
     const contentTable = () => {
         return usuarios.map((usuario, index) => {
-            if (usuario.estadoUsuario === 2) {
+            if (usuario.estadoUsuario === 2 || (userType != 2 && usuario.tipoUsuario == 2)) {
                 return null;
             }
             return (
+                
                 <Tr key={index}>
                     <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{usuario.nombre}</Td>
                     <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{usuario.rut}</Td>
-                    <Td border="2px" borderColor="black.200">{usuario.numero}</Td>
+                    <Td style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minHeight: '1em' }} border="2px" borderColor="black.200">{'+56 ' + usuario.numero}</Td>
                     <Td border="2px" borderColor="black.200">{showTipo(usuario.tipoUsuario)}</Td>
                     <Td border="2px" borderColor="black.200">{showEstado(usuario.estadoUsuario)}</Td>
                     
-                    {(userType != 2 && usuario.tipoUsuario == 2) ? (
-                        <></>
-                        ) : (
+                    {(userType != 1) ? (
                     <Td border="2px" borderColor="black.200">
                         <HStack justifyContent="center">
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${usuario._id}`)}>Modificar</Button>
                             <Button colorScheme={"blue"} onClick={() => router.push(`./editarPassword/${usuario._id}`)}>Cambiar contraseña</Button> 
-                            <Button colorScheme={"red"} onClick={() => confirmDelete(usuario._id,usuario.tipoUsuario)}>Eliminar</Button>
+                            <Button colorScheme={"red"} onClick={() => confirmDelete(usuario._id,usuario.tipoUsuario)}>Desvincular</Button>
                         </HStack>
-                    </Td>   
+                    </Td> 
+                    ) : (
+                    <></>
                     )}
 
                 </Tr>
@@ -134,16 +135,15 @@ const Mostrar = () => {
             <Container maxW="container.xl">
                 <Heading visibility="hidden">a</Heading>
                 <Heading as="h1" size="2xl" textAlign="center">Usuarios</Heading>
-                <VStack spacing={4} align='stretch'>
-                    <Heading visibility="hidden">a</Heading>
+                <Center display="flex" marginTop="20px">
                     {userType != 1 ? (
-                    <Button colorScheme='green' width='15%' marginLeft='85%' onClick={()=> router.push('./crear')}>Crear Usuario</Button>
+                    <>
+                        <Button colorScheme='green' ml='70%' width='15%'onClick={()=> router.push('./crear')}>Crear Usuario</Button>
+                        <Button colorScheme='blue' ml='1' width='15%'onClick={()=> router.push('./mostrarUinactivos')}>Usuarios desvinculados</Button>
+                    </>
                     ) : null}
-                    {userType != 1 ? (
-                    <Button colorScheme='blue' width='15%'marginLeft='85%' onClick={()=> router.push('./mostrarUinactivos')}>Usuarios inactivos</Button>
-                    ) : null}
-                </VStack>
-
+                
+                </Center>
                 <Stack spacing={4} mt="10">
                     <Table variant="simple" bg="white">        
                         <Thead>

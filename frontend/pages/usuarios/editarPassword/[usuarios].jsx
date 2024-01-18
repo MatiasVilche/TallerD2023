@@ -62,7 +62,7 @@ const Editar = ({ data }) => {
         updateUsuario(usuarios,usuario).then(res => {
             if (res.status == 200){
                 Swal.fire({
-                    title:'Usuario actualizado correctamente',
+                    title:'Contraseña actualizada correctamente',
                     icon:'success',
                     timer:1000,
                     timerProgressBar: false,
@@ -104,7 +104,7 @@ const Editar = ({ data }) => {
             <Container maxW="container.xl">
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar contraseña: {data.nombre}</Heading>
             <Stack spacing={4} mt={10}>
-                <InputForm width="40%" backgroundColor= 'white' borderColor= 'black'color='black' label="Contreseña" handleChange={handleChangePassword} name="password" placeholder="Actualizar contraseña" type="password" value={password.password}/>
+                <InputForm width="40%" backgroundColor= 'white' borderColor= 'black'color='black' label="Contreseña" handleChange={handleChangePassword} name="password" placeholder="Actualizar contraseña" type="text" value={password.password}/>
                 </Stack>
                 <HStack>
                     <Button colorScheme="green" mt={10} mb={10} onClick={submitUsuario}>Modificar Usuario</Button>

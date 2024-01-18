@@ -35,10 +35,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/mostrar.js"
     ],
-    "/usuarios/crear": [
+    "/usuarios/editar/[usuarios]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/usuarios/crear.js"
+      "static/chunks/pages/usuarios/editar/[usuarios].js"
     ],
     "/usuarios/mostrar": [
       "static/chunks/webpack.js",

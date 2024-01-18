@@ -37,15 +37,24 @@ const Usuarios = () => {
         let nombre = document.getElementById("nombre").value;
         let cantidad = document.getElementById("cantidad").value;
 
+        const expresionCodigo = /^[A-Za-z0-9]+$/;
+
         // Comprueba si el código ya existe
         if (allMaterials.some(material => material.codigo === codigo)) {
             alert("El código del material ya existe");
             return false;
         }
     
-        if(codigo === "" || nombre === "" || cantidad === ""){
+        if(codigo === "" || !expresionCodigo.test(codigo)){
+            alert("Codigo invalido, ingreselo nuevamente");
             return false;
-        } else {
+        } else if(nombre === "" ){
+            alert("Nombre invalido, ingreselo nuevamente");
+            return false;
+        }else if(cantidad === ""){
+            alert("Cantidad invalida, ingreselo nuevamente");
+            return false;
+        }else{
             return true;
         }
     }
@@ -99,17 +108,17 @@ const Usuarios = () => {
             <Stack spacing={4} mt={10}>
                 <FormControl id="codigo"> 
                     <FormLabel>Codigo</FormLabel>
-                    <Input width="35%" backgroundColor= 'white' borderColor= 'black'color='black' name="codigo" placeholder="1234" type="number" maxLength="12" onChange = {handleChange}/>
+                    <Input width="35%" backgroundColor= 'white' borderColor= 'black'color='black' name="codigo" placeholder="1234" type="text" maxLength={12} onChange = {handleChange}/>
                 </FormControl> 
 
                 <FormControl id="nombre"> 
                     <FormLabel>Nombre</FormLabel>
-                    <Input width="80%" backgroundColor= 'white' borderColor= 'black'color='black' pattern="[a-zA-Z]+" name={"nombre"} placeholder="Perfil aluminio 10 metros" type="text" onChange = {handleChange}/>
+                    <Textarea width="80%" backgroundColor= 'white' borderColor= 'black'color='black' pattern="[a-zA-Z]+" name={"nombre"} placeholder="Perfil aluminio 10 metros" type="text" maxLength={120} onChange = {handleChange}/>
                 </FormControl> 
 
-                <FormControl id="descripcion"> 
+                <FormControl id="descripcion">
                     <FormLabel>Descripcion</FormLabel>
-                    <Textarea backgroundColor= 'white' borderColor= 'black' color='black' resize="vertical" maxH="8em" maxLength={200} name={"descripcion"} placeholder="marca acme" type="text" onChange = {handleChange}/>
+                    <Textarea backgroundColor= 'white' borderColor= 'black' color='black' resize="vertical" maxH="8em" maxLength={200} name={"descripcion"} placeholder="Marca ACME" type="text" onChange = {handleChange}/>
                 </FormControl> 
 
                 <FormControl id="cantidad"> 

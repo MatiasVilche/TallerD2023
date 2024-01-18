@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Container, Heading, HStack, Stack,Select, FormControl, FormLabel, FormHelperText,Input, FormErrorMessage,Box} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack,Select, FormControl, FormLabel, FormHelperText,Input, FormErrorMessage,Box,InputGroup,InputLeftAddon} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {createCliente} from '../../data/cliente'
 import  Swal  from 'sweetalert2'
@@ -68,7 +68,7 @@ const Clientes = () => {
         
         
         Swal.fire({
-            title: 'Se creo un nuevo cliente',
+            title: 'Se creó un nuevo cliente',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK'
         }).then((result) => {
@@ -103,24 +103,20 @@ const Clientes = () => {
                     <Input width="45%" backgroundColor= 'white' borderColor= 'black'color='black' pattern="[a-zA-Z]+" name={"nombre"} placeholder="Norman Vergara" type="text" onChange = {handleChange}/>
                 </FormControl> 
 
-                <FormControl id="numero"> 
+                <FormControl id="numero" isRequired> 
                     <FormLabel>Número de teléfono</FormLabel>
-                    <Input width="25%" backgroundColor= 'white' borderColor= 'black'color='black' name={"numero"} placeholder="12345678" type="tel" maxLength="9" onChange = {handleChange}/>   
+                    <InputGroup>
+                    <InputLeftAddon>
+                        +56
+                    </InputLeftAddon>
+                    <Input width="25%" backgroundColor= 'white' borderColor= 'black'color='black' name={"numero"} placeholder="912345678" type="text" maxLength="9" onChange = {handleChange}/>   
+                    </InputGroup>
                 </FormControl> 
 
                 <FormControl id="email"> 
                     <FormLabel>Email</FormLabel>
                     <Input width="55%" backgroundColor= 'white' borderColor= 'black'color='black' name={"email"} placeholder="prueba@gmail.cl" type="text" onChange = {handleChange}/>   
-                </FormControl> 
-
-                <FormControl id="estadoCliente">
-                    <h1>Estado del cliente</h1>
-                    <Select width="45%" backgroundColor= 'white' borderColor= 'black'color='black' name={"estadoCliente"} onChange = {handleChange} placeholder='Seleccione el tipo de cliente'>
-                        <option name={"estadoCliente"} onChange = {handleChange} value='0'> Cliente activo</option>
-                        <option name={"estadoCliente"} onChange = {handleChange} value='1'>Cliente inactivo</option>
-                    </Select>
-                </FormControl> 
-
+                </FormControl>
                 </Stack>
             <HStack>
                 <Button colorScheme="green" mt={10} mb={10} onClick={submitProduct}>Crear cliente</Button>

@@ -65,13 +65,15 @@ const Proyectos = () => {
             return [material.nombre, material.cantidad];
         });
 
+        let clienteActual = clientes.find(cliente => cliente._id === proyectoActual.data.cliente);
+
         const docDefinition = {
             styles: styles,
             content: [
                 { text: 'Biosur ventanas PVC', style: 'title' },
                 //Info proyecto
                 'Proyecto: ' + proyectoActual.data.nombre,
-                'Cliente: ' + proyectoActual.data.cliente,
+                'Cliente: ' + clienteActual.nombre,
                 'Fecha de inicio: ' + proyectoActual.data.fechaInicio,
                 'Fecha de termino: '+ proyectoActual.data.fechaTermino,
                 '\n',
@@ -133,15 +135,13 @@ const Proyectos = () => {
                     <Td border="2px" borderColor="black.200">{proyecto.fechaInicio}</Td>
                     <Td border="2px" borderColor="black.200" style={{visibility: proyecto.fechaTermino === "0" ? 'hidden' : 'visible'}}>{proyecto.fechaTermino}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.estado === 0 ? 'Activo' : proyecto.estado}</Td>
-                    <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.nombre).join(', ')}</Td>
-                    <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.cantidad).join(', ')}</Td>
                     {userType != 1 ? (
                     <Td>
                         <HStack>
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editarMateriales/${proyecto._id}`)}>Ver materiales</Button>
                             <Button colorScheme={"green"} onClick={() => router.push(`./editar/${proyecto._id}`)}>Editar proyecto</Button>
                             <Button colorScheme={"blue"} onClick={() => generatePDF(proyecto._id)}>Generar PDF</Button>
-                            <Button colorScheme={"red"} onClick={() => confirmDelete(proyecto._id)}>Eliminar proyecto</Button>
+                            <Button colorScheme={"red"} onClick={() => confirmDelete(proyecto._id)}>Deshabilitar proyecto</Button>
                         </HStack>
                     </Td>
                     ) : null}
@@ -224,25 +224,21 @@ const Proyectos = () => {
         <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
         <Container maxW="container.xl">
             <Heading visibility="hidden">a</Heading>
-            <Heading as="h1" size="2xl" textAlign="center">
-                Proyectos
-            </Heading>
-            <VStack spacing={4} align='stretch'>
+            <Heading as="h1" size="2xl" textAlign="center">Proyectos</Heading>
+
+            <Center display="flex" justifyContent="space-between" marginTop="20px">
+                <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
+                    <option value="default">Seleccione un filtro</option>
+                    <option value="projects">Filtrar por proyecto</option>
+                    <option value="names">Filtrar por nombre</option>
+                </Select>
+                <Input border="2px" borderColor="black.200" backgroundColor= 'white' textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterFunction(e)}/>
+                
                 {userType != 1 ? (
-                <Button width='15%' marginLeft='auto' colorScheme='green'  onClick={()=> router.push('./crearProyecto')}>Crear proyecto</Button>
+                <Button width='15%' ml='1' colorScheme='green'  onClick={()=> router.push('./crearProyecto')}>Crear proyecto</Button>
                 ) : null}
-                <Button width='15%' marginLeft='auto' colorScheme='orange'  onClick={()=> router.push('./proyectoinactivos')}>Proyectos terminados</Button>
-            </VStack>
-            <VStack divider={<StackDivider borderColor='gray.200' />}spacing={4} align='stretch'>
-                        <Center mt="5">
-                            <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
-                                <option value="default">Seleccione un filtro</option>
-                                <option value="projects">Filtrar por proyecto</option>
-                                <option value="names">Filtrar por nombre</option>
-                            </Select>
-                            <Input border="2px" borderColor="black.200" backgroundColor= 'white' textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterFunction(e)}/>
-                        </Center>
-                </VStack>
+                <Button width='18%' ml='1' colorScheme='orange'  onClick={()=> router.push('./proyectoinactivos')}>Proyectos deshabilitados</Button>
+            </Center>
 
             <Stack spacing={4} mt="10">
             <Table variant="simple" bg="white">
@@ -253,8 +249,6 @@ const Proyectos = () => {
                     <Td textAlign="center">Fecha de inicio</Td>
                     <Td textAlign="center">Fecha de término</Td>
                     <Td textAlign="center">Estado del proyecto</Td>
-                    <Td textAlign="center">Nombre de los materiales</Td>
-                    <Td textAlign="center" >Cantidad</Td>
                     {userType != 1 ? (
                                 <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
                     ) : null}
