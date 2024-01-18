@@ -140,7 +140,7 @@ const Mostrar = () => {
                                 <option value="names">Filtrar por nombre</option>
                                 <option value="code">Filtrar por codigo</option>
                         </Select>
-                        <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterFunction(e)}/>
+                        <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='' size='lg' onChange={(e) => filterFunction(e)}/>
                         </Center>
                 </VStack>
 

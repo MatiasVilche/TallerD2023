@@ -21,8 +21,10 @@ const Usuarios = () => {
         nombre:'',
         numero:'',
         tipoUsuario:'',
-        estadoUsuario:''
+        estadoUsuario:'0'
     })
+
+    const [rutF, setRut] = useState('')
 
     const [allUsuarios, setAllUsuarios] = useState([]);
 
@@ -41,7 +43,6 @@ const Usuarios = () => {
         let nombre = document.getElementById("nombre").value;
         let numero = document.getElementById("numero").value;
         let tipoUsuario = document.getElementById("tipoUsuario").value;
-        let estadoUsuario = document.getElementById("estadoUsuario").value;
 
         const expresionNombre = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/ug;
 
@@ -52,7 +53,7 @@ const Usuarios = () => {
             return false;
         }
 
-        if(rut === "" || password ==="" || nombre === "" || numero === "" || tipoUsuario === "" || estadoUsuario === ""){
+        if(rut === "" || password ==="" || nombre === "" || numero === "" || tipoUsuario === ""){
             return false;
         }else if(!validate(rut)){
             alert("El rut no es valido")
@@ -76,13 +77,27 @@ const Usuarios = () => {
 
     const handleChangeRut = (e) => {
         
-        setProduct({
-            ...Usuario,
-            [e.target.name]: format(e.target.value)
-        })  
-    }
+		let value = e.target.value;
+		    value = value.replace(/\./g, '').replace(/-/g, '');
+		if (value.length > 2) {
+		    value = value.slice(0, -7) + '.' + value.slice(-7);
+		}
+		if (value.length > 6) {
+		    value = value.slice(0, -4) + '.' + value.slice(-4);
+		}
+		if (value.length > 3) {
+		    value = value.slice(0, -1) + '-' + value.slice(-1);
+		}
+        setRut(value)
+	};
 
     const submitProduct = async (e) => {
+
+        Usuario.rut = rutF
+
+        console.log(rutF)
+        console.log(Usuario.rut)
+
         const v = validar();
 
         if (v === false){
@@ -129,8 +144,8 @@ const Usuarios = () => {
             <Stack spacing={4} mt={10}>
                 <FormControl id="rut" isRequired> 
                     <FormLabel>RUT</FormLabel>
-                    <Input width="25%" backgroundColor= 'white' borderColor= 'black'color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" onChange = {handleChangeRut}/>
-                    {!validate(Usuario.rut) ? (
+                    <Input width="25%" backgroundColor= 'white' borderColor= 'black'color='black' name="rut" placeholder="12.345.678-9" value={rutF} type="text" maxLength="12" onChange = {handleChangeRut}/>
+                    {!validate(rutF) ? (
                         <FormHelperText>
                             Rut Invalido
                         </FormHelperText>

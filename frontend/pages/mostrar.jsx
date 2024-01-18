@@ -365,7 +365,7 @@ const Mostrar = () => {
                     <option value="code">Filtrar por codigo</option>
                 </Select>
 
-                <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterFunction(e)}/>
+                <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='' size='lg' onChange={(e) => filterFunction(e)}/>
                 {userType != 1 ? (
                     <>
                     <Button marginLeft='auto' ml='1' colorScheme='orange' width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>

@@ -3,5 +3,8 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/proyecto/proyectoinactivos": "pages/proyecto/proyectoinactivos.js",
-  "/proyecto/proyecto": "pages/proyecto/proyecto.js"
+  "/clientes/mostrar": "pages/clientes/mostrar.js",
+  "/clientes/mostrarinactivos": "pages/clientes/mostrarinactivos.js",
+  "/proyecto/proyecto": "pages/proyecto/proyecto.js",
+  "/mostrar": "pages/mostrar.js"
 }

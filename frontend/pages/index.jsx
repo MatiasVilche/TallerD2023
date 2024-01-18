@@ -10,13 +10,26 @@ import Cookies from 'js-cookie';
 
 const Index = () => {
 
-	const [rut, setRUT] = useState('')
+	const [rut, setRut] = useState('')
 	const [password, setPassword] = useState('')
 	const router = useRouter()
 
-	const handleChange = (e) => {
-		setRUT(e.target.value)
-	}
+	const handleChange = (event) => {
+		let value = event.target.value;
+		// Eliminamos los puntos y guiones
+		value = value.replace(/\./g, '').replace(/-/g, '');
+		// Agregamos los puntos y guiones en las posiciones correctas
+		if (value.length > 2) {
+		  value = value.slice(0, -7) + '.' + value.slice(-7);
+		}
+		if (value.length > 6) {
+		  value = value.slice(0, -4) + '.' + value.slice(-4);
+		}
+		if (value.length > 3) {
+		  value = value.slice(0, -1) + '-' + value.slice(-1);
+		}
+		setRut(value);
+	};
 
 	const handleChangePassword = (e) => {
 		setPassword(e.target.value)
@@ -105,7 +118,7 @@ const Index = () => {
       </Heading>
       <Stack my={5}>
           			<FormControl>
-							<Input placeholder = "Ingrese su RUT" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black',textAlign: 'center'}} onChange={handleChange} />
+							<Input placeholder = "Ingrese su RUT" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black',textAlign: 'center'}} value={rut} maxLength="12" onChange={handleChange} />
 							<Input mt='1' type="password" placeholder = "Ingrese su contraseña" maxW="sm" style={{backgroundColor: 'white', borderColor: 'black',color: 'black',textAlign: 'center'}} onChange={handleChangePassword}/>
 					</FormControl>
           <Button mt={5} colorScheme="green" onClick={onSubmit} mx="auto">

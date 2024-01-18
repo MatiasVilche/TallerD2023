@@ -22,6 +22,7 @@ const Editar = ({ data }) => {
     const router = useRouter()
     const { usuarios } = router.query
 
+    const [rutF, setRut] = useState(usuario.rut)
     const [userType, setUserType] = useState("")
 
     useEffect(() => {
@@ -31,18 +32,17 @@ const Editar = ({ data }) => {
 
     function validar(){
 
-        var rut,nombre,numero,tipoUsuario,estadoUsuario;
+        var rut,nombre,numero,tipoUsuario;
     
         rut = usuario.rut;
         nombre = usuario.nombre;
         numero = usuario.numero;
         tipoUsuario = usuario.tipoUsuario;
-        estadoUsuario = usuario.estadoUsuario;
 
         const expresionNombre = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/ug;
         const expresionTelefono = /^\d{9}$/;
 
-        if(rut === "" ||nombre === "" || numero === "" || tipoUsuario === "" || estadoUsuario === ""){
+        if(rut === "" ||nombre === "" || numero === "" || tipoUsuario === "" ){
             return false;
         }else if(!expresionNombre.test(nombre)){
             console.log(nombre)
@@ -58,22 +58,30 @@ const Editar = ({ data }) => {
     const handleChange = (e) => {
         setUsuario({
             ...usuario,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
+            estadoUsuario: "0"
         })
     }
 
     const handleChangeRut = (e) => {
-        setUsuario({
-            ...usuario,
-            [e.target.name]: format(e.target.value)
-        })  
-    }
-    
-    const handleChangeNumero = (e) => {
-        setUsuario({ numero: event.target.value });
-    };
+        
+		let value = e.target.value;
+		    value = value.replace(/\./g, '').replace(/-/g, '');
+		if (value.length > 2) {
+		    value = value.slice(0, -7) + '.' + value.slice(-7);
+		}
+		if (value.length > 6) {
+		    value = value.slice(0, -4) + '.' + value.slice(-4);
+		}
+		if (value.length > 3) {
+		    value = value.slice(0, -1) + '-' + value.slice(-1);
+		}
+        setRut(value)
+	};
     
     const submitUsuario = async (e) => {
+        
+        usuario.rut = rutF
 
         const v = validar();
 
@@ -134,11 +142,10 @@ const Editar = ({ data }) => {
             <Container maxW="container.xl">
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar Usuario: {data.nombre}</Heading>
             <Stack spacing={4} mt={10}>
-                {(usuario.tipoUsuario === 2 && userType === "2") && (
                     <FormControl id="rut" isRequired> 
                     <FormLabel>RUT</FormLabel>
-                        <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={usuario.rut} onChange = {handleChangeRut}/>
-                        {!validate(usuario.rut) ? (
+                        <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={rutF} onChange = {handleChangeRut}/>
+                        {!validate(rutF) ? (
                         <FormHelperText>
                             Rut Invalido
                         </FormHelperText>
@@ -146,33 +153,6 @@ const Editar = ({ data }) => {
                         <FormErrorMessage>El rut es obligatorio</FormErrorMessage>
                         }
                     </FormControl>
-                )}
-                {(usuario.tipoUsuario === 1 && (userType === "0" || userType === "2")) && (
-                    <FormControl id="rut" isRequired> 
-                    <FormLabel>RUT</FormLabel>
-                        <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={usuario.rut} onChange = {handleChangeRut}/>
-                        {!validate(usuario.rut) ? (
-                        <FormHelperText>
-                            Rut Invalido
-                        </FormHelperText>
-                            ) : 
-                        <FormErrorMessage>El rut es obligatorio</FormErrorMessage>
-                        }
-                    </FormControl>
-                )}
-                {(usuario.tipoUsuario === 0 && userType === "2") && (
-                    <FormControl id="rut" isRequired> 
-                    <FormLabel>RUT</FormLabel>
-                        <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={usuario.rut} onChange = {handleChangeRut}/>
-                        {!validate(usuario.rut) ? (
-                        <FormHelperText>
-                            Rut Invalido
-                        </FormHelperText>
-                            ) : 
-                        <FormErrorMessage>El rut es obligatorio</FormErrorMessage>
-                        }
-                    </FormControl>
-                )}
 
                 <FormControl id="nombre" isRequired>
                 <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={usuario.nombre}/>
@@ -198,15 +178,6 @@ const Editar = ({ data }) => {
                     </FormControl>
                 )}
 
-                {usuario.tipoUsuario !== 2 && (
-                <FormControl id="estadoUsuario"> 
-                    <h1>Estado del usuario</h1>
-                    <Select width="40%" backgroundColor= 'white' borderColor= 'black'color='black' name={"estadoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario' value={usuario.estadoUsuario}>
-                        <option name={"estadoUsuario"} onChange = {handleChange} value='0'>Empleado</option>
-                        <option name={"estadoUsuario"} onChange = {handleChange} value='1'>Desvinculado de la empresa</option>
-                    </Select>
-                </FormControl> 
-                )}
                 </Stack>
                 <HStack>
                     <Button colorScheme="green" mt={10} mb={10} onClick={submitUsuario}>Modificar Usuario</Button>

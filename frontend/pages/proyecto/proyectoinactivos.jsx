@@ -237,7 +237,7 @@ const Proyectos = () => {
                     <option value="projects">Filtrar por proyecto</option>
                     <option value="names">Filtrar por nombre</option>
                 </Select>
-                <Input border="2px" borderColor="black.200" backgroundColor= 'white' textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterFunction(e)}/>
+                <Input border="2px" borderColor="black.200" backgroundColor= 'white' textAlign="center" placeholder='' size='lg' width="50%" onChange={(e) => filterFunction(e)}/>
                 </Center>
             </VStack>
 
