@@ -15,11 +15,6 @@
   ],
   "rootMainFiles": [],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -30,20 +25,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/mostrar": [
+    "/proyecto/proyecto": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/mostrar.js"
+      "static/chunks/pages/proyecto/proyecto.js"
     ],
-    "/usuarios/editar/[usuarios]": [
+    "/proyecto/proyectoinactivos": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/usuarios/editar/[usuarios].js"
-    ],
-    "/usuarios/mostrar": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/usuarios/mostrar.js"
+      "static/chunks/pages/proyecto/proyectoinactivos.js"
     ]
   },
   "ampFirstPages": []

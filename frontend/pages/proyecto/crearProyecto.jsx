@@ -48,7 +48,7 @@ const Proyectos = () => {
         })
 
         Swal.fire({
-            title: 'Se agregó un material',
+            title: 'Se creó el proyecto',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK'
         }).then((result) => {
@@ -82,12 +82,13 @@ const Proyectos = () => {
 
                 <FormControl id="cliente"> 
                 <FormLabel>Nombre del cliente</FormLabel>
-                    <Select width="60%" backgroundColor= 'white' borderColor= 'black'color='black' placeholder="Seleccione el cliente" name={"cliente"} onChange = {handleChange}>
-                        {clientes.map((cliente, index) => (
-                        <option key={index} value={cliente._id}>{cliente.nombre}</option>
-                    ))}
+                    <Select width="60%" backgroundColor= 'white' borderColor= 'black' color='black' placeholder="Seleccione el cliente" name={"cliente"} onChange = {handleChange}>
+                        {clientes.filter(cliente => cliente.estadoCliente === 0).map((cliente, index) => (
+                            <option key={index} value={cliente._id}>{cliente.nombre}</option>
+                        ))}
                     </Select>
                 </FormControl>
+
 
                 <FormControl id="cliente"> 
                     <FormLabel>Fecha de inicio</FormLabel>

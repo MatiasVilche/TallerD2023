@@ -108,10 +108,10 @@ const Editar = ({ data }) => {
 
             <FormLabel htmlFor="cliente">Nombre del cliente
             <Select placeholder="Seleccione un cliente" onChange={handleChangeCliente} value={proyecto.cliente}>
-                {clientes.map((cliente) => (
-                    <option key={cliente._id} value={cliente._id}>
-                        {cliente.nombre}
-                    </option>
+                {(clientes.filter(cliente => cliente.estadoCliente === 0 || cliente._id === proyecto.cliente)).map((cliente) => (
+                <option key={cliente._id} value={cliente._id}>
+                    {cliente.nombre}
+                </option>
                 ))}
             </Select>
             </FormLabel>

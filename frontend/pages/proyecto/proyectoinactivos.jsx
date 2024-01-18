@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState,useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex , Input, VStack, StackDivider,Th,Center,Box} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex , Input, VStack, StackDivider,Th,Center,Box,Select} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {getProyecto,getProyectoEspecifico,updateEstadoProyecto2} from '../../data/proyecto'
 import { getMateriales} from '../../data/materiales'
@@ -64,13 +64,15 @@ const Proyectos = () => {
             return [material.nombre, material.cantidad];
         });
 
+        let clienteActual = clientes.find(cliente => cliente._id === proyectoActual.data.cliente);
+
         const docDefinition = {
             styles: styles,
             content: [
                 { text: 'Biosur ventanas PVC', style: 'title' },
                 //Info proyecto
                 'Proyecto: ' + proyectoActual.data.nombre,
-                'Cliente: ' + proyectoActual.data.cliente,
+                'Cliente: ' + clienteActual.nombre,
                 'Fecha de inicio: ' + proyectoActual.data.fechaInicio,
                 'Fecha de termino: '+ proyectoActual.data.fechaTermino,
                 '\n',
@@ -132,14 +134,14 @@ const Proyectos = () => {
                     <Td border="2px" borderColor="black.200">{clienteProyecto ? clienteProyecto.nombre : 'Cliente no encontrado'}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.fechaInicio}</Td>
                     <Td border="2px" borderColor="black.200" style={{visibility: proyecto.fechaTermino === "0" ? 'hidden' : 'visible'}}>{proyecto.fechaTermino}</Td>
-                    <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.nombre).join(', ')}</Td>
-                    <Td border="2px" borderColor="black.200">{proyecto.materiales.map(material => material.cantidad).join(', ')}</Td>
                     <Td>
-                        <HStack>
+                        <HStack justifyContent="center">
                             {userType != 1 ? (
                             <Button colorScheme={"green"} onClick={() => confirmDelete(proyecto._id)}>Habilitar proyecto</Button>
                             ) : null}
+                            {userType != 1 ? (
                             <Button colorScheme={"blue"} onClick={() => generatePDF(proyecto._id)}>Generar PDF</Button>
+                            ) : null}
                         </HStack>
                     </Td>
                     
@@ -149,17 +151,51 @@ const Proyectos = () => {
         )
     }
 
-    const filterNames = e => {
-        const search = e.target.value.toLowerCase();
-        if (search === "") {
+    const filterProjects = e => {
+        
+        const search = e.target.value.toLowerCase()
+        const filteredProjects = proyecto.filter(proyecto => proyecto.nombre.toLowerCase().includes(search))
+        setProyecto(filteredProjects)
+
+        if(e.target.value.toLowerCase() === ""){
             getProyecto().then(res => {
                 setProyecto(res.data);
-            });
-        } else {
-            const filteredProyecto = proyecto.filter(names => names.nombre.toLowerCase().includes(search));
-            setProyecto(filteredProyecto);
-        }
+            })
+        };
     }
+
+    const filterNames = e => {
+        const search = e.target.value.toLowerCase()
+        const filteredClientes = clientes.filter(clientes => clientes.nombre.toLowerCase().includes(search))
+        const filteredClientesIds = filteredClientes.map(cliente => cliente._id);
+
+        const filteredNames = proyecto.filter(clientes => filteredClientesIds.includes(clientes.cliente));
+        setProyecto(filteredNames)
+
+        if(e.target.value.toLowerCase() === ""){
+            getProyecto().then(res => {
+                setProyecto(res.data);
+            })
+        };
+    }
+
+    const [filterFunction, setFilterFunction] = useState(() => () => {});
+
+    const handleSelectChange = (event) => {
+        switch (event.target.value) {
+            case 'default':
+                setFilterFunction(() => () => {});
+                break;
+            case 'names':
+                setFilterFunction(() => filterNames);
+                break;
+            case 'projects':
+                setFilterFunction(() => filterProjects);
+                break;
+            default:
+                setFilterFunction(() => () => {});
+        }
+    };
 
     //Trae la lista de proyectos
     useEffect(() => {
@@ -196,7 +232,12 @@ const Proyectos = () => {
             </Flex>
             <VStack spacing={4} align='stretch'>
                 <Center mt="2%">
-                        <Input border="2px" borderColor="black.200" backgroundColor= 'white' textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterNames(e)}/>
+                <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
+                    <option value="default">Seleccione un filtro</option>
+                    <option value="projects">Filtrar por proyecto</option>
+                    <option value="names">Filtrar por nombre</option>
+                </Select>
+                <Input border="2px" borderColor="black.200" backgroundColor= 'white' textAlign="center" placeholder='Ingrese el nombre del proyecto' size='lg' width="50%" onChange={(e) => filterFunction(e)}/>
                 </Center>
             </VStack>
 
@@ -208,8 +249,6 @@ const Proyectos = () => {
                     <Td textAlign="center">Cliente</Td>
                     <Td textAlign="center">Fecha de inicio</Td>
                     <Td textAlign="center">Fecha de término</Td>
-                    <Td textAlign="center">Nombre de los materiales</Td>
-                    <Td textAlign="center" >Cantidad</Td>
                     <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
                 </Tr>
                 </Thead>

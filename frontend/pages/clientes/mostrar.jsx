@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Box, Spacer,VStack} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex, Box, Spacer,VStack, Center} from '@chakra-ui/react'
 import { getClientes,updateEstadoCliente} from '../../data/cliente'
 import { useRouter } from 'next/router'
 import  Swal  from 'sweetalert2'
@@ -50,7 +50,7 @@ const Mostrar = () => {
             } else if (result.isConfirmed) {
                     modEstado(id)
                     Swal.fire({
-                        title:'Eliminado', 
+                        title:'Deshabilitado', 
                         showConfirmButton: true
                     }).then((result) => {
                         if (result.isConfirmed)
@@ -94,13 +94,12 @@ const Mostrar = () => {
             <Container maxW="container.xl">
                 <Heading visibility="hidden">a</Heading>
                 <Heading as="h1" size="2xl" textAlign="center">Clientes</Heading>
-                <VStack spacing={4} align='stretch'>
+                <Center display="flex" marginTop="20px">
                     {userType != 1 ? (
-                    <Button colorScheme='green' marginLeft='85%' onClick={()=> router.push('./crear')}>Crear cliente</Button>
+                    <Button colorScheme='green' ml='70%' width='15%' onClick={()=> router.push('./crear')}>Crear cliente</Button>
                     ) : null}
-                    <Button colorScheme='blue' marginLeft='85%' onClick={()=> router.push('./mostrarinactivos')}>Ver clientes inactivos</Button>
-                </VStack>
-
+                    <Button colorScheme='blue' ml='1' width='15%' onClick={()=> router.push('./mostrarinactivos')}>Ver clientes inactivos</Button>
+                </Center>
                 <Stack spacing={4} mt="10">
                     <Table variant="simple" bg="white">        
                         <Thead>

@@ -120,7 +120,7 @@ const Editar = ({ data }) => {
                     <InputForm showLabel={false} width="25%" backgroundColor= 'white' borderColor= 'black'color='black'handleChange={handleChange} name="numero" placeholder="Actualizar numero" type="tel" maxLength="9" value={cliente.numero}/> 
                     </InputGroup>
                 </FormControl>
-            <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Email" handleChange={handleChange} name="email" placeholder="Actualizar email" type="text" value={cliente.email}/> 
+            <InputForm width="55%" backgroundColor= 'white' borderColor= 'black'color='black' label="Email" handleChange={handleChange} name="email" placeholder="Actualizar email" type="text" value={cliente.email}/> 
             </Stack>
             <HStack>
                 <Button colorScheme="green" mt={10} mb={10} onClick={submitCliente}>Modificar cliente</Button>

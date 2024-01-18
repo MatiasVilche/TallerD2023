@@ -64,7 +64,6 @@ const Usuarios = () => {
         const v = validar();
 
         if (v === false){
-            alert("Todos los campos son obligatorios");
         }else if (v === true){
             e.preventDefault()
         if (material.cantidad <= 0) {

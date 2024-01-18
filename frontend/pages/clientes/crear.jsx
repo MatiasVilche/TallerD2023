@@ -17,7 +17,7 @@ const Clientes = () => {
 
     function validar(){
 
-        var nombre,numero,email,estadoCliente;
+        var nombre,numero,email;
 
         nombre = document.getElementById("nombre").value;
         console.log(nombre)
@@ -26,8 +26,6 @@ const Clientes = () => {
         console.log(numero)
 
         email = document.getElementById("email").value;
-
-        estadoCliente = document.getElementById("estadoCliente").value;
 
         const expresionNombre = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
         const expresionTelefono = /^\d{9}$/;

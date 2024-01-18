@@ -8,10 +8,17 @@ import Sidebar from '../../components/Sidebar2';
 const Mostrar = () => {
 
     const [userType, setUserType] = useState("")
+    const [userName, setUserName] = useState("")
+
 
     useEffect(() => {
         let currentLogUser = localStorage.getItem('userType') || ""
         setUserType(currentLogUser)
+    }, [])
+
+    useEffect(() => {
+        let currentNameUser = localStorage.getItem('nombreUsuario') || ""
+        setUserName(currentNameUser)
     }, [])
 
     const [usuarios, setUsuarios] = useState([{
@@ -42,7 +49,7 @@ const Mostrar = () => {
 
             if (result.isDenied) {
                 Swal.fire({
-                    title:'No se desvinculo el usuario',
+                    title:'No se desvinculó el usuario',
                     confirmButtonColor: 'green'
                 })
                 return
@@ -82,7 +89,7 @@ const Mostrar = () => {
                     <Td border="2px" borderColor="black.200">{showTipo(usuario.tipoUsuario)}</Td>
                     <Td border="2px" borderColor="black.200">{showEstado(usuario.estadoUsuario)}</Td>
                     
-                    {(userType != 1) ? (
+                    {((userType === "0" && (usuario.nombre === userName || usuario.tipoUsuario === 1)) || (userType === "2")) ? (
                     <Td border="2px" borderColor="black.200">
                         <HStack justifyContent="center">
                             <Button colorScheme={"orange"} onClick={() => router.push(`./editar/${usuario._id}`)}>Modificar</Button>

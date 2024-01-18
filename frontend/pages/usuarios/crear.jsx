@@ -154,8 +154,9 @@ const Usuarios = () => {
                     <InputLeftAddon>
                         +56
                     </InputLeftAddon>
-                    <Input width="25%" backgroundColor= 'white' borderColor= 'black'color='black' name={"numero"} placeholder="12345678" type="text" maxLength="9" onChange = {handleChange}/>   
+                    <Input width="25%" backgroundColor= 'white' borderColor= 'black'color='black' name={"numero"} placeholder="" type="text" maxLength="9" onChange = {handleChange}/>   
                     </InputGroup>
+                    <FormHelperText>Ejemplo: 912345678</FormHelperText>
                 </FormControl> 
 
                 <FormControl id="tipoUsuario">
@@ -168,14 +169,6 @@ const Usuarios = () => {
                         <option name={"tipoUsuario"} onChange = {handleChange} value='1'>Trabajador</option>
                     </Select>
                 </FormControl> 
-                <FormControl id="estadoUsuario">
-                    <h1>Estado del usuario</h1>
-                    <Select width="60%" backgroundColor= 'white' borderColor= 'black'color='black' name={"estadoUsuario"} onChange = {handleChange} placeholder='Seleccione el tipo de usuario'>
-                        <option name={"estadoUsuario"} onChange = {handleChange} value='0'>Empleado activo</option>
-                        <option name={"estadoUsuario"} onChange = {handleChange} value='1'>Empleado desvinculado</option>
-                    </Select>
-                </FormControl> 
-
                 </Stack>
             <HStack>
                 <Button colorScheme="green" mt={10} mb={10} onClick={submitProduct}>Crear usuario</Button>

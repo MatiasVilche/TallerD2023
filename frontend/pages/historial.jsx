@@ -45,9 +45,11 @@ const Mostrar = () => {
 
     const router = useRouter()
 
+    const [isReversed, setIsReversed] = useState(false);
+
     const contentTable = () => {
         return (
-            historial.map((historial,index) => {
+            (isReversed ? historial.slice().reverse() : historial).map((historial,index) => {
                 const trabajador = usuarios.find((t) => t._id === historial.rutTrabajador);
                 const materiales = material.find((t) => t._id === historial.codigoProducto);
                 const proyectoHistorial = proyectos.find(p => p._id === historial.proyecto);
@@ -179,11 +181,14 @@ const Mostrar = () => {
                         <Center mt="5">
                             <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
                                 <option value="default">Seleccione un filtro</option>
-                                <option value="names">Filtrar por nombre</option>
+                                <option value="names">Filtrar por trabajador</option>
                                 <option value="products">Filtrar por producto</option>
                                 <option value="projects">Filtrar por proyecto</option>
                             </Select>
                             <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='Ingrese el nombre del producto que desea buscar' size='lg' onChange={(e) => filterFunction(e)}/>
+                            <Button ml="6%" textAlign="center" colorScheme={"yellow"} onClick={() => setIsReversed(!isReversed)}>
+                                Cambiar orden
+                            </Button>
                         </Center>
                 </VStack>
 

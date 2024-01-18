@@ -58,7 +58,7 @@ const Mostrar = () => {
                 <Tr key={index}>
                     <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{usuario.nombre}</Td>
                     <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{usuario.rut}</Td>
-                    <Td border="2px" borderColor="black.200">{usuario.numero}</Td>
+                    <Td style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minHeight: '1em' }} border="2px" borderColor="black.200">{'+56 ' + usuario.numero}</Td>
                     <Td border="2px" borderColor="black.200">{showTipo(usuario.tipoUsuario)}</Td>
                     <Td border="2px" borderColor="black.200">
                         <HStack justifyContent="center">
