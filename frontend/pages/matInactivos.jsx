@@ -102,7 +102,7 @@ const Mostrar = () => {
         }
     };
 
-    const contentTable = () => {
+    const useContentTable = () => {
 
         const [showAdditionalField, setShowAdditionalField] = useState(false);
         const filteredMaterial = material.filter(item => item.estadoMaterial === 1);
@@ -156,7 +156,7 @@ const Mostrar = () => {
                             </Tr>
                         </Thead>
                         <Tbody >
-                            {contentTable()}
+                            {useContentTable()}
                         </Tbody>
                     </Table>
                 </Stack>
