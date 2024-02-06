@@ -25,12 +25,32 @@ const sendCustomEmail = async (msg) => {
     return 1;
 }
 
+const sendCustomEmailPassword = async (msg) => {
+    const mensaje = {
+        from : process.env.USER,
+        to : msg.destino,
+        subject : "Cambio de contraseña " + msg.user + " Sistema Biosur",
+        text: "Estimado " + msg.user + ", la recuperación de contraseña fue exitosa.\n\nSe le proporcionará una nueva contraseña, por favor cambiarla a la brevedad a una que usted estime conveniente.\n\nNUEVA CONTRASEÑA:\n" + msg.password + "" // Accede directamente a la propiedad 'password'
+    };
+
+    await transporter.sendMail(mensaje);
+
+    return   1;
+}
+
 const enviarMail = (message,res) => {
     sendCustomEmail(message)
     res.status(200).send({ message: "Se envio el correo con exito" })
 }
 
+const enviarMailPassword = (req, res) => {
+    const message = req.body; // Extrae el cuerpo de la solicitud
+    sendCustomEmailPassword(message)
+    res.status(200).send({ message: "Se envio el correo de recuperación con exito" });
+}
+
 
 module.exports = {
-    enviarMail
+    enviarMail,
+    enviarMailPassword
 }

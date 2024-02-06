@@ -3,6 +3,10 @@ const api = express.Router();
 
 const mailerController = require('../controllers/mailerController');
 
-api.post('/:message', mailerController.enviarMail);
+// Ruta para enviar un correo de recuperación de contraseña
+api.post('/password', mailerController.enviarMailPassword);
+
+// Ruta para enviar un correo genérico
+api.post('/materiales/:message', mailerController.enviarMail);
 
 module.exports = api;

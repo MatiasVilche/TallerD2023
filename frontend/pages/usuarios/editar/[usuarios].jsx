@@ -32,21 +32,26 @@ const Editar = ({ data }) => {
 
     function validar(){
 
-        var rut,nombre,numero,tipoUsuario;
+        var rut,nombre,email,numero,tipoUsuario;
     
         rut = usuario.rut;
         nombre = usuario.nombre;
+        email = usuario.email;
         numero = usuario.numero;
         tipoUsuario = usuario.tipoUsuario;
 
         const expresionNombre = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/ug;
         const expresionTelefono = /^\d{9}$/;
+        const expresionMail = /^[a-z0-9]+(?:[-\._]?[a-z0-9]+)*@(?:[a-z0-9]+(?:-?[a-z0-9]+)*\.)+[a-z]+$/;
 
-        if(rut === "" ||nombre === "" || numero === "" || tipoUsuario === "" ){
+        if(rut === "" ||nombre === "" || email ===""||numero === "" || tipoUsuario === "" ){
             return false;
         }else if(!expresionNombre.test(nombre)){
             console.log(nombre)
             alert("El nombre no es valido")
+            return false;
+        }else if(!expresionMail.test(email)){
+            alert("El correo electrinico ingresado no es valido")
             return false;
         }else if(!expresionTelefono.test(numero)){
             alert("El número de teléfono no valido (maximos 8 números)")
@@ -156,6 +161,10 @@ const Editar = ({ data }) => {
 
                 <FormControl id="nombre" isRequired>
                 <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={usuario.nombre}/>
+                </FormControl>
+
+                <FormControl id="email" isRequired>
+                <InputForm width="55%" backgroundColor= 'white' borderColor= 'black'color='black' label="Email" handleChange={handleChange} name="email" placeholder="Actualizar email" type="text" value={usuario.email}/> 
                 </FormControl>
 
                 <FormControl id="numero" isRequired> 

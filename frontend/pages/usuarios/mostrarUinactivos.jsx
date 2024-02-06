@@ -8,6 +8,7 @@ const Mostrar = () => {
     const [usuarios, setUsuarios] = useState([{
         rut: '',
         nombre: '',
+        email:'',
         numero: '',
         tipoUsuario: '',
         estadoUsuario: ''
@@ -58,6 +59,7 @@ const Mostrar = () => {
                 <Tr key={index}>
                     <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{usuario.nombre}</Td>
                     <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{usuario.rut}</Td>
+                    <Td border="2px" borderColor="black.200" whiteSpace="nowrap">{usuario.email}</Td>
                     <Td style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minHeight: '1em' }} border="2px" borderColor="black.200">{'+56 ' + usuario.numero}</Td>
                     <Td border="2px" borderColor="black.200">{showTipo(usuario.tipoUsuario)}</Td>
                     <Td border="2px" borderColor="black.200">
@@ -116,6 +118,7 @@ const Mostrar = () => {
                             <Tr border="2px" borderColor="black.200">
                                 <Td textAlign="center">Nombre</Td>
                                 <Td textAlign="center">RUT</Td>
+                                <Td textAlign="center">Email</Td>
                                 <Td textAlign="center">Numero</Td>
                                 <Td textAlign="center" borderRight="2px" borderColor="black.200">Tipo de usuario</Td>
                                 <Td textAlign="center">Acciones</Td>

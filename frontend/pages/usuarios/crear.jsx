@@ -19,6 +19,7 @@ const Usuarios = () => {
         rut:'',
         password:'',
         nombre:'',
+        email:'',
         numero:'',
         tipoUsuario:'',
         estadoUsuario:'0'
@@ -41,6 +42,7 @@ const Usuarios = () => {
         let rut = document.getElementById("rut").value;
         let password = document.getElementById("password").value;
         let nombre = document.getElementById("nombre").value;
+        let email = document.getElementById("email").value;
         let numero = document.getElementById("numero").value;
         let tipoUsuario = document.getElementById("tipoUsuario").value;
 
@@ -48,18 +50,23 @@ const Usuarios = () => {
 
         const expresionTelefono = /^\d{9}$/;
 
+        const expresionMail = /^[a-z0-9]+(?:[-\._]?[a-z0-9]+)*@(?:[a-z0-9]+(?:-?[a-z0-9]+)*\.)+[a-z]+$/;
+
         if (allUsuarios.some(Usuario => Usuario.rut === format(rut))) {
             alert("El rut ingresado ya existe, por favor ingrese otro.");
             return false;
         }
 
-        if(rut === "" || password ==="" || nombre === "" || numero === "" || tipoUsuario === ""){
+        if(rut === "" || password ==="" || nombre === "" || email==="" || numero === "" || tipoUsuario === ""){
             return false;
         }else if(!validate(rut)){
             alert("El rut no es valido")
             return false;
         }else if(!expresionNombre.test(nombre)){
             alert("El nombre no es valido")
+            return false;
+        }else if(!expresionMail.test(email)){
+            alert("El correo electrinico ingresado no es valido")
             return false;
         }else if(!expresionTelefono.test(numero)){
             alert("El número de teléfono ingresado no es valido")
@@ -162,6 +169,11 @@ const Usuarios = () => {
                     <FormLabel>Nombre y apellido</FormLabel>
                     <Input width="60%" backgroundColor= 'white' borderColor= 'black'color='black' pattern="[a-zA-Z]+" name={"nombre"} placeholder="Norman Vergara" type="text" onChange = {handleChange}/>
                 </FormControl> 
+                
+                <FormControl id="email"> 
+                    <FormLabel>Email</FormLabel>
+                    <Input width="55%" backgroundColor= 'white' borderColor= 'black'color='black' name={"email"} placeholder="prueba@gmail.cl" type="text" onChange = {handleChange}/>   
+                </FormControl>
 
                 <FormControl id="numero" isRequired> 
                     <FormLabel>Número de teléfono</FormLabel>

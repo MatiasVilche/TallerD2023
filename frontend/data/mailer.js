@@ -1,10 +1,16 @@
 import axios from 'axios';
 
 const sendEmail = async(message) => {
-    const response = await axios.post(`${process.env.SERVIDOR}/Mailer/${message}`);
-    return response
+    const response = await axios.post(`${process.env.SERVIDOR}/Mailer/materiales/${message}`);
+    return response;
 }
 
-module.exports = {
-    sendEmail
+const sendEmailPassword = async(msg) => {
+    const response = await axios.post(`${process.env.SERVIDOR}/Mailer/password`, msg);
+    return response;
+}
+
+export {
+    sendEmail,
+    sendEmailPassword
 }
