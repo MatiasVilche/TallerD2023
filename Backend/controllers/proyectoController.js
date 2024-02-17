@@ -26,8 +26,12 @@ const crearProyecto = async (req, res) => {
         // Crear la carpeta del proyecto si no existe
         if (!fs.existsSync(pdfFolderPath)) {
             fs.mkdirSync(pdfFolderPath, { recursive: true });
+
+			// Crear un archivo de texto vacío con el mismo nombre que la carpeta
+			const txtFileName = path.join(pdfFolderPath, proyecto.nombre + '.txt');
+			fs.writeFileSync(txtFileName, '', 'utf8');
         }
-        
+
         // Responder con el nuevo proyecto
         res.status(201).json(nuevoProyecto);
     } catch (error) {
