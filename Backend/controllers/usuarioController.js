@@ -35,6 +35,7 @@ const getUsuarios = (req, res) => {
 // OBTENER UN USUARIO ESPECIFICO
 const getUsuario = (req, res) => {
     let id = req.params.id
+
     Usuario.findById(id, (err, usuarios) => {
         if (err) {
             res.status(400).send({ message: err })

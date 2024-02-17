@@ -10,10 +10,20 @@ const proyectoSchema = mongoose.Schema({
     materiales:
         [materialSchema.schema]
     ,
+    etapa:{
+        //0= inicio 1=intermedia 2=final
+        type: Number,
+		enum: [0, 1, 2],
+        default: 0
+    }
+    ,
     cliente:{
         type: Schema.Types.ObjectId,
 		ref: 'Cliente',
 		required: true
+    },
+    descripcion:{
+        type: String
     },
     fechaInicio: {
         type: String,
@@ -24,7 +34,9 @@ const proyectoSchema = mongoose.Schema({
     },
     estado: {
         //0= activo 1=inactivo
-        type: Number, enum: [0, 1],default: 0
+        type: Number, 
+        enum: [0, 1],
+        default: 0
     }
 });
 

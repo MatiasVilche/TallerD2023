@@ -13,5 +13,6 @@ api.post('/usr/login/', usuarioController.login);
 api.get('/query/:id', usuarioController.isAdmin);
 api.put('/updateEstado/:id', usuarioController.updateEstadoUsuario);
 api.put('/updateEstadoRetorno/:id', usuarioController.updateEstadoUsuario2);
+api.put('/updatePassword/:id', usuarioController.updateEstadoUsuario2);
 
 module.exports = api;

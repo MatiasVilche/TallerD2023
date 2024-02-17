@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const path = require('path');
 
 const options = {
     useNewUrlParser: true,
@@ -20,9 +21,12 @@ const historialRoute = require('./routes/historialRoute')
 const usuarioRoute = require('./routes/usuarioRoute')
 const proyectoRoute = require('./routes/proyectoRoute')
 const clienteRoute = require('./routes/clienteRoute')
+const fileRoutes = require('./routes/fileRoutes');
+const pdfRoutes = require('./routes/pdfRoute');
 
 const app = express();
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.options('*', cors());
 
@@ -32,7 +36,11 @@ app.use('/api/Historial',historialRoute)
 app.use('/api/Usuario', usuarioRoute)
 app.use('/api/Proyecto', proyectoRoute)
 app.use('/api/Cliente', clienteRoute)
+app.use('/api/files', fileRoutes);
+app.use('/api/pdf', pdfRoutes);
 
+// Sirve los archivos estáticos desde la carpeta 'pdfs'
+app.use('/PDF', express.static(path.join(__dirname, './PDF')));
 
 mongoose.set('strictQuery', false);
 

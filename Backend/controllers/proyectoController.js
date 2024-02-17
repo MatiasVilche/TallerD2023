@@ -1,22 +1,38 @@
 const Proyecto = require('../models/ProyectoModel');
+const fs = require('fs');
+const path = require('path');
 
-// Crear un nuevo proyecto
 const crearProyecto = async (req, res) => {
-	try {
-		const { nombre, materiales ,cliente,fechaInicio,fechaTermino,estado} = req.body;
-		const proyecto = new Proyecto({
-		nombre,
-		materiales,
-		cliente,
-		fechaInicio,
-		fechaTermino:"0",
-		estado:"0"	
-	});
-		const nuevoProyecto = await proyecto.save();
-		res.status(201).json(nuevoProyecto);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+    try {
+        const { nombre, materiales, etapa, cliente, descripcion, fechaInicio, fechaTermino, estado } = req.body;
+        
+        // Crear el nuevo proyecto
+        const proyecto = new Proyecto({
+            nombre,
+            materiales,
+            etapa: "0",
+            cliente,
+            descripcion,
+            fechaInicio,
+            fechaTermino: "0",
+            estado: "0"    
+        });
+        
+        const nuevoProyecto = await proyecto.save();
+        
+        // Definir la ruta de la nueva carpeta del proyecto
+        const pdfFolderPath = path.join(__dirname, '../PDF', nuevoProyecto._id +"-"+ nombre);
+        
+        // Crear la carpeta del proyecto si no existe
+        if (!fs.existsSync(pdfFolderPath)) {
+            fs.mkdirSync(pdfFolderPath, { recursive: true });
+        }
+        
+        // Responder con el nuevo proyecto
+        res.status(201).json(nuevoProyecto);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 // Obtener todos los proyectos
@@ -42,7 +58,6 @@ const obtenerProyectoPorId = (req, res) => {
 }
 
 // Agregar materiales a un proyecto
-
 const agregarMaterialAProyecto = (req, res) => {
 	const id = req.params.id;
 	const material = req.body.material;
