@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState,useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Flex , Input, VStack, StackDivider,Th,Center,Box,Select} from '@chakra-ui/react'
+import { useState,useEffect} from 'react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Input,Center,Box,Select} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {getProyecto,getProyectoEspecifico,updateEstadoProyecto} from '../../data/proyecto'
 import { getMateriales} from '../../data/materiales'
@@ -45,51 +45,6 @@ const Proyectos = () => {
         estadoCliente: ''
     }])
 
-    let styles = {
-        title: {
-            fontSize: 18,
-            bold: true,
-            alignment: 'center'
-        }
-    };
-
-    const generatePDF = async (proyecto) => {
-
-        let proyectoActual = await getProyectoEspecifico(proyecto)
-
-        let materialesParaPDF = proyectoActual.data.materiales.map((material, index) => {
-            return { nombre: material.nombre, cantidad: material.cantidad };
-        });
-
-        let cuerpoTabla = materialesParaPDF.map(material => {
-            return [material.nombre, material.cantidad];
-        });
-
-        let clienteActual = clientes.find(cliente => cliente._id === proyectoActual.data.cliente);
-
-        const docDefinition = {
-            styles: styles,
-            content: [
-                { text: 'Biosur ventanas PVC', style: 'title' },
-                //Info proyecto
-                'Proyecto: ' + proyectoActual.data.nombre,
-                'Cliente: ' + clienteActual.nombre,
-                'Fecha de inicio: ' + proyectoActual.data.fechaInicio,
-                'Fecha de termino: '+ proyectoActual.data.fechaTermino,
-                '\n',
-                //Info materiales proyecto
-                {
-                    style: 'tableExample',
-                    table: {
-                        body: [['Nombre del material', 'Cantidad']].concat(cuerpoTabla)
-                    }
-                }
-            ]
-        };
-
-        pdfMake.createPdf(docDefinition).download('Informe proyecto ' + proyectoActual.data.nombre);
-    }
-
     //Desactivar proyectos
     const delProyect = async (id) => {
         const response = await updateEstadoProyecto(id)
@@ -123,6 +78,18 @@ const Proyectos = () => {
 
     const router = useRouter()
 
+    function showEtapa(a){
+        var s = ""
+        if(a === 0){
+            s = "Inicio"
+        }else if(a === 1){
+            s = "Intermedio"    
+        }else if(a === 2){
+            s = "Final"    
+        }
+            return s
+    }
+
     const contentTable = () => {
         return (
             Array.isArray(proyecto) && proyecto.filter(proyecto => proyecto.estado !== 1).map((proyecto, index) => {
@@ -132,16 +99,18 @@ const Proyectos = () => {
                 <Tr border="2px" borderColor="black.200" key={index}>
                     <Td border="2px" borderColor="black.200">{proyecto.nombre}</Td>
                     <Td border="2px" borderColor="black.200">{clienteProyecto ? clienteProyecto.nombre : 'Cliente no encontrado'}</Td>
+                    <Td border="2px" borderColor="black.200">{showEtapa(proyecto.etapa)}</Td>
+                    <Td border="2px" borderColor="black.200">{proyecto.descripcion}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.fechaInicio}</Td>
                     <Td border="2px" borderColor="black.200" style={{visibility: proyecto.fechaTermino === "0" ? 'hidden' : 'visible'}}>{proyecto.fechaTermino}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.estado === 0 ? 'Activo' : proyecto.estado}</Td>
                     {userType != 1 ? (
                     <Td>
-                        <HStack>
-                            <Button colorScheme={"orange"} onClick={() => router.push(`./editarMateriales/${proyecto._id}`)}>Ver materiales</Button>
-                            <Button colorScheme={"green"} onClick={() => router.push(`./editar/${proyecto._id}`)}>Editar proyecto</Button>
-                            <Button colorScheme={"blue"} onClick={() => generatePDF(proyecto._id)}>Generar PDF</Button>
-                            <Button colorScheme={"red"} onClick={() => confirmDelete(proyecto._id)}>Deshabilitar proyecto</Button>
+                        <HStack spacing={2}>
+                            <Button style={{padding: '4px  8px' }} colorScheme={"orange"} onClick={() => router.push(`./editarMateriales/${proyecto._id}`)}>Ver materiales</Button>
+                            <Button style={{padding: '4px  8px' }} colorScheme={"green"} onClick={() => router.push(`./editar/${proyecto._id}`)}>Editar proyecto</Button>
+                            <Button style={{padding: '4px  8px' }} colorScheme={"yellow"} onClick={() => router.push(`./verDocs/${proyecto._id}`)}>Ver documentos</Button>
+                            <Button style={{padding: '4px  8px' }} colorScheme={"red"} onClick={() => confirmDelete(proyecto._id)}>Deshabilitar</Button>
                         </HStack>
                     </Td>
                     ) : null}
@@ -239,13 +208,14 @@ const Proyectos = () => {
                 ) : null}
                 <Button width='18%' ml='1' colorScheme='orange'  onClick={()=> router.push('./proyectoinactivos')}>Proyectos deshabilitados</Button>
             </Center>
-
             <Stack spacing={4} mt="10">
             <Table variant="simple" bg="white">
                 <Thead>
                 <Tr border="2px" borderColor="black.200">
                     <Td textAlign="center">Nombre del Proyecto</Td>
                     <Td textAlign="center">Cliente</Td>
+                    <Td textAlign="center">Etapa</Td>
+                    <Td textAlign="center">Descripción</Td>
                     <Td textAlign="center">Fecha de inicio</Td>
                     <Td textAlign="center">Fecha de término</Td>
                     <Td textAlign="center">Estado del proyecto</Td>

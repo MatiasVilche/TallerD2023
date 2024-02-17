@@ -1,6 +1,6 @@
 import {useState,useEffect} from 'react'
 import {useRouter} from 'next/router'
-import { Container, Heading,Stack, Button,Box,Select,FormLabel} from '@chakra-ui/react'
+import { Container, Heading,Stack, Button,Box,Select,FormLabel,FormControl,Textarea} from '@chakra-ui/react'
 import {getProyectoEspecifico,updateProyecto} from '../../../data/proyecto'
 import {getClientes} from '../../../data/cliente'
 import InputForm from '../../../components/InputForm'
@@ -86,7 +86,7 @@ const Editar = ({ data }) => {
     const delay = ms => new Promise(
         resolve => setTimeout(resolve, ms)
     );
-    
+
     return(
         <Box
     	    bgGradient="linear(to-r, #007bff, #8a2be2)"
@@ -116,6 +116,20 @@ const Editar = ({ data }) => {
             </Select>
             </FormLabel>
 
+            <FormLabel htmlFor="etapa">Etapa del proyecto
+            <Select placeholder="Seleccione la etapa" onChange={handleChange} name="etapa" value={proyecto.etapa}>
+                <option value="0">{"Inicio"}</option>
+                <option value="1">{"Intermedio"}</option>
+                <option value="2">{"Final"}</option>
+            </Select>
+            </FormLabel>
+
+            <FormControl>
+                    <FormLabel>{"Descripción"}
+                        <Textarea resize="vertical" maxH="8em" width="100%" backgroundColor='white' borderColor='black' color='black' name="descripcion" onChange={handleChange} maxLength={200} value={proyecto.descripcion}/>
+                    </FormLabel>
+            </FormControl>
+
             <InputFormDates label="Fecha de inicio" handleChange={handleChange} name="fechaInicio" type="date" value={proyecto.fechaInicio}/>
             <InputFormDates label="Fecha de término" handleChange={handleChange} name="fechaTermino" min={proyecto.fechaInicio} type="date" value={proyecto.fechaTermino}/>
 
@@ -124,7 +138,7 @@ const Editar = ({ data }) => {
             <Button colorScheme="red" ml="1"mt={10} mb={10} onClick={() => router.push('../proyecto')}>Cancelar</Button>
     </Container>
     </Box>
-    </Box>
+    </Box>  
     )
 }
 

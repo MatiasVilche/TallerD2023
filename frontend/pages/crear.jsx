@@ -116,7 +116,7 @@ const Usuarios = () => {
                 </FormControl> 
 
                 <FormControl id="descripcion">
-                    <FormLabel>Descripcion</FormLabel>
+                    <FormLabel>Descripción</FormLabel>
                     <Textarea backgroundColor= 'white' borderColor= 'black' color='black' resize="vertical" maxH="8em" maxLength={200} name={"descripcion"} placeholder="Marca ACME" type="text" onChange = {handleChange}/>
                 </FormControl> 
 

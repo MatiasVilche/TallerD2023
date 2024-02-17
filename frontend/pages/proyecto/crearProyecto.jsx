@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react'
-import { Button, Container, Heading, HStack, Stack, FormControl, FormLabel,Input,Select,Box} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, FormControl, FormLabel,Input,Select,Box,Textarea} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {createProyecto} from '../../data/proyecto'
 import { getClientes} from '../../data/cliente'
@@ -16,6 +16,7 @@ const Proyectos = () => {
             
         ],
         cliente:'',
+        descripcion:'',
         fechaInicio:'',
         fechaTermino:''
     })
@@ -44,7 +45,7 @@ const Proyectos = () => {
         }
 
             createProyecto(proyecto).then(res => {
-            console.log(res.data)
+            //console.log(res.data)
         })
 
         Swal.fire({
@@ -75,6 +76,7 @@ const Proyectos = () => {
         <Container maxW="container.xl" mt={10}>
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Ingrese los datos del proyecto a crear</Heading>
             <Stack spacing={4} mt={10}>
+
                 <FormControl id="nombre"> 
                     <FormLabel>Nombre</FormLabel>
                     <Input width="60%" backgroundColor= 'white' borderColor= 'black'color='black' pattern="[a-zA-Z]+" name={"nombre"} placeholder="Proyecto liceo AB12" type="text" onChange = {handleChange}/>
@@ -89,8 +91,12 @@ const Proyectos = () => {
                     </Select>
                 </FormControl>
 
+                <FormControl id="descripcion"> 
+                    <FormLabel>Descripción</FormLabel>
+                    <Textarea backgroundColor= 'white' borderColor= 'black' color='black' resize="vertical" maxH="8em" maxLength={200} name={"descripcion"} placeholder="Proyecto para X, ubicado en X." type="text" onChange = {handleChange}/>
+                </FormControl>
 
-                <FormControl id="cliente"> 
+                <FormControl id="fechaInicio"> 
                     <FormLabel>Fecha de inicio</FormLabel>
                     <input type="date" name="fechaInicio"  onChange = {handleChange}/>
                 </FormControl>

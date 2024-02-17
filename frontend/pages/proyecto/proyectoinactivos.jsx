@@ -8,13 +8,6 @@ import { getClientes} from '../../data/cliente'
 import Sidebar from '../../components/Sidebar2';
 import  Swal  from 'sweetalert2'
 
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
-import Image from 'next/image'
-import Logo from '../../public/logoBiosur.png'
-
 const Proyectos = () => {
 
     const [userType, setUserType] = useState("")
@@ -52,43 +45,6 @@ const Proyectos = () => {
         }
     };
 
-    const generatePDF = async (proyecto) => {
-
-        let proyectoActual = await getProyectoEspecifico(proyecto)
-
-        let materialesParaPDF = proyectoActual.data.materiales.map((material, index) => {
-            return { nombre: material.nombre, cantidad: material.cantidad };
-        });
-
-        let cuerpoTabla = materialesParaPDF.map(material => {
-            return [material.nombre, material.cantidad];
-        });
-
-        let clienteActual = clientes.find(cliente => cliente._id === proyectoActual.data.cliente);
-
-        const docDefinition = {
-            styles: styles,
-            content: [
-                { text: 'Biosur ventanas PVC', style: 'title' },
-                //Info proyecto
-                'Proyecto: ' + proyectoActual.data.nombre,
-                'Cliente: ' + clienteActual.nombre,
-                'Fecha de inicio: ' + proyectoActual.data.fechaInicio,
-                'Fecha de termino: '+ proyectoActual.data.fechaTermino,
-                '\n',
-                //Info materiales proyecto
-                {
-                    style: 'tableExample',
-                    table: {
-                        body: [['Nombre del material', 'Cantidad']].concat(cuerpoTabla)
-                    }
-                }
-            ]
-        };
-
-        pdfMake.createPdf(docDefinition).download('Informe proyecto ' + proyectoActual.data.nombre);
-    }
-
     //Desactivar proyectos
     const delProyect = async (id) => {
         const response = await updateEstadoProyecto2(id)
@@ -120,6 +76,17 @@ const Proyectos = () => {
         )
     }
     
+    function showEtapa(a){
+        var s = ""
+        if(a === 0){
+            s = "Inicio"
+        }else if(a === 1){
+            s = "Intermedio"    
+        }else if(a === 2){
+            s = "Final"    
+        }
+            return s
+    }
 
     const router = useRouter()
 
@@ -132,15 +99,14 @@ const Proyectos = () => {
                 <Tr border="2px" borderColor="black.200" key={index}>
                     <Td border="2px" borderColor="black.200">{proyecto.nombre}</Td>
                     <Td border="2px" borderColor="black.200">{clienteProyecto ? clienteProyecto.nombre : 'Cliente no encontrado'}</Td>
+                    <Td border="2px" borderColor="black.200">{showEtapa(proyecto.etapa)}</Td>
+                    <Td border="2px" borderColor="black.200">{proyecto.descripcion}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.fechaInicio}</Td>
                     <Td border="2px" borderColor="black.200" style={{visibility: proyecto.fechaTermino === "0" ? 'hidden' : 'visible'}}>{proyecto.fechaTermino}</Td>
                     <Td>
                         <HStack justifyContent="center">
                             {userType != 1 ? (
                             <Button colorScheme={"green"} onClick={() => confirmDelete(proyecto._id)}>Habilitar proyecto</Button>
-                            ) : null}
-                            {userType != 1 ? (
-                            <Button colorScheme={"blue"} onClick={() => generatePDF(proyecto._id)}>Generar PDF</Button>
                             ) : null}
                         </HStack>
                     </Td>
@@ -247,6 +213,8 @@ const Proyectos = () => {
                 <Tr border="2px" borderColor="black.200">
                     <Td textAlign="center">Nombre del Proyecto</Td>
                     <Td textAlign="center">Cliente</Td>
+                    <Td textAlign="center">Etapa</Td>
+                    <Td textAlign="center">Descripción</Td>
                     <Td textAlign="center">Fecha de inicio</Td>
                     <Td textAlign="center">Fecha de término</Td>
                     <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>

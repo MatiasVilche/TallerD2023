@@ -134,7 +134,7 @@ const Editar = ({ data }) => {
                     </FormLabel>
                 </FormControl>
                 <FormControl>
-                    <FormLabel>{"Descripcion"}
+                    <FormLabel>{"Descripción"}
                         <Textarea resize="vertical" maxH="8em" width="100%" backgroundColor='white' borderColor='black' color='black' name="descripcion" onChange={handleChange} maxLength={200} value={material.descripcion}/>
                     </FormLabel>
                 </FormControl>

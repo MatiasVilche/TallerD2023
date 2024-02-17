@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, Heading, Input, Stack, FormControl, FormLabel, useToast, Box ,Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { login, isAdmin, getUsuario } from '../data/usuarios'
+import { login, isAdmin, getUsuario,updateUsuario} from '../data/usuarios'
 import { format } from 'rut.js'
 import Image from 'next/image'
 import Logo from '../public/logoBiosur.png'
@@ -160,12 +160,8 @@ const Index = () => {
 
 		let rutF = format(rutRecover);
 		const response = await login(rutF);
-		
-
 		const usrType = await isAdmin(rutF);
 		const usrState = await getUsuario(usrType.data.userId);
-
-		console.log(usrState);
 
 		if (response.data.success === true && response.data.message === "Inicio exitoso") {
 			toast({
@@ -193,6 +189,11 @@ const Index = () => {
 			password: generarContraseñaAleatoria()
 		};
 
+		const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(msg.password, salt);
+		usrState.password = hashedPassword
+
+		updateUsuario(usrState.data._id,usrState)
     	sendEmailPassword(msg)
 	};
 
