@@ -56,6 +56,10 @@ const Editar = ({ data }) => {
             alert('Por favor, selecciona un cliente antes de actualizar el proyecto.');
             return;
         }
+        if (!proyecto.etapa) {
+            alert('Por favor, selecciona la etapa en la cual se encuentra el proyecto.');
+            return;
+        }
 
         let timerInterval
 
@@ -134,7 +138,7 @@ const Editar = ({ data }) => {
             <InputFormDates label="Fecha de término" handleChange={handleChange} name="fechaTermino" min={proyecto.fechaInicio} type="date" value={proyecto.fechaTermino}/>
 
         </Stack>
-            <Button colorScheme="green" mt={10} mb={10} onClick={submitProyecto}>Modificar Proyecto</Button>
+            <Button colorScheme="green" mt={10} mb={10} onClick={submitProyecto}>Modificar proyecto</Button>
             <Button colorScheme="red" ml="1"mt={10} mb={10} onClick={() => router.push('../proyecto')}>Cancelar</Button>
     </Container>
     </Box>
@@ -143,4 +147,3 @@ const Editar = ({ data }) => {
 }
 
 export default Editar
-

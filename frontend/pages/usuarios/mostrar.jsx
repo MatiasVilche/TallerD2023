@@ -39,7 +39,7 @@ const Mostrar = () => {
     const confirmDelete = async (id,tipo) => {
 
         Swal.fire({
-            title: 'Esta seguro que quiere desvincular este usuario?',
+            title: 'Está seguro que quiere desvincular este usuario?',
             showDenyButton: true,
             //showCancelButton: true,
             confirmButtonText: 'Si',
@@ -147,7 +147,7 @@ const Mostrar = () => {
                 <Center display="flex" marginTop="20px">
                     {userType != 1 ? (
                     <>
-                        <Button colorScheme='green' ml='70%' width='15%'onClick={()=> router.push('./crear')}>Crear Usuario</Button>
+                        <Button colorScheme='green' ml='70%' width='15%'onClick={()=> router.push('./crear')}>Crear usuario</Button>
                         <Button colorScheme='blue' ml='1' width='15%'onClick={()=> router.push('./mostrarUinactivos')}>Usuarios desvinculados</Button>
                     </>
                     ) : null}
@@ -160,7 +160,7 @@ const Mostrar = () => {
                                 <Td textAlign="center">Nombre</Td>
                                 <Td textAlign="center">RUT</Td>
                                 <Td textAlign="center">Email</Td>
-                                <Td textAlign="center">Numero</Td>
+                                <Td textAlign="center">Número</Td>
                                 <Td textAlign="center">Tipo de usuario</Td>
                                 <Td textAlign="center" borderRight="2px" borderColor="black.200">Estado</Td>
                                 {userType != 1 ? (

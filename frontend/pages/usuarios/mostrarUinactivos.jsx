@@ -109,7 +109,7 @@ const Mostrar = () => {
                 <Heading visibility="hidden">a</Heading>
                 <Heading as="h1" size="2xl" textAlign="center">Usuarios desvinculados</Heading>
                 <Flex mt="3%"> 
-                    <Button colorScheme='red' onClick={()=> router.push('./mostrar')}>Atras</Button>
+                    <Button colorScheme='red' onClick={()=> router.push('./mostrar')}>Atrás</Button>
                 </Flex>
 
                 <Stack spacing={4} mt="10">
@@ -119,9 +119,9 @@ const Mostrar = () => {
                                 <Td textAlign="center">Nombre</Td>
                                 <Td textAlign="center">RUT</Td>
                                 <Td textAlign="center">Email</Td>
-                                <Td textAlign="center">Numero</Td>
+                                <Td textAlign="center">Número</Td>
                                 <Td textAlign="center" borderRight="2px" borderColor="black.200">Tipo de usuario</Td>
-                                <Td textAlign="center">Acciones</Td>
+                                <Td textAlign="center">Acciones</Td>    
                             </Tr>
                         </Thead>
                         <Tbody>

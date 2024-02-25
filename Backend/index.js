@@ -25,7 +25,14 @@ const fileRoutes = require('./routes/fileRoutes');
 const pdfRoutes = require('./routes/pdfRoute');
 
 const app = express();
-app.use(cors());
+
+// Configuración de CORS para permitir solicitudes desde el IP de .env
+const corsOptions = {
+    origin: process.env.FRONTEND,
+    credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.options('*', cors());

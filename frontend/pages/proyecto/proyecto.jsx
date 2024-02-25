@@ -62,7 +62,7 @@ const Proyectos = () => {
             }).then((result) => {
 
             if (result.isDenied) {
-                Swal.fire({title: 'No se deshabilito el proyecto',confirmButtonColor:'blue'})
+                Swal.fire({title: 'No se deshabilitó el proyecto',confirmButtonColor:'blue'})
             }else if (result.isConfirmed) {
                 delProyect(id)
                 Swal.fire({

@@ -1,55 +1,75 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
+const getToken = () => {
+    return Cookies.get('tokenAuth'); // Utiliza Cookies.get en lugar de localStorage.getItem
+}
 
 const login =  (rut) => {
-    const response =  axios.post(`${process.env.SERVIDOR}/usuario/usr/login/`, { rut });
+    const response =  axios.post(`${process.env.SERVIDOR}/usuario/usr/login/`, { rut },{ withCredentials: true });
     return response
 }
 
 const getUsuarios = async () => {
-    const response = await axios.get(`${process.env.SERVIDOR}/Usuario`)
+    const token = getToken();
+    const response = await axios.get(`${process.env.SERVIDOR}/Usuario`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
     return response
     
 }
 
 const isAdmin = async (rut) => {
-    //let rut = localStorage.getItem("token")
     const response = await axios.get(`${process.env.SERVIDOR}/Usuario/query/${rut}`)
     return response
 }
 
 
 const getUsuario = async (id) => {
-    //console.log(id)
-    const response = await axios.get(`${process.env.SERVIDOR}/Usuario/search/${id}`)
-    return response
+    const token = getToken();
+    const response = await axios.get(`${process.env.SERVIDOR}/Usuario/search/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response;
 }
 
 const createUsuario = (Usuario) => {
-    //console.log(Usuario)
-    const response = axios.post(`${process.env.SERVIDOR}/Usuario/`,Usuario);
-    return response 
+    const token = getToken();
+    const response = axios.post(`${process.env.SERVIDOR}/Usuario/`, Usuario, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response;
 }
 
-
-const deleteUsuario = (id,x) => {
-    const response = axios.delete(`${process.env.SERVIDOR}/Usuario/${id}/1`)
-    return response
+const deleteUsuario = (id) => {
+    const token = getToken();
+    const response = axios.delete(`${process.env.SERVIDOR}/Usuario/${id}/1`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response;
 }
 
 const updateUsuario = (id, usuario) => {
-    const response = axios.put(`${process.env.SERVIDOR}/Usuario//update/${id}/1`,usuario)
-    return response
+    const response = axios.put(`${process.env.SERVIDOR}/Usuario/update/${id}/1`, usuario)
+    return response;
 }
 
 const updateEstadoUsuario = (id) => {
-    const response = axios.put(`${process.env.SERVIDOR}/Usuario/updateEstado/${id}`)
-    return response
+    const token = getToken();
+    const response = axios.put(`${process.env.SERVIDOR}/Usuario/updateEstado/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response;
 }
 
 const updateEstadoUsuario2 = (id) => {
-    const response = axios.put(`${process.env.SERVIDOR}/Usuario/updateEstadoRetorno/${id}`)
-    return response
+    const token = getToken();
+    const response = axios.put(`${process.env.SERVIDOR}/Usuario/updateEstadoRetorno/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response;
 }
+
 
 module.exports = {
     login,

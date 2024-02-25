@@ -163,7 +163,7 @@ const Mostrar = () => {
         if(a === 0){
             s = "Venta"
         }else if(a === 1){
-            s = "Prestamo"    
+            s = "Préstamo"    
         }else if(a === 2){
             s = "Fabricación"    
         }
@@ -191,14 +191,13 @@ const Mostrar = () => {
                             </Button>
                         </Center>
                 </VStack>
-
                 <Stack spacing={4} mt="10">
                     <Table variant="simple" bg="white">
                         <Thead>
                             <Tr border="2px" borderColor="black.200">
                                 <Td textAlign="center">Nombre del trabajador</Td>
                                 <Td textAlign="center">Nombre del producto</Td>
-                                <Td textAlign="center">Razon</Td>
+                                <Td textAlign="center">Razón</Td>
                                 <Td textAlign="center">Proyecto</Td>
                                 <Td textAlign="center">Descripción</Td>
                                 <Td textAlign="center">Cantidad</Td>

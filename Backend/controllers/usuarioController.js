@@ -1,4 +1,6 @@
 const Usuario = require('../models/Usuario')
+const jwt = require('jsonwebtoken');
+
 
 // CREACION DE NUEVO USUARIO
 const createUsuario = async (req, res) => {
@@ -85,18 +87,34 @@ const getCurrentAdmin = (req, res) => {
 	})
 }
 
-const login = (req, res) => {
-	
-	Usuario.findOne({rut: req.body.rut}, (err, result) => {
-		if (err) return res.status(200).send({success: false, message: "Ocurrio un error"})
-		
-		if(result) {
-			return res.status(200).send({success: true, message: "Inicio exitoso"})
-		} else {
-			return res.status(200).send({success: false, message: "Usuario no encontrado"});
-		}
-	})
-}
+
+
+const login = async (req, res) => {
+    const { rut } = req.body;
+
+    try {
+        const usuario = await Usuario.findOne({ rut });
+        if (!usuario) {
+            return res.status(400).send({ success: false, message: "Usuario no encontrado" });
+        }
+        // Generar y enviar el token
+        const token = jwt.sign({usuario}, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+		// Establecer el encabezado de autorización
+		res.header('Authorization')
+		//res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		//res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		// Establecer la cookie
+		res.cookie("tokenAuth", token, {
+			sameSite: 'none',
+			secure:true
+		});
+
+		res.send({ success: true, message: "Inicio exitoso", token });
+    } catch (error) {
+        res.status(500).send({ success: false, message: "Ocurrió un error" });
+    }
+};
 
 const isAdmin = (req, res) => {
 	let reqRut = req.params.id

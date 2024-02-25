@@ -152,10 +152,10 @@ const Editar = ({ data }) => {
                         <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={rutF} onChange = {handleChangeRut}/>
                         {!validate(rutF) ? (
                         <FormHelperText>
-                            Rut Invalido
+                            Rut Inválido
                         </FormHelperText>
                             ) : 
-                        <FormErrorMessage>El rut es obligatorio</FormErrorMessage>
+                        <FormErrorMessage>El RUT es obligatorio</FormErrorMessage>
                         }
                     </FormControl>
 

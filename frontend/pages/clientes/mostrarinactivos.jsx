@@ -32,7 +32,7 @@ const Mostrar = () => {
     const confirmDelete = async (id) => {
 
         Swal.fire({
-            title: 'Esta seguro que quiere habilitar este cliente?',
+            title: 'Está seguro que quiere habilitar este cliente?',
             showDenyButton: true,
             //showCancelButton: true,
             confirmButtonText: 'Si',
@@ -43,18 +43,25 @@ const Mostrar = () => {
 
             if (result.isDenied) {
                 Swal.fire({
-                    title:'No se habilito el cliente',
+                    title:'No se habilitó el cliente',
                     confirmButtonColor: 'red'
                 })
                 return
             } else if (result.isConfirmed) {
                     modEstado(id)
                     Swal.fire({
-                        title:'Cliente habilitado', 
-                        showConfirmButton: true
+                        title: 'Cliente habilitado',
+                        showConfirmButton: true,
+                        confirmButtonColor: 'blue',
+                        backdrop: true
                     }).then((result) => {
-                        if (result.isConfirmed)
-                        router.reload()})         
+                        if (result.isDismissed && result.dismiss === Swal.DismissReason.backdrop) {
+                            router.reload();
+                        }
+                        else if (result.isConfirmed) {
+                            router.reload();
+                        }
+                    })
             } 
             }
         )
@@ -100,8 +107,8 @@ const Mostrar = () => {
                         <Thead>
                             <Tr border="2px" borderColor="black.200">
                                 <Td textAlign="center">Nombre</Td>
-                                <Td textAlign="center">Numero</Td>
-                                <Td textAlign="center">E-mail</Td>
+                                <Td textAlign="center">Número</Td>
+                                <Td textAlign="center">Email</Td>
                                 {userType != 1 ? (
                                 <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
                                 ) : null}

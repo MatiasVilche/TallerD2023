@@ -66,7 +66,7 @@ const Usuarios = () => {
             alert("El nombre no es valido")
             return false;
         }else if(!expresionMail.test(email)){
-            alert("El correo electrinico ingresado no es valido")
+            alert("El correo electrónico ingresado no es valido")
             return false;
         }else if(!expresionTelefono.test(numero)){
             alert("El número de teléfono ingresado no es valido")

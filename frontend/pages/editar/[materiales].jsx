@@ -127,7 +127,7 @@ const Editar = ({ data }) => {
             <Container maxW="container.xl" mt={10}>
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>{data.nombre}</Heading>
             <Stack spacing={4} mt={10}>
-                <InputForm width="35%" backgroundColor= 'white' borderColor= 'black'color='black' label="Codigo" handleChange={handleChange} name="codigo" type="text" maxLength={12} value={material.codigo}/>
+                <InputForm width="35%" backgroundColor= 'white' borderColor= 'black'color='black' label="Código" handleChange={handleChange} name="codigo" type="text" maxLength={12} value={material.codigo}/>
                 <FormControl>
                     <FormLabel>{"Nombre"}
                         <Textarea resize="vertical" maxH="8em" width="100%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" type="text" maxLength={120} value={material.nombre}/>
@@ -140,7 +140,7 @@ const Editar = ({ data }) => {
                 </FormControl>
                 <InputForm width="25%" backgroundColor= 'white' borderColor= 'black'color='black' label="Cantidad" handleChange={handleChange} name="cantidad" type="text" value={material.cantidad}/>
             </Stack>
-                <Button colorScheme="green" mt={10} mb={10} mr="1%" onClick={submitMaterial}>Modificar Material</Button>
+                <Button colorScheme="green" mt={10} mb={10} mr="1%" onClick={submitMaterial}>Modificar material</Button>
                 <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../mostrar')}>Cancelar</Button>
             </Container>
             </Box>

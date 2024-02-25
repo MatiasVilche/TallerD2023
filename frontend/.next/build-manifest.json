@@ -25,10 +25,25 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/proyecto/crearProyecto": [
+    "/proyecto/editar/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/proyecto/crearProyecto.js"
+      "static/chunks/pages/proyecto/editar/[id].js"
+    ],
+    "/proyecto/proyecto": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/proyecto/proyecto.js"
+    ],
+    "/proyecto/proyectoinactivos": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/proyecto/proyectoinactivos.js"
+    ],
+    "/proyecto/verDocs/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/proyecto/verDocs/[id].js"
     ]
   },
   "ampFirstPages": []

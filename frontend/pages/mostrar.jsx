@@ -311,8 +311,8 @@ const Mostrar = () => {
                 <FormLabel htmlFor="tipoRetiro">Tipo de retiro</FormLabel>
                 <Select id="tipoRetiro" placeholder="Seleccionar" value={formData.tipo} onChange={(e) => {setFormData({ ...formData, tipo: e.target.value }); setShowAdditionalField(e.target.value === "2");}}>
                     <option value="0">Venta</option>
-                    <option value="1">Prestamo</option>
-                    <option value="2">Fabricacion</option>
+                    <option value="1">Préstamo</option>
+                    <option value="2">Fabricación</option>
                 </Select>
             </FormControl>
             {showAdditionalField && (
@@ -362,25 +362,27 @@ const Mostrar = () => {
                 <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
                     <option value="default">Seleccione un filtro</option>
                     <option value="names">Filtrar por nombre</option>
-                    <option value="code">Filtrar por codigo</option>
+                    <option value="code">Filtrar por código</option>
                 </Select>
-
                 <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='' size='lg' onChange={(e) => filterFunction(e)}/>
+
                 {userType != 1 ? (
                     <>
-                    <Button marginLeft='auto' ml='1' colorScheme='orange' width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
-                    <Button marginLeft='auto' ml='1' colorScheme='blue' width='15%' className="sidebar-button"onClick={()=> router.push('./matInactivos')}>Materiales inactivos</Button>
+                    <Button ml='1' colorScheme='orange' width='15%' className="sidebar-button"onClick={()=> router.push('./crear')}>Agregar un material</Button>
+                    <Button ml='1' colorScheme='blue' width='15%' className="sidebar-button"onClick={()=> router.push('./matInactivos')}>Materiales inactivos</Button>
                     </>
-                ) : null}
+                ) : (
+                    <div style={{ width: '30%', visibility: 'hidden' }}></div>
+                )}
                 </Center>
                 
                 <Stack spacing={4} mt="10">
                     <Table variant="simple" bg="white">
                         <Thead>
                             <Tr border="2px" borderColor="black.200">
-                                <Td textAlign="center">Codigo</Td>
+                                <Td textAlign="center">Código</Td>
                                 <Td textAlign="center">Nombre del producto</Td>
-                                <Td textAlign="center">Descripcion</Td>
+                                <Td textAlign="center">Descripción</Td>
                                 <Td textAlign="center">Cantidad</Td>
                                 {userType != 1 ? (
                                 <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>

@@ -106,7 +106,7 @@ const Usuarios = () => {
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Ingrese los datos del material a ingresar</Heading>
             <Stack spacing={4} mt={10}>
                 <FormControl id="codigo"> 
-                    <FormLabel>Codigo</FormLabel>
+                    <FormLabel>Código</FormLabel>
                     <Input width="35%" backgroundColor= 'white' borderColor= 'black'color='black' name="codigo" placeholder="1234" type="text" maxLength={12} onChange = {handleChange}/>
                 </FormControl> 
 

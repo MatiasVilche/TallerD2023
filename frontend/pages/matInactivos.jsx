@@ -132,13 +132,13 @@ const Mostrar = () => {
             <Container  maxW="container.xl">
                 <Heading visibility="hidden">a</Heading>
                 <Heading as="h1" size="2xl" textAlign="center">Lista de materiales inactivos</Heading>
-                <Button mt="5%" colorScheme='red'  onClick={()=> router.push('./mostrar')}>Atras</Button>
+                <Button mt="5%" colorScheme='red'  onClick={()=> router.push('./mostrar')}>Atrás</Button>
                 <VStack spacing={4} align='stretch'>
                         <Center>
                         <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
                                 <option value="default">Seleccione un filtro</option>
                                 <option value="names">Filtrar por nombre</option>
-                                <option value="code">Filtrar por codigo</option>
+                                <option value="code">Filtrar por código</option>
                         </Select>
                         <Input border="2px" borderColor="black.200" backgroundColor= 'white' width='50%' textAlign="center" placeholder='' size='lg' onChange={(e) => filterFunction(e)}/>
                         </Center>
@@ -148,9 +148,9 @@ const Mostrar = () => {
                     <Table variant="simple" bg="white">
                         <Thead>
                             <Tr border="2px" borderColor="black.200">
-                                <Td textAlign="center">Codigo</Td>
+                                <Td textAlign="center">Código</Td>
                                 <Td textAlign="center">Nombre del producto</Td>
-                                <Td textAlign="center">Descripcion</Td>
+                                <Td textAlign="center">Descripción</Td>
                                 <Td textAlign="center">Cantidad</Td>
                                 <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
                             </Tr>

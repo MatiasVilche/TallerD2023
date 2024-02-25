@@ -10,14 +10,14 @@ const Clientes = () => {
         nombre:'',
         numero:'',
         email:'',
-        estadoCliente:''
+        estadoCliente:'0'
     })
 
     const router = useRouter()
 
     function validar(){
 
-        var nombre,numero,email;
+        var nombre,numero,email,estadoCliente;
 
         nombre = document.getElementById("nombre").value;
         console.log(nombre)
@@ -26,6 +26,8 @@ const Clientes = () => {
         console.log(numero)
 
         email = document.getElementById("email").value;
+
+        estadoCliente=0
 
         const expresionNombre = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
         const expresionTelefono = /^\d{9}$/;

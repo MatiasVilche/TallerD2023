@@ -104,10 +104,10 @@ const Editar = ({ data }) => {
             <Container maxW="container.xl">
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar contraseña: {data.nombre}</Heading>
             <Stack spacing={4} mt={10}>
-                <InputForm width="40%" backgroundColor= 'white' borderColor= 'black'color='black' label="Contreseña" handleChange={handleChangePassword} name="password" placeholder="Actualizar contraseña" type="text" value={password.password}/>
+                <InputForm width="40%" backgroundColor= 'white' borderColor= 'black'color='black' label="Contraseña" handleChange={handleChangePassword} name="password" placeholder="Actualizar contraseña" type="text" value={password.password}/>
                 </Stack>
                 <HStack>
-                    <Button colorScheme="green" mt={10} mb={10} onClick={submitUsuario}>Modificar Usuario</Button>
+                    <Button colorScheme="green" mt={10} mb={10} onClick={submitUsuario}>Modificar contraseña</Button>
                     <Button colorScheme="red" mt={10} mb={10} onClick={() => router.push('../mostrar')}>Cancelar</Button>
                 </HStack>
         </Container>

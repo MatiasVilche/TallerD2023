@@ -95,7 +95,7 @@ const EditarMateriales = ({ data }) => {
         <Container maxW="container.xl" mt={10}>
             <Heading as="h1" size="2xl" textAlign="center" mt="10">Materiales proyecto: {data.nombre}</Heading>
             <Flex mt="3%"> 
-                <Button colorScheme="red" onClick={()=> router.push('../proyecto')}>Atras</Button>
+                <Button colorScheme="red" onClick={()=> router.push('../proyecto')}>Atrás</Button>
             </Flex>
         <Stack spacing={4} mt={10}>
         <Table variant="simple">

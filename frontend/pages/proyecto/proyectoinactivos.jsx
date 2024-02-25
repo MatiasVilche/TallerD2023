@@ -103,6 +103,7 @@ const Proyectos = () => {
                     <Td border="2px" borderColor="black.200">{proyecto.descripcion}</Td>
                     <Td border="2px" borderColor="black.200">{proyecto.fechaInicio}</Td>
                     <Td border="2px" borderColor="black.200" style={{visibility: proyecto.fechaTermino === "0" ? 'hidden' : 'visible'}}>{proyecto.fechaTermino}</Td>
+                    {userType != 1 ? (
                     <Td>
                         <HStack justifyContent="center">
                             {userType != 1 ? (
@@ -110,7 +111,7 @@ const Proyectos = () => {
                             ) : null}
                         </HStack>
                     </Td>
-                    
+                    ) : null}
                     </Tr>
                 )
             })
@@ -194,7 +195,7 @@ const Proyectos = () => {
                 Proyectos deshabilitados
             </Heading>
             <Flex mt="3%"> 
-                    <Button colorScheme='red' onClick={()=> router.push('./proyecto')}>Atras</Button>
+                    <Button colorScheme='red' onClick={()=> router.push('./proyecto')}>Atrás</Button>
             </Flex>
             <VStack spacing={4} align='stretch'>
                 <Center mt="2%">
@@ -217,7 +218,9 @@ const Proyectos = () => {
                     <Td textAlign="center">Descripción</Td>
                     <Td textAlign="center">Fecha de inicio</Td>
                     <Td textAlign="center">Fecha de término</Td>
-                    <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
+                    {userType != 1 ? (
+                                <Td textAlign="center" border="2px" borderColor="black.200">Acciones</Td>
+                    ) : null}
                 </Tr>
                 </Thead>
                 <Tbody>

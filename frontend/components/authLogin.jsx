@@ -1,43 +1,34 @@
-import { Box } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+// components/authLogin.js
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-export default function HomePage() {
-    const router = useRouter();
-    const [loading, setLoading] = useState(false);
+const Auth = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const hasToken = document.cookie.includes('token=');
+  useEffect(() => {
+    const hasToken = document.cookie.includes('token=');
 
-        if (!hasToken && router.pathname !== '/') {
-                setLoading(true);
+    if (!hasToken && router.pathname !== '/') {
+      setLoading(true);
 
-                setTimeout(() => {
-                    router.push('/');
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 10);
-                }, 100);
+      setTimeout(() => {
+        router.push('/');
+        setTimeout(() => {
+          setLoading(false);
+        },  10);
+      },  100);
+    } else if (router.pathname === '/') {
+      setLoading(false);
+    }
+  }, [router]);
 
-        } else if (router.pathname === '/') {
-            setLoading(false);
-        }
-    }, []);
+  // Renderiza un indicador de carga si es necesario
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
 
-    return (
-    <>
-    {loading &&(
-        <Box 
-        position="absolute" 
-        top={0} 
-        left={0} 
-        right={0} 
-        bottom={0} 
-        zIndex={9999} 
-        bgGradient="linear(to-r, #007bff, #8a2be2)" 
-        minH="100vh"
-        />
-        )}
-    </>
-    );
-}
+  return null; // No renderiza nada si no hay carga
+};
+
+export default Auth;
