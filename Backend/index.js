@@ -27,12 +27,12 @@ const pdfRoutes = require('./routes/pdfRoute');
 const app = express();
 
 // Configuración de CORS para permitir solicitudes desde el IP de .env
-const corsOptions = {
-    origin: process.env.FRONTEND,
-    credentials: true
-};
+//const corsOptions = {
+//    origin: process.env.FRONTEND,
+//    credentials: true
+//};
 
-app.use(cors(corsOptions));
+app.use(cors('*'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.options('*', cors());

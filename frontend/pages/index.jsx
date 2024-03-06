@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Heading, Input, Stack, FormControl, FormLabel, useToast, Box ,Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { login, isAdmin, getUsuario,updateUsuario} from '../data/usuarios'
-import { format } from 'rut.js'
+import { format,validate} from 'rut.js'
 import Image from 'next/image'
 import Logo from '../public/logoBiosur.png'
 import bcrypt from 'bcryptjs'
@@ -60,11 +60,21 @@ const Index = () => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		let rutF = format(rut);
-	
+
+		if (!validate(rutF)) {
+			alert('El RUT ingresado no es válido. Por favor, ingrese su RUT nuevamente.');
+			return;
+		}
+
+		const usrType = await isAdmin(rutF);
+		if (usrType.data.message === "El RUT ingresado no existe en el sistema.") {
+    		alert('El RUT ingresado no está registrado, inténtelo nuevamente.');
+    		return;
+		}
+
 		const response = await login(rutF);
 
 		if (response.data.success === true && response.data.message === "Inicio exitoso") {
-			const usrType = await isAdmin(rutF);
 			const usrState = await getUsuario(usrType.data.userId);
 
 			bcrypt.compare(password, usrState.data.password, (err, response) =>{
@@ -79,7 +89,13 @@ const Index = () => {
 				}
 				if(response === true){
 					if(usrState.data.estadoUsuario === 0){
-						Cookies.set('token', usrState.data.userId);
+						//El token expira 1 hora despues de su creacion
+						const expirationDate = new Date();
+						expirationDate.setHours(expirationDate.getHours() + 1);
+						//Se setea la cookie para la permanencia de sesion
+						Cookies.set('token', usrState.data.userId, { expires: expirationDate });
+
+						//Datos para usuario actualmente logeado
 						localStorage.setItem('token', usrState.data.userId);
 						localStorage.setItem('userType', usrState.data.tipoUsuario);
 						localStorage.setItem('nombreUsuario', usrState.data.nombre);
@@ -159,8 +175,20 @@ const Index = () => {
 	const onSubmitRecover = async (e) => {
 
 		let rutF = format(rutRecover);
-		const response = await login(rutF);
+
+		// Validar el RUT
+		if (!validate(rutF)) {
+			alert('El RUT ingresado no es válido. Por favor, ingrese su RUT nuevamente.');
+			return;
+		}
+
 		const usrType = await isAdmin(rutF);
+		if (usrType.data.message === "El RUT ingresado no existe en el sistema.") {
+    		alert('El RUT ingresado no está registrado, inténtelo nuevamente.');
+    		return;
+		}
+
+		const response = await login(rutF);
 		const usrState = await getUsuario(usrType.data.userId);
 
 		if (response.data.success === true && response.data.message === "Inicio exitoso") {

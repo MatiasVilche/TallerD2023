@@ -11,6 +11,9 @@ import { useState,useEffect} from 'react'
 import axios from 'axios';
 import Sidebar from '../components/Sidebar2';
 
+import Image from 'next/image'
+import Logo from '../public/logoBiosur_ST.png'
+
 const Mostrar = () => {
 
     const [userType, setUserType] = useState("")
@@ -353,6 +356,18 @@ const Mostrar = () => {
     return (
         <>
         <Sidebar/>
+        <Image
+            src={Logo}
+            alt='logo'
+            width={182}
+            height={70}
+            style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                zIndex: 1000
+            }}
+        />
         <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
             <Container  maxW="container.xl">
                 <Heading visibility="hidden">a</Heading>

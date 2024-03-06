@@ -6,15 +6,12 @@ const getToken = () => {
 }
 
 const login =  (rut) => {
-    const response =  axios.post(`${process.env.SERVIDOR}/usuario/usr/login/`, { rut },{ withCredentials: true });
+    const response =  axios.post(`${process.env.SERVIDOR}/usuario/usr/login/`, { rut });
     return response
 }
 
 const getUsuarios = async () => {
-    const token = getToken();
-    const response = await axios.get(`${process.env.SERVIDOR}/Usuario`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await axios.get(`${process.env.SERVIDOR}/Usuario`);
     return response
     
 }
@@ -26,26 +23,17 @@ const isAdmin = async (rut) => {
 
 
 const getUsuario = async (id) => {
-    const token = getToken();
-    const response = await axios.get(`${process.env.SERVIDOR}/Usuario/search/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await axios.get(`${process.env.SERVIDOR}/Usuario/search/${id}`);
     return response;
 }
 
 const createUsuario = (Usuario) => {
-    const token = getToken();
-    const response = axios.post(`${process.env.SERVIDOR}/Usuario/`, Usuario, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = axios.post(`${process.env.SERVIDOR}/Usuario/`, Usuario);
     return response;
 }
 
 const deleteUsuario = (id) => {
-    const token = getToken();
-    const response = axios.delete(`${process.env.SERVIDOR}/Usuario/${id}/1`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = axios.delete(`${process.env.SERVIDOR}/Usuario/${id}/1`);
     return response;
 }
 
@@ -55,18 +43,14 @@ const updateUsuario = (id, usuario) => {
 }
 
 const updateEstadoUsuario = (id) => {
-    const token = getToken();
-    const response = axios.put(`${process.env.SERVIDOR}/Usuario/updateEstado/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+    
+    const response = axios.put(`${process.env.SERVIDOR}/Usuario/updateEstado/${id}`);
     return response;
 }
 
 const updateEstadoUsuario2 = (id) => {
-    const token = getToken();
-    const response = axios.put(`${process.env.SERVIDOR}/Usuario/updateEstadoRetorno/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+    
+    const response = axios.put(`${process.env.SERVIDOR}/Usuario/updateEstadoRetorno/${id}`);
     return response;
 }
 

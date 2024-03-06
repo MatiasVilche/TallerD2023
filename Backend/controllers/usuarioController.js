@@ -87,8 +87,6 @@ const getCurrentAdmin = (req, res) => {
 	})
 }
 
-
-
 const login = async (req, res) => {
     const { rut } = req.body;
 
@@ -97,6 +95,7 @@ const login = async (req, res) => {
         if (!usuario) {
             return res.status(400).send({ success: false, message: "Usuario no encontrado" });
         }
+		/*
         // Generar y enviar el token
         const token = jwt.sign({usuario}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
@@ -105,35 +104,37 @@ const login = async (req, res) => {
 		//res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 		//res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		// Establecer la cookie
+		
 		res.cookie("tokenAuth", token, {
 			sameSite: 'none',
 			secure:true
-		});
-
-		res.send({ success: true, message: "Inicio exitoso", token });
+		});*/
+		res.send({ success: true, message: "Inicio exitoso" });
     } catch (error) {
         res.status(500).send({ success: false, message: "Ocurrió un error" });
     }
 };
-
+//Busca un usuario por el RUT
 const isAdmin = (req, res) => {
-	let reqRut = req.params.id
+    let reqRut = req.params.id;
 
-	Usuario.findOne({rut: reqRut}, (err, result) => {
-		if (err) return res.status(400).send({msg:err})
-		if(result){	
-			//console.log(result)
-			if (result.tipoUsuario === 0){
-			return res.status(202).send({msg: "TRUE", userId: result._id})
-			}
-			if (result.tipoUsuario === 1){
-				return res.status(200).send({msg: "FALSE", userId: result._id})
-			}
-			if (result.tipoUsuario === 2)
-			return res.status(203).send({msg: "FALSE", userId: result._id})
-		}
-	})
-}
+    Usuario.findOne({ rut: reqRut }, (err, result) => {
+        if (err) return res.status(400).send({ msg: err });
+        if (result) {
+            // Verificar si el usuario es administrador
+            const isAdmin = result.tipoUsuario === 0;
+            // Devolver el resultado
+            return res.status(200).send({
+                msg: isAdmin ? "El usuario es administrador" : "El usuario no es administrador",
+                userId: result._id,
+                isAdmin: isAdmin
+            });
+        } else {
+            // El RUT no existe en el sistema
+            return res.status(200).send({ message: "El RUT ingresado no existe en el sistema." });
+        }
+    });
+};
 
 const updateEstadoUsuario = (req, res) => {
 	let id = req.params.id

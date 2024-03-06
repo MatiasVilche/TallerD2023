@@ -106,49 +106,6 @@ const VerDocs = ({ data }) => {
 
     //Fin del bloque de PDF desde el backend
 
-    //Inicio del bloque de PDF del proyecto
-    const generatePDF = async (proyecto) => {
-
-        let proyectoActual = await getProyectoEspecifico(proyecto)
-
-        let materialesParaPDF = proyectoActual.data.materiales.map((material, index) => {
-            return { nombre: material.nombre, cantidad: material.cantidad };
-        });
-
-        let cuerpoTabla = materialesParaPDF.map(material => {
-            return [material.nombre, material.cantidad];
-        });
-
-        let clienteActual = clientes.find(cliente => cliente._id === proyectoActual.data.cliente);
-
-        const docDefinition = {
-            styles: styles,
-            content: [
-                { text: 'Biosur ventanas PVC', style: 'title' },
-                // Info proyecto
-                { text: 'Proyecto: ' + proyectoActual.data.nombre, style: 'subtitle' },
-                { text: 'Cliente: ' + clienteActual.nombre, style: 'subtitle' },
-                { text: 'Fecha de inicio: ' + proyectoActual.data.fechaInicio, style: 'subtitle' },
-                { text: 'Fecha de termino: ' + (proyectoActual.data.fechaTermino ===  "0" ? 'Sin definir' : proyectoActual.data.fechaTermino), style: 'subtitle' },
-                '\n',
-                // Info materiales proyecto
-                {
-                    style: 'tableExample',
-                    table: {
-                        headerRows:  1,
-                        widths: ['*', '*'],
-                        body: [
-                            [{ text: 'Nombre del material', style: 'tableHeader' }, { text: 'Cantidad', style: 'tableHeader' }],
-                        ].concat(cuerpoTabla.map(row => row.map(cell => ({ text: cell, style: 'tableCell' })))),
-                    },
-                },
-            ],
-        };
-
-    pdfMake.createPdf(docDefinition).download('Informe proyecto ' + proyectoActual.data.nombre);
-    }
-    //Fin del bloque de PDF del proyecto
-
     // Función para descargar el archivo PDF
     const downloadPdf = (file) => {
         const baseUrl = process.env.SERVIDOR.replace('/api', '');
@@ -214,7 +171,6 @@ const VerDocs = ({ data }) => {
             <Flex direction="row" align="center" mt="5%"> 
                 <Button colorScheme={"green"} onClick={(e) => {e.preventDefault(); handleOpen();}}>Subir PDF</Button>
             </Flex>
-                <Button mt="1%"style={{padding: '4px  8px' }} colorScheme={"blue"} onClick={() => generatePDF(proyecto._id)}>Generar PDF del proyecto</Button>
         <Stack spacing={4} mt={5}>
         <Table variant="simple">
                 <Thead>

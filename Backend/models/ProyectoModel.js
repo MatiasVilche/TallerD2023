@@ -11,9 +11,9 @@ const proyectoSchema = mongoose.Schema({
         [materialSchema.schema]
     ,
     etapa:{
-        //0= inicio 1=intermedia 2=final
+        //0= Inicio 1=Planificación 2=Ejecución 3=Terminado
         type: Number,
-		enum: [0, 1, 2],
+		enum: [0, 1, 2, 3],
         default: 0
     }
     ,

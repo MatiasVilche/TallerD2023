@@ -9,6 +9,10 @@ const Proyectos = () => {
 
     const router = useRouter()
 
+    // Obtén la fecha actual y formátala en el formato YYYY-MM-DD
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
     const [proyecto, setProyecto] = useState({
         _id: '',
         nombre: '',
@@ -17,7 +21,7 @@ const Proyectos = () => {
         ],
         cliente:'',
         descripcion:'',
-        fechaInicio:'',
+        fechaInicio: formattedDate,
         fechaTermino:''
     })
 
@@ -98,7 +102,12 @@ const Proyectos = () => {
 
                 <FormControl id="fechaInicio"> 
                     <FormLabel>Fecha de inicio</FormLabel>
-                    <input type="date" name="fechaInicio"  onChange = {handleChange}/>
+                    <input type="date" name="fechaInicio"  value={proyecto.fechaInicio} max={proyecto.fechaTermino} onChange = {handleChange}/>
+                </FormControl>
+
+                <FormControl id="fechaTermino"> 
+                    <FormLabel>Fecha de termino</FormLabel>
+                    <input type="date" name="fechaTermino"  min={proyecto.fechaInicio} onChange = {handleChange}/>
                 </FormControl>
                 </Stack>
             <HStack>

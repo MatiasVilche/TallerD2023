@@ -123,8 +123,9 @@ const Editar = ({ data }) => {
             <FormLabel htmlFor="etapa">Etapa del proyecto
             <Select placeholder="Seleccione la etapa" onChange={handleChange} name="etapa" value={proyecto.etapa}>
                 <option value="0">{"Inicio"}</option>
-                <option value="1">{"Intermedio"}</option>
-                <option value="2">{"Final"}</option>
+                <option value="1">{"Planificación"}</option>
+                <option value="2">{"Ejecución"}</option>
+                <option value="3">{"Terminado"}</option>
             </Select>
             </FormLabel>
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState,useEffect} from 'react'
-import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Input,Center,Box,Select} from '@chakra-ui/react'
+import { Button, Container, Heading, HStack, Stack, Table, Thead, Tr, Td, Tbody, Input,Center,Box,Select,Flex} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {getProyecto,getProyectoEspecifico,updateEstadoProyecto} from '../../data/proyecto'
 import { getMateriales} from '../../data/materiales'
@@ -13,7 +13,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 import Image from 'next/image'
-import Logo from '../../public/logoBiosur.png'
+import Logo from '../../public/logoBiosur_ST.png'
 
 const Proyectos = () => {
 
@@ -83,9 +83,12 @@ const Proyectos = () => {
         if(a === 0){
             s = "Inicio"
         }else if(a === 1){
-            s = "Intermedio"    
+            s = "Planificación"    
         }else if(a === 2){
-            s = "Final"    
+            s = "Ejecución"    
+        }
+        else if(a === 2){
+            s = "Terminado"    
         }
             return s
     }
@@ -107,6 +110,7 @@ const Proyectos = () => {
                     {userType != 1 ? (
                     <Td>
                         <HStack spacing={2}>
+                            <Button style={{padding: '4px  8px' }} colorScheme={"purple"} onClick={() => router.push(`./verDetalles/${proyecto._id}`)}>Ver detalles</Button>
                             <Button style={{padding: '4px  8px' }} colorScheme={"orange"} onClick={() => router.push(`./editarMateriales/${proyecto._id}`)}>Ver materiales</Button>
                             <Button style={{padding: '4px  8px' }} colorScheme={"green"} onClick={() => router.push(`./editar/${proyecto._id}`)}>Editar proyecto</Button>
                             <Button style={{padding: '4px  8px' }} colorScheme={"yellow"} onClick={() => router.push(`./verDocs/${proyecto._id}`)}>Ver documentos</Button>
@@ -190,11 +194,22 @@ const Proyectos = () => {
     return (
         <>
         <Sidebar/>
-        <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh">
+        <Box bgGradient="linear(to-r, #007bff, #8a2be2)" minH="100vh" position="relative">
+        <Image
+            src={Logo}
+            alt='logo'
+            width={182}
+            height={70}
+            style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                zIndex: 1000
+            }}
+        />
         <Container maxW="container.xl">
             <Heading visibility="hidden">a</Heading>
             <Heading as="h1" size="2xl" textAlign="center">Proyectos</Heading>
-
             <Center display="flex" justifyContent="space-between" marginTop="20px">
                 <Select backgroundColor= 'white' border="2px" borderColor="black.200" size='lg' width="300px" onChange={handleSelectChange}>
                     <option value="default">Seleccione un filtro</option>
