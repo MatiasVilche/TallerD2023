@@ -2,6 +2,11 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/mostrar": "pages/mostrar.js"
+  "/clientes/editar/[clientes]": "pages/clientes/editar/[clientes].js",
+  "/mostrar": "pages/mostrar.js",
+  "/usuarios/mostrar": "pages/usuarios/mostrar.js",
+  "/proyecto/proyecto": "pages/proyecto/proyecto.js",
+  "/clientes/mostrar": "pages/clientes/mostrar.js",
+  "/historial": "pages/historial.js",
+  "/usuarios/editarPassword/[usuarios]": "pages/usuarios/editarPassword/[usuarios].js"
 }

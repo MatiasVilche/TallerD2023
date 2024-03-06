@@ -15,11 +15,6 @@
   ],
   "rootMainFiles": [],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -30,10 +25,40 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/clientes/editar/[clientes]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/clientes/editar/[clientes].js"
+    ],
+    "/clientes/mostrar": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/clientes/mostrar.js"
+    ],
+    "/historial": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/historial.js"
+    ],
     "/mostrar": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/mostrar.js"
+    ],
+    "/proyecto/proyecto": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/proyecto/proyecto.js"
+    ],
+    "/usuarios/editarPassword/[usuarios]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/usuarios/editarPassword/[usuarios].js"
+    ],
+    "/usuarios/mostrar": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/usuarios/mostrar.js"
     ]
   },
   "ampFirstPages": []

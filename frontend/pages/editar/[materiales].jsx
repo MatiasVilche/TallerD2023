@@ -40,12 +40,14 @@ const Editar = ({ data }) => {
 
         const expresionCantidad = /^(0|[1-9]\d*)$/;
         const expresionCodigo = /^[A-Za-z0-9]+$/;
-        
+        /*
         // Comprueba si el código ya existe
         if (allMaterials.some(material => material.codigo === codigo)) {
             alert("El código del material ya existe");
             return false;
         }
+        <InputForm width="35%" backgroundColor= 'white' borderColor= 'black'color='black' label="Código" handleChange={handleChange} name="codigo" type="text" maxLength={12} value={material.codigo}/>
+        */
 
         if(codigo === "" || nombre === "" || descripcion === "" || cantidad === ""){
             alert("No pueden haber campos vacios, por favor rellene los faltantes")
@@ -127,7 +129,7 @@ const Editar = ({ data }) => {
             <Container maxW="container.xl" mt={10}>
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>{data.nombre}</Heading>
             <Stack spacing={4} mt={10}>
-                <InputForm width="35%" backgroundColor= 'white' borderColor= 'black'color='black' label="Código" handleChange={handleChange} name="codigo" type="text" maxLength={12} value={material.codigo}/>
+                
                 <FormControl>
                     <FormLabel>{"Nombre"}
                         <Textarea resize="vertical" maxH="8em" width="100%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" type="text" maxLength={120} value={material.nombre}/>

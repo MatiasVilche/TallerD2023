@@ -94,13 +94,6 @@ const Editar = ({ data }) => {
             alert("Todos los campos son obligatorios");
         }else if (v === true){
             e.preventDefault()
-
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(usuario.password, salt);
-
-            usuario.password = hashedPassword;
-            //usuario.numero = '+56' + usuario.numero; 
-
             let timerInterval
         updateUsuario(usuarios,usuario).then(res => {
             if (res.status == 200){
@@ -129,7 +122,20 @@ const Editar = ({ data }) => {
     const delay = ms => new Promise(
         resolve => setTimeout(resolve, ms)
     );
-    
+    /* 
+    <FormControl id="rut" isRequired> 
+                    <FormLabel>RUT</FormLabel>
+                        <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={rutF} onChange = {handleChangeRut}/>
+                        {!validate(rutF) ? (
+                        <FormHelperText>
+                            Rut Inválido
+                        </FormHelperText>
+                            ) : 
+                        <FormErrorMessage>El RUT es obligatorio</FormErrorMessage>
+                        }
+                    </FormControl>
+    */
+   
         return(   
             <Box
     	    bgGradient="linear(to-r, #007bff, #8a2be2)"
@@ -147,17 +153,7 @@ const Editar = ({ data }) => {
             <Container maxW="container.xl">
             <Heading as={"h1"} size={"2xl"} textAlign={"center"}>Modificar Usuario: {data.nombre}</Heading>
             <Stack spacing={4} mt={10}>
-                    <FormControl id="rut" isRequired> 
-                    <FormLabel>RUT</FormLabel>
-                        <Input width="25%" backgroundColor= 'white' borderColor= 'black' color='black' name="rut" placeholder="12.345.678-9" type="text" maxLength="12" value={rutF} onChange = {handleChangeRut}/>
-                        {!validate(rutF) ? (
-                        <FormHelperText>
-                            Rut Inválido
-                        </FormHelperText>
-                            ) : 
-                        <FormErrorMessage>El RUT es obligatorio</FormErrorMessage>
-                        }
-                    </FormControl>
+                    
 
                 <FormControl id="nombre" isRequired>
                 <InputForm width="60%" backgroundColor= 'white' borderColor= 'black'color='black' label="Nombre" handleChange={handleChange} name="nombre" placeholder="Actualizar nombre" type="text" value={usuario.nombre}/>
